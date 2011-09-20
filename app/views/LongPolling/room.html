@@ -1,0 +1,19 @@
+#{extends 'layout.html' /}
+#{set title: 'Chat room' /}
+#{set bodyID: 'long-polling' /}
+#{set 'moreScripts'} <script> var userNickName = "${user}"; </script> #{/}
+
+<h1>
+    You are now chatting as ${user}
+    <a href="@{leave(user)}">Leave the chat room</a>
+</h1>
+
+<div id="thread">
+</div>
+
+<div id="new-message">
+    <input type="text" id="message" autocomplete="off">
+    <input type="submit" value="send" id="send">
+</div>
+
+#{event-js-templates user: user /}

@@ -1,0 +1,11 @@
+#{if play.Play.id != 'production' && _arg?.size() > 0}
+<div class="flash-message">
+    <ul>
+        <li><u><b>Error debugging (dev and staging only):</b></u></li>
+
+        #{list _arg}
+            <li>${_.getKey()} - ${_}</li>
+        #{/}
+    </ul>
+</div>
+#{/}

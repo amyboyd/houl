@@ -1,0 +1,68 @@
+*{
+Optional args:
+    title
+    metaDescription
+    moreHead
+    moreStyles
+    moreScripts
+    bodyID
+    bodyClass
+    doc-canonical
+    doc-og-title
+    doc-og-type
+    doc-og-url
+    doc-og-image
+}*
+<!DOCTYPE html>
+<html "♥♥♥" lang="en">
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        #{if get('metaDescription')}
+            <meta name="description" content="#{get 'metaDescription' /}" />
+        #{/}
+
+        *{ Stylesheets. }*
+        <link rel="stylesheet" type="text/css" media="screen" href="@{Bundles.styles}" />
+        #{get 'moreStyles' /}
+
+        *{ Javascript files and the variable 'moreScripts' are at the end of this file. }*
+
+        <link rel="shortcut icon" type="image/x-icon" href="@{'/public/favicon.ico'}" />
+
+        #{if get('doc-canonical')}
+            <link id="doc-canonical" rel="canonical" href="#{get 'doc-canonical' /}" />
+        #{/}
+        #{else}
+            <link id="doc-canonical" rel="canonical" href="/" />
+        #{/}
+
+        <meta id="doc-og-title" property="og:title" content="#{get 'doc-og-title' /}" />
+        <meta id="doc-og-type" property="og:type" content="#{get 'doc-og-type' /}" />
+        <meta id="doc-og-url" property="og:url" content="#{get 'doc-og-url' /}" />
+        <meta id="doc-og-image" property="og:image" content="#{get 'doc-og-image' /}" />
+        <meta property="og:site_name" content="${play.configuration.getProperty('application.name')}" />
+
+        #{get 'moreHead' /}
+    </head>
+    <body #{if bodyID != null} id="${bodyID.raw()}" #{/} #{if bodyClass != null} class="${bodyClass.raw()}" #{/} >
+        <section id="main-page-content">
+            #{debug-form-errors errors /}
+            #{if flash?.success}<p class="flash-message">${flash.success}</p>#{/if}
+            #{if flash?.error}<p class="flash-message">${flash.error}</p>#{/if}
+
+            #{doLayout /}
+        </section>
+
+        *{ JavaScript. }*
+        <script src="@{Bundles.scripts}" type="text/javascript"></script>
+        #{get 'moreScripts' /}
+
+        *{ Google Analytics. }*
+        #{if !currentUser?.admin && !request?.domain?.startsWith("dev.")}
+            *{ @todo - GA scripts }*
+        #{/}
+    </body>
+</html>

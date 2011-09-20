@@ -1,0 +1,182 @@
+// The var `userNickName` should be defined externally.
+var userNickName = userNickName || "";
+
+if (document.body.id === "index") {
+    indexPage();
+}
+else if (document.body.id === "active-refresh") {
+    activeRefreshPage();
+}
+else if (document.body.id === "long-polling") {
+    longPollingPage();
+}
+else if (document.body.id === "web-socket") {
+    webSocketPage();
+}
+
+function indexPage() {
+    $('#user').focus();
+
+    // Persisting the user nick name is done differently in website vs apps.
+    if (typeof webmynd !== "undefined") {
+        indexPageInAppOrExtension();
+    } else {
+        indexPageInWebsite();
+    }
+}
+
+function indexPageInAppOrExtension() {
+    var uuid = "webmynd-chat";
+    var api = webmynd[uuid].api;
+
+    /**
+     * Load previously saved user nick name.
+     */
+    api.prefs.get("user", function(value) {
+        if (value) {
+            // Already logged in.
+            api.log("Already logged in as: " + value);
+            location = "@@{LongPolling.room}?user=" + value;
+        } else {
+            // Not already logged in.
+            api.log("Requesting user nick name");
+        }
+    });
+
+    /**
+     * Save user nick name when they click "enter".
+     */
+    $('#enter').click(function() {
+        var value = $('#user').val();
+
+        api.log("Saving user nick name in api.prefs: " + value);
+        api.prefs.set("user", value);
+    });
+}
+
+function indexPageInWebsite() {
+    /**
+     * Use previously saved user nick name.
+     */
+    if ((typeof localStorage !== "undefined") && localStorage["user"]) {
+        console.log("Already logged in as: " + localStorage["user"]);
+        location = "@@{LongPolling.room}?user=" + localStorage["user"];
+    }
+
+    /**
+     * Save user nick name when they click "enter".
+     */
+    $('#enter').click(function() {
+        var value = $('#user').val();
+
+        console.log("Saving user nick name in local storage: " + value);
+        localStorage["user"] = value;
+    });
+}
+
+function activeRefreshPage() {
+    console.log("Refresh");
+
+    $('#message').focus();
+
+    // Scroll the messages panel to the end.
+    var scrollDown = function() {
+        $('#thread').scrollTo('max')
+    }
+
+    // Reload the whole messages panel.
+    var refresh = function() {
+        $('#thread').load('@@{Refresh.room}?user=' + userNickName + ' #thread .message', function() {
+            scrollDown()
+        });
+    }
+
+    // Call refresh every 5 seconds.
+    setInterval(refresh, 5000)
+
+    scrollDown();
+}
+
+function longPollingPage() {
+    console.log("Long polling");
+
+    $('#message').focus();
+
+    var lastReceived = 0;
+    var waitMessages = "@@{LongPolling.waitMessages}";
+    var say = "@@{LongPolling.say}";
+
+    $('#send').click(function(e) {
+        var message = $('#message').val();
+        $('#message').val('').focus();
+        $.post(say, {user: userNickName, message: message});
+    });
+
+    $('#message').keypress(function(e) {
+        if(e.charCode == 13 || e.keyCode == 13) {
+            $('#send').click();
+            e.preventDefault();
+        }
+    })
+
+    // Retrieve new messages.
+    var getMessages = function() {
+        $.ajax({
+            url: waitMessages + "?lastReceived=" + lastReceived,
+            success: function(events) {
+                $(events).each(function() {
+                    display(this.data);
+                    lastReceived = this.id;
+                });
+                getMessages();
+            },
+            dataType: 'json'
+        });
+    }
+
+    getMessages();
+
+    // Display a message.
+    var display = function(event) {
+        $('#thread').append(tmpl('message_tmpl', {event: event}));
+        $('#thread').scrollTo('max');
+    }
+}
+
+function webSocketPage() {
+    console.log("WebSocket");
+
+    $('#message').focus();
+
+    // Create a socket.
+    var socket = new WebSocket('@@{WebSocket.ChatRoomSocket.join}?user=' + userNickName);
+
+    // Display a message.
+    var display = function(event) {
+        $('#thread').append(tmpl('message_tmpl', {event: event}));
+        $('#thread').scrollTo('max');
+    }
+
+    // Message received on the socket.
+    socket.onmessage = function(event) {
+        var parts = /^([^:]+):([^:]+)(:(.*))?$/.exec(event.data)
+        display({
+            type: parts[1],
+            user: parts[2],
+            text: parts[4]
+        });
+    }
+
+    $('#send').click(function(e) {
+        var message = $('#message').val();
+        $('#message').val('');
+        socket.send(message);
+    });
+
+    $('#message').keypress(function(e) {
+        if(e.charCode == 13 || e.keyCode == 13) {
+            $('#send').click();
+            e.preventDefault();
+        }
+    });
+}

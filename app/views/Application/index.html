@@ -1,0 +1,33 @@
+#{extends 'layout.html' /}
+#{set title: 'Login' /}
+#{set bodyID: 'index' /}
+
+<h1>${play.configuration.getProperty('application.name')}</h1>
+
+<div id="login">
+    #{form @enterDemo()}
+        #{if flash.error}
+            <p class="error">
+                ${flash.error}
+            </p>
+        #{/if}
+        <p>
+            <label for="user">Choose a nick name:</label>
+            <input type="text" name="user" id="user" autocomplete="off">
+        </p>
+<!--        <p>
+            <label for="nick">Demonstration:</label>
+            <select name="demo">
+                <option></option>
+                <option value="refresh">Ajax, active refresh</option>
+                <option value="longpolling">Ajax, long polling</option>
+                <option value="websocket">WebSocket</option>
+            </select>
+        </p>-->
+        <input type="hidden" name="demo" value="longpolling" />
+        <p>
+            <label></label>
+            <input type="submit" id="enter" value="Enter and troll">
+        </p>
+    #{/form}
+</div>
