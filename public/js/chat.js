@@ -16,62 +16,6 @@ else if (document.body.id === "web-socket") {
 
 function indexPage() {
     $('#user').focus();
-
-    // Persisting the user nick name is done differently in website vs apps.
-    if (typeof webmynd !== "undefined") {
-        indexPageInAppOrExtension();
-    } else {
-        indexPageInWebsite();
-    }
-}
-
-function indexPageInAppOrExtension() {
-    var uuid = "webmynd-chat";
-    var api = webmynd[uuid].api;
-
-    /**
-     * Load previously saved user nick name.
-     */
-    api.prefs.get("user", function(value) {
-        if (value) {
-            // Already logged in.
-            api.log("Already logged in as: " + value);
-            location = "@@{LongPolling.room}?user=" + value;
-        } else {
-            // Not already logged in.
-            api.log("Requesting user nick name");
-        }
-    });
-
-    /**
-     * Save user nick name when they click "enter".
-     */
-    $('#enter').click(function() {
-        var value = $('#user').val();
-
-        api.log("Saving user nick name in api.prefs: " + value);
-        api.prefs.set("user", value);
-    });
-}
-
-function indexPageInWebsite() {
-    /**
-     * Use previously saved user nick name.
-     */
-    if ((typeof localStorage !== "undefined") && localStorage["user"]) {
-        console.log("Already logged in as: " + localStorage["user"]);
-        location = "@@{LongPolling.room}?user=" + localStorage["user"];
-    }
-
-    /**
-     * Save user nick name when they click "enter".
-     */
-    $('#enter').click(function() {
-        var value = $('#user').val();
-
-        console.log("Saving user nick name in local storage: " + value);
-        localStorage["user"] = value;
-    });
 }
 
 function activeRefreshPage() {

@@ -1,25 +1,15 @@
-# Index/login
 GET     /                                       Application.index
 *       /app/{action}                           Application.{action}
+WS      /app/ws/join                            WebSocket.ChatRoomSocket.join
+*       /app/{module}/{action}                  {module}.{action}
 
-# Refresh demo
-GET     /refresh                                Refresh.index
-GET     /refresh/room                           Refresh.room
-POST    /refresh/room                           Refresh.say
-GET     /refresh/room/leave                     Refresh.leave          
 
-# Long polling demo
-GET     /longpolling/room                       LongPolling.room
-GET     /longpolling/room/messages              LongPolling.waitMessages
-POST    /longpolling/room/messages              LongPolling.say  
-GET     /longpolling/room/leave                 LongPolling.leave    
+# Static files
+# ~~~~~~~~~~~~
 
-# WebSocket demo
-GET     /websocket/room                         WebSocket.room
-WS      /websocket/room/socket                  WebSocket.ChatRoomSocket.join
+# Update the version number when deploying if we need to force browsers to refresh their cache.
+GET     /_/bundles/1/{action}                   Bundles.{action}
+GET     /_/a/1/                                 staticDir:public/
 
-# Misc
-GET     /robots.txt                             404
 GET     /favicon.ico                            staticFile:public/favicon.ico
-GET     /_/bundles/{action}                     Bundles.{action}
-GET     /_/app-public/                          staticDir:public
+GET     /robots.txt                             staticFile:public/robots.txt

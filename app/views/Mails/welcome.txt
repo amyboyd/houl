@@ -1,0 +1,5 @@
+Welcome to ${chatapp.Constants.SITE_NAME}!
+
+Confirm your email address by clicking this link: @@{UserAccount.confirmEmail(user.id, user.getValidationCode())}
+
+(Remember to bookmark us in your browser!)

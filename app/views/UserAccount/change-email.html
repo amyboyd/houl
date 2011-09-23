@@ -1,0 +1,24 @@
+#{extends 'layout.html' /}
+#{set title:'Change Your Account\'s Email Address - ' + SITE_NAME /}
+
+<h1>Change Your Account's Email Address</h1>
+
+#{form @UserAccount.changeEmailHandler(), method: 'post'}
+    <table>
+        <tbody>
+            <tr>
+                <th><label for="newEmail">New email address:</label></th>
+                <td>
+                    <input type="email" value="${flash.get('newEmail') ?: ''}" name="newEmail" id="newEmail" required />
+                    #{form-error-if-exists 'newEmail', tag: 'span' /}
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><input type="submit" value="Save" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <input type="hidden" name="forward" value="${params.get('forward')}" />
+#{/}

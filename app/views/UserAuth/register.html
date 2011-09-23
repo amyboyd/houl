@@ -1,0 +1,14 @@
+#{if !request.isAjax()}
+    #{extends 'layout.html' /}
+    #{set title:'Register On ' + SITE_NAME /}
+#{/}
+
+<h1>Register On ${SITE_NAME}</h1>
+
+#{include 'UserAuth/_register-form.html' /}
+
+<p>
+    <a href="@{UserAuth.login(forward)}">If you already have an account, click here to login.</a>
+    <br />
+    <a href="@{UserAuth.forgotPassword}">If you forgot your password, click here to reset it.</a>
+</p>

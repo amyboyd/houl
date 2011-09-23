@@ -1,16 +1,25 @@
 package controllers;
 
-import models.ChatRoom;
-import play.mvc.*;
+import java.util.List;
+import models.Buddy;
+import models.BuddyList;
+import models.User;
 import play.data.validation.*;
 
-public class Application extends Controller {
-
+public class Application extends BaseController {
     public static void index() {
-        render();
-    }
+        if (!isAuth()) {
+            UserAuth.login(null, null);
+        }
 
-    public static void afterLogout() {
+        final User user = requireAuthenticatedUser();
+        final BuddyList buddyList = new BuddyList(user);
+
+        renderArgs.put("countBuddies", buddyList.countAll());
+        renderArgs.put("countOnlineBuddies", 2); // @todo
+        renderArgs.put("requests", buddyList.getRequests());
+        renderArgs.put("buddies", buddyList.getAccepted());
+
         render();
     }
 
@@ -30,12 +39,5 @@ public class Application extends Controller {
         if (demo.equals("websocket")) {
             WebSocket.room(user);
         }
-    }
-
-    /**
-     * Just for showing that cross-domain AJAX works in apps/extensions. Not used on the website.
-     */
-    public static void numberOfEvents() {
-        renderText(ChatRoom.get().archive().size());
     }
 }

@@ -1,0 +1,24 @@
+#{extends 'layout.html' /}
+#{set title: SITE_NAME /}
+#{set bodyId: 'login-page' /}
+#{set navBreadcrumbs: 'Login' /}
+
+#{if overrideMessage}
+    <div class="flash-message">${overrideMessage.raw()}</div>
+#{/}
+
+<p>${SITE_NAME} is lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.</p>
+
+<div id="login-column-1" class="login-column">
+    <h1>Login</h1>
+
+    #{include 'UserAuth/_login-form.html' /}
+
+    <p><a href="@{UserAuth.forgotPassword}">Forgot your password? Reset it here.</a></p>
+</div>
+
+<div id="login-column-2" class="login-column">
+    <h1>Register</h1>
+
+    #{include 'UserAuth/_register-form.html' /}
+</div>

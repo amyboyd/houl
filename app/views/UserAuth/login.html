@@ -1,0 +1,15 @@
+#{if !request.isAjax()}
+    #{extends 'layout.html' /}
+    #{set title:'Login' /}
+#{/}
+
+<h1>Login</h1>
+
+#{include 'UserAuth/_login-form.html' /}
+
+<p>
+    <a href="@{UserAuth.register(forward)}">Not registered yet? Click here.</a>
+</p>
+<p>
+    <a href="@{UserAuth.forgotPassword}">Forgot your password? Click here.</a>
+</p>

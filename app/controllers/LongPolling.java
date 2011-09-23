@@ -1,12 +1,11 @@
 package controllers;
 
-import play.mvc.*;
 import play.libs.F.*;
 import java.util.*;
 import com.google.gson.reflect.*;
 import models.*;
 
-public class LongPolling extends Controller {
+public class LongPolling extends BaseController {
 
     public static void room(String user) {
         ChatRoom.get().join(user);
@@ -27,6 +26,6 @@ public class LongPolling extends Controller {
 
     public static void leave(String user) {
         ChatRoom.get().leave(user);
-        Application.afterLogout();
+        redirect("/");
     }
 }

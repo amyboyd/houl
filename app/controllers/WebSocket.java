@@ -6,7 +6,7 @@ import play.mvc.Http.*;
 import models.*;
 import static play.libs.F.Matcher.*;
 
-public class WebSocket extends Controller {
+public class WebSocket extends BaseController {
 
     public static void room(String user) {
         render(user);

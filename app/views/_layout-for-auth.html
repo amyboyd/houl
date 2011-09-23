@@ -1,0 +1,23 @@
+<section id="center-column">
+    <div id="top-bar">
+        <h1>#{get 'topBarText' /}</h1>
+    </div>
+
+    <div id="content">
+        #{debug-form-errors errors /}
+        #{if flash?.success}<p class="flash-message">${flash.success}</p>#{/if}
+        #{if flash?.error}<p class="flash-message">${flash.error}</p>#{/if}
+
+        #{doLayout /}
+
+        <div class="clearfix"></div>
+    </div>
+    
+    <div id="bottom-buttons">
+        <a id="bottom-buttons-add" title="Add a buddy" href="@todo">&nbsp;</a>
+        <a id="bottom-buttons-houl" title="Houl at someone" href="@todo">&nbsp;</a>
+        <a id="bottom-buttons-unknown" title="What is this?" href="@todo">&nbsp;</a>
+        <a id="bottom-buttons-options" title="Options" href="@todo">&nbsp;</a>
+    </div>
+    <div class="clearfix"></div>
+</section>

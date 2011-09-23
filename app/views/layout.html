@@ -5,7 +5,7 @@ Optional args:
     moreHead
     moreStyles
     moreScripts
-    bodyID
+    bodyId
     bodyClass
     doc-canonical
     doc-og-title
@@ -47,14 +47,13 @@ Optional args:
 
         #{get 'moreHead' /}
     </head>
-    <body #{if bodyID != null} id="${bodyID.raw()}" #{/} #{if bodyClass != null} class="${bodyClass.raw()}" #{/} >
-        <section id="main-page-content">
-            #{debug-form-errors errors /}
-            #{if flash?.success}<p class="flash-message">${flash.success}</p>#{/if}
-            #{if flash?.error}<p class="flash-message">${flash.error}</p>#{/if}
-
-            #{doLayout /}
-        </section>
+    <body #{if bodyId != null} id="${bodyId.raw()}" #{/} #{if bodyClass != null} class="${bodyClass.raw()}" #{/} >
+        #{if isAuth}
+            #{include '_layout-for-auth.html' /}
+        #{/}
+        #{else}
+            #{include '_layout-for-unauth.html' /}
+        #{/}
 
         *{ JavaScript. }*
         <script src="@{Bundles.scripts}" type="text/javascript"></script>

@@ -1,11 +1,9 @@
 package controllers;
 
-import play.mvc.*;
 import java.util.*;
 import models.*;
 
-public class Refresh extends Controller {
-
+public class Refresh extends BaseController {
     public static void index(String user) {
         ChatRoom.get().join(user);
         room(user);
@@ -23,6 +21,6 @@ public class Refresh extends Controller {
 
     public static void leave(String user) {
         ChatRoom.get().leave(user);
-        Application.afterLogout();
+        redirect("/");
     }
 }

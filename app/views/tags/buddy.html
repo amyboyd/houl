@@ -1,0 +1,36 @@
+*{
+@param {Buddy} _arg
+}*
+
+<div class="buddy ${_arg.isRequest() ? 'request-type' : _arg.isOpenChat() ? 'open-chat-type' : 'other-type'}">
+    <img src="${_arg.getBuddy().getImageUrl()}" alt="" width="48" height="48" />
+
+    <div class="buddy-type-and-time">
+        #{if _arg.isRequest()}
+            #{_buddy-type-and-time type: 'request', time: _arg.relationship.requestedAt /}
+        #{/}
+        #{elseif _arg.isOpenChat()}
+            #{_buddy-type-and-time type: 'message', time: _arg.relationship.lastChatAt /}
+        #{/}
+        #{elseif _arg.relationship.lastChatAt != null}
+            #{_buddy-type-and-time type: 'message', time: _arg.relationship.lastChatAt /}
+        #{/}
+        #{else}
+            #{_buddy-type-and-time type: 'added', time: _arg.relationship.acceptedAt/}
+        #{/}
+    </div>
+
+    <h2 class="buddy-name">${_arg.getBuddy()}</h2>
+
+    <div style="clear: right;"></div>
+
+    #{if _arg.isRequest()}
+        #{_buddy-message _arg.relationship.requestMessage /}
+    #{/}
+    #{elseif _arg.relationship.lastChatMessage}
+        #{_buddy-message _arg.relationship.lastChatMessage /}
+    #{/}
+    #{elseif _arg.buddy.status}
+        #{_buddy-message '<em>Status:</em> ' + _arg.buddy.status /}
+    #{/}
+</div>

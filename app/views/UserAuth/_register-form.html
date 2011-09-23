@@ -1,0 +1,26 @@
+#{form @UserAuth.registerHandler(forward), method:'post', onsubmit:"this.submit.value='Registering...';this.submit.disabled=1;"}
+    #{if flash.userRegisterError}<p class="flash-message">${flash.userRegisterError}</p>#{/if}
+
+    <p>
+        <label for="email">Email Address:</label>
+        <br />
+        <input type="email" required="required" name="email" value="${flash.email}" size="21"
+               placeholder="name@example.com" tabindex="400" />
+    </p>
+
+    <p>
+        <label for="password">Password:</label>
+        <br />
+        <input type="password" required="required" name="password" value="" size="15" tabindex="401" />
+    </p>
+
+    <p>
+        <label for="password2">Password again:</label>
+        <br />
+        <input type="password" required="required" name="password2" value="" size="15" tabindex="402" />
+    </p>
+
+    <p>
+        <input type="submit" name="submit" value="Register" tabindex="403" />
+    </p>
+#{/form}

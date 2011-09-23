@@ -1,0 +1,20 @@
+#{form @UserAuth.loginHandler(forward), method:'post', onsubmit:"this.submit.value='Logging in...';this.submit.disabled=1;"}
+    #{if flash.userLoginError}<p class="flash-message">${flash.userLoginError}</p>#{/if}
+
+    <p>
+        <label for="email">Email Address:</label>
+        <br />
+        <input type="email" required="required" name="email" value="${flash.email}" size="21"
+               placeholder="name@example.com" tabindex="300" />
+    </p>
+
+    <p>
+        <label for="password">Password:</label>
+        <br />
+        <input type="password" required="required" name="password" value="" size="15" tabindex="301" />
+    </p>
+
+    <p>
+        <input type="submit" name="submit" value="Login" tabindex="302" />
+    </p>
+#{/form}

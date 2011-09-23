@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <style type="text/css">
+            body { font: 13px "Arial", sans-serif; line-height: 1.5em; }
+            #logo-link { text-decoration: none; }
+            p    { margin: 0 0 1em; }
+            p.footer { font: 12px; color: #AAA; }
+            hr   { border: 1px solid #CCC; }
+        </style>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        *{ Incase any unintended relative URLs are sent in the email, try to ensure they still work. }*
+        <base href="${play.configuration.getProperty('application.baseUrl')}" />
+    </head>
+    <body>
+        <a id="logo-link" href="${play.configuration.getProperty('application.baseUrl')}">
+            <img src="@@{'/public/images/logo-150x50-transparent.png'}" width="150" height="50" alt="${chatapp.Constants.SITE_NAME}" />
+        </a>
+
+        <p><hr /></p>
+
+        #{doLayout /}
+
+        <p><hr /></p>
+
+        <p class="footer">
+            If you ever want to speak to a real, living human being at ${chatapp.Constants.SITE_NAME},
+            just email <a href="mailto:${play.configuration.get('application.emailAddress')}">${play.configuration.get('application.emailAddress')}</a>!
+            We love hearing from users, and welcome suggestions about how we can improve.
+        </p>
+    </body>
+</html>

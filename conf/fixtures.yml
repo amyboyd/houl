@@ -1,0 +1,96 @@
+User(User_1):
+    name: Michael Boyd
+    email: mic.t.boyd@gmail.com
+    password: purple
+    admin: true
+    loginCount: 0
+    loginFailures: 0
+    emailConfirmed: true
+    status: Hello world.
+
+User(User_2):
+    name: Debbie N.
+    email: mic.t.boyd+2@gmail.com
+    password: purple
+    emailConfirmed: true
+
+User(User_3):
+    name: Johnny Silvershoe
+    email: mic.t.boyd+3@gmail.com
+    password: purple
+    emailConfirmed: true
+
+User(User_4):
+    name: White Gorilla
+    email: mic.t.boyd+4@gmail.com
+    password: purple
+    emailConfirmed: true
+    status: Being Primal
+
+User(User_5):
+    name: Ari A.
+    email: mic.t.boyd+5@gmail.com
+    password: purple
+    emailConfirmed: true
+    status: Chilen at Arctica, swing by! Gonna be there all night.
+
+User(User_6):
+    name: Lauren P.
+    email: mic.t.boyd+6@gmail.com
+    password: purple
+    emailConfirmed: true
+    status: Hanging out with poo bear!
+
+User(User_7):
+    name: Adam Haya
+    email: mic.t.boyd+7@gmail.com
+    password: purple
+    emailConfirmed: true
+
+User(User_8):
+    name: Abby Winter
+    email: mic.t.boyd+8@gmail.com
+    password: purple
+    emailConfirmed: true
+
+
+
+BuddyRelationship(BR_1):
+    user1: User_1
+    user2: User_2
+    requestedAt: 2011-09-01 12:12:12
+    acceptedAt: 2011-09-01 12:12:12
+    lastChatAt: 2011-09-23 23:59:59
+    lastChatMessage: Hey there!
+
+BuddyRelationship(BR_2):
+    user1: User_1
+    user2: User_3
+    requestedAt: 2011-09-01 12:12:12
+    acceptedAt: 2011-09-01 12:12:12
+    lastChatAt: 2011-10-01 01:01:01
+    lastChatMessage: If you wanna go with Mike tonight then just tell me... I don't really care... I just wanna know so I can cry myself to sleep.
+
+BuddyRelationship(BR_3):
+    user1: User_1
+    user2: User_4
+    requestedAt: 2011-09-01 12:12:12
+    acceptedAt: 2011-09-01 12:12:12
+
+BuddyRelationship(BR_4):
+    user1: User_1
+    user2: User_5
+    requestedAt: 2011-09-01 12:12:12
+    requestMessage: I found your PIN!
+
+BuddyRelationship(BR_5):
+    user1: User_5
+    user2: User_6
+    requestedAt: 2011-09-01 12:12:12
+    requestMessage: Hey there!
+
+BuddyRelationship(BR_6):
+    user1: User_8
+    user2: User_1
+    requestedAt: 2011-09-01 12:12:12
+    requestMessage: Hey! Do you remember me from last night? You're lucky I found your pin in my purse!
