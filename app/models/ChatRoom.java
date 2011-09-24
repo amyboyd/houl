@@ -1,36 +1,46 @@
 package models;
 
+import com.google.gson.*;
 import java.util.*;
+import javax.persistence.*;
+import org.apache.commons.lang.StringUtils;
+import play.data.validation.MaxSize;
+import play.db.jpa.Model;
 import play.libs.F.*;
 
-public class ChatRoom {
-
+@Entity
+@Table(name = "chat_room")
+public class ChatRoom extends Model {
+    @Transient
     private final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(100);
 
     /**
-     * For WebSocket, when a user join the room we return a continuous event stream
-     * of ChatEvent
+     * The IDs of the users in this room, concatenated.
      */
-    public EventStream<ChatRoom.Event> join(String user) {
-        chatEvents.publish(new Join(user));
-        return chatEvents.eventStream();
-    }
+    private String name;
 
-    /**
-     * A user leaves the room.
-     */
-    public void leave(String user) {
-        chatEvents.publish(new Leave(user));
+    @Lob
+    @MaxSize(500000)
+    private JsonArray json;
+
+    private ChatRoom(String name) {
+        this.name = name;
+        this.json = new JsonArray();
     }
 
     /**
      * A user says something in the room.
      */
-    public void say(String user, String text) {
+    public void say(User user, String text) {
         if (text == null || text.trim().isEmpty()) {
             return;
         }
-        chatEvents.publish(new Message(user, text));
+        publishEvent(new Message(user, text));
+    }
+
+    private void publishEvent(Event event) {
+        chatEvents.publish(event);
+        json.add(event.toJsonObject());
     }
 
     /**
@@ -41,64 +51,77 @@ public class ChatRoom {
         return chatEvents.nextEvents(lastReceived);
     }
 
-    /**
-     * For active refresh, we need to retrieve the whole message archive at
-     * each refresh
-     */
-    public List<ChatRoom.Event> archive() {
-        return chatEvents.archive();
+    public EventStream<Event> getEventStream() {
+        return chatEvents.eventStream();
     }
+//
+//    /**
+//     * For active refresh, we need to retrieve the whole message archive at
+//     * each refresh
+//     */
+//    public List<ChatRoom.Event> archive() {
+//        return chatEvents.archive();
+//    }
 
     ///////////// Chat room events //////////////////
     public static abstract class Event {
-
         public final String type;
+
         public final long timestamp;
 
-        public Event(String type) {
+        public final long user;
+
+        protected Event(String type, User user) {
             this.type = type;
             this.timestamp = System.currentTimeMillis();
+            this.user = user.id.longValue();
         }
-    }
 
-    public static class Join extends Event {
-
-        final public String user;
-
-        public Join(String user) {
-            super("join");
-            this.user = user;
-        }
-    }
-
-    public static class Leave extends Event {
-
-        final public String user;
-
-        public Leave(String user) {
-            super("leave");
-            this.user = user;
+        protected JsonObject toJsonObject() {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("type", type);
+            obj.addProperty("timestamp", timestamp);
+            obj.addProperty("user", user);
+            return obj;
         }
     }
 
     public static class Message extends Event {
+        public final String text;
 
-        final public String user;
-        final public String text;
-
-        public Message(String user, String text) {
-            super("message");
-            this.user = user;
+        private Message(User user, String text) {
+            super("message", user);
             this.text = text;
         }
-    }
-    //////////////// Chat room factory ////////////////
-    private static ChatRoom INSTANCE = null;
 
-    public static ChatRoom get() {
-        if (INSTANCE == null) {
-            INSTANCE = new ChatRoom();
+        @Override
+        protected JsonObject toJsonObject() {
+            JsonObject obj = super.toJsonObject();
+            obj.addProperty("text", text);
+            return obj;
         }
-        return INSTANCE;
+    }
+
+    //////////////// Chat room factory ////////////////
+    private static Map<String, ChatRoom> INSTANCES = new HashMap<String, ChatRoom>(10);
+
+    public static ChatRoom get(User... users) {
+        return get(Arrays.asList(users));
+    }
+
+    public static ChatRoom get(List<User> users) {
+        Collections.sort(users, new AscendingIDcomparator<User>());
+        String name = StringUtils.join(users.iterator(), '-');
+        return get(name);
+    }
+
+    public static ChatRoom get(String roomName) {
+        if (INSTANCES.containsKey(roomName)) {
+            return INSTANCES.get(roomName);
+        } else {
+            ChatRoom instance = new ChatRoom(roomName);
+            INSTANCES.put(roomName, instance);
+            return instance;
+        }
     }
 }

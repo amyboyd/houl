@@ -1,42 +1,90 @@
 package models;
 
-import java.util.Date;
+import com.google.gson.*;
+import java.util.*;
+import javax.persistence.*;
+import play.Logger;
+import play.data.validation.MaxSize;
+import play.db.jpa.Model;
+import play.exceptions.UnexpectedException;
+import play.mvc.Http.Request;
+import play.mvc.Router;
+import play.mvc.Router.ActionDefinition;
+import play.mvc.Scope.Params;
 
-public class Buddy {
-    private User user;
-
-    private User buddy;
-
-    private BuddyRelationship relationship;
+@Entity
+@Table(name = "buddy")
+public class Buddy extends Model {
+    /**
+     * Requestor.
+     */
+    @ManyToOne
+    public User user1;
 
     /**
-     * If the users have chatted in the last 30 minutes.
+     * Acceptor.
      */
-    private boolean isOpenChat;
+    @ManyToOne
+    public User user2;
 
-    public Buddy(User user, BuddyRelationship relationship) {
-        this.user = user;
-        this.relationship = relationship;
-        this.buddy = (user.equals(relationship.user1) ? relationship.user2 : relationship.user1);
+    public Date requestedAt;
 
-        Date oneHourAgo = org.apache.commons.lang.time.DateUtils.addMinutes(new Date(), -30);
-        this.isOpenChat = (relationship.lastChatAt != null
-                && relationship.lastChatAt.after(oneHourAgo));
-    }
+    @MaxSize(255)
+    public String requestMessage;
 
-    public User getBuddy() {
-        return buddy;
+    public Date acceptedAt;
+
+    public Date lastChatAt;
+
+    public String lastChatMessage;
+
+    public User getOtherUser() {
+        User currentUser = (User) Request.current().args.get("currentUser");
+        if (currentUser == null) {
+            throw new UnexpectedException("User is null");
+        } else if (currentUser.equals(user1)) {
+            return user2;
+        } else if (currentUser.equals(user2)) {
+            return user1;
+        } else {
+            throw new UnexpectedException("User not in this Buddy");
+        }
     }
 
     public boolean isAccepted() {
-        return relationship.acceptedAt != null;
+        return acceptedAt != null;
     }
 
     public boolean isRequest() {
-        return relationship.acceptedAt == null;
+        return acceptedAt == null;
     }
 
     public boolean isOpenChat() {
-        return isOpenChat;
+        Date oneHourAgo = org.apache.commons.lang.time.DateUtils.addMinutes(new Date(), -30);
+        return (lastChatAt != null && lastChatAt.after(oneHourAgo));
+    }
+
+    public JsonObject toJsonObject() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("type", isRequest() ? "incoming request" : isOpenChat() ? "open chat" : "other");
+
+        User otherUser = getOtherUser();
+        obj.addProperty("id", otherUser.id);
+        obj.addProperty("name", otherUser.name);
+
+        // URL is either to the chat room if accepted, or to the accept/reject page if a request.
+        if (isRequest()) {
+            ActionDefinition url = Router.reverse("Application.request");
+            url = url.add("id", otherUser.id);
+            url.absolute();
+            obj.addProperty("url", url.toString());
+        } else {
+            ActionDefinition url = Router.reverse("Application.room");
+            url = url.add("id", otherUser.id);
+            url.absolute();
+            obj.addProperty("url", url.toString());
+        }
+
+        return obj;
     }
 }

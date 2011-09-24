@@ -1,24 +1,28 @@
 package models;
 
+import com.google.gson.*;
 import java.util.*;
 
 public class BuddyList {
-    private User user;
-
     private List<Buddy> buddies;
 
-    public BuddyList(User user) {
-        this.user = user;
-        this.buddies = new ArrayList<Buddy>(10);
-
+    public BuddyList(User currentUser) {
         // Exclude requests from this user, but include requests to this user.
-        List<BuddyRelationship> brList = BuddyRelationship.find(
-                "(user1 = ?1 AND acceptedAt is not null) OR user2 = ?1 " +
-                "ORDER BY requestedAt DESC, lastChatAt DESC, acceptedAt DESC",
-                user).fetch();
-        for (BuddyRelationship br: brList) {
-            this.buddies.add(new Buddy(user, br));
+        this.buddies = Buddy.find(
+                "(user1 = ?1 AND acceptedAt is not null) OR user2 = ?1 "
+                + "ORDER BY requestedAt DESC, lastChatAt DESC, acceptedAt DESC",
+                currentUser).fetch();
+    }
+
+    public JsonArray toJsonArray() {
+        JsonArray array = new JsonArray();
+        for (Buddy request: getRequests()) {
+            array.add(request.toJsonObject());
         }
+        for (Buddy accepted: getAccepted()) {
+            array.add(accepted.toJsonObject());
+        }
+        return array;
     }
 
     public int countAll() {
