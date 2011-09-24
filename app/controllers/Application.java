@@ -10,14 +10,6 @@ public class Application extends BaseController {
         if (!isAuth()) {
             UserAuth.login(null, null);
         }
-
-        final User user = requireAuthenticatedUser();
-        final BuddyList buddyList = new BuddyList(user);
-//
-        renderArgs.put("countBuddies", buddyList.countAll());
-        renderArgs.put("countOnlineBuddies", 2); // @todo
-//        renderArgs.put("requests", buddyList.getRequests());
-//        renderArgs.put("buddies", buddyList.getAccepted());
         render();
     }
     

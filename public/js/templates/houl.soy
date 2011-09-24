@@ -7,29 +7,27 @@
     <div class="buddy {if $buddy.isRequest} request-type {elseif $buddy.isOpenChat} open-chat-type {else} other-type {/if}">
         <img src="{$buddy.imageURL}" alt="" width="48" height="48" />
 
-        <div class="buddyTypeAndTime">
-            {if $buddy.isRequest}
-                {call .buddyTypeAndTime}
-                    {param type: 'request' /}
-                    {param time: $buddy.requestedAt /}
-                {/call}
-            {elseif $buddy.isOpenChat}
-                {call .buddyTypeAndTime}
-                    {param type: 'message' /}
-                    {param time: $buddy.lastChatAt/}
-                {/call}
-            {elseif $buddy.lastChatAt != null}
-                {call .buddyTypeAndTime}
-                    {param type: 'message' /}
-                    {param time: $buddy.lastChatAt /}
-                {/call}
-            {else}
-                {call .buddyTypeAndTime}
-                    {param type: 'added' /}
-                    {param time: $buddy.acceptedAt /}
-                {/call}
-            {/if}
-        </div>
+        {if $buddy.isRequest}
+            {call .buddyTypeAndTime}
+                {param type: 'request' /}
+                {param time: $buddy.requestedAt /}
+            {/call}
+        {elseif $buddy.isOpenChat}
+            {call .buddyTypeAndTime}
+                {param type: 'message' /}
+                {param time: $buddy.lastChatAt/}
+            {/call}
+        {elseif $buddy.lastChatAt != null}
+            {call .buddyTypeAndTime}
+                {param type: 'message' /}
+                {param time: $buddy.lastChatAt /}
+            {/call}
+        {else}
+            {call .buddyTypeAndTime}
+                {param type: 'added' /}
+                {param time: $buddy.acceptedAt /}
+            {/call}
+        {/if}
 
         // Name and link to room
         <h2 class="buddy-name">
@@ -62,9 +60,11 @@
  * @private
  */
 {template .buddyTypeAndTime}
-    <strong>{$type}</strong>
-    <br />
-    {if $time} {$time} {else} just now {/if}
+    <div class="buddy-type-and-time">
+        <strong>{$type}</strong>
+        <br />
+        {if $time} {$time} {else} just now {/if}
+    </div>
 {/template}
 
 
@@ -74,10 +74,12 @@
  * @private
  */
 {template .buddyMessage}
-    <div class="buddy-message">
-        <span class="quote">&OpenCurlyDoubleQuote;</span>
-        {if $prependHTML} {$prependHTML|noAutoescape} {/if}
-        {$text |insertWordBreaks:5 |escapeHtml}
-        <span class="quote">&CloseCurlyDoubleQuote;</span>
-    </div>
+    {if $text}
+        <div class="buddy-message">
+            <span class="quote">&OpenCurlyDoubleQuote;</span>
+            {if $prependHTML} {$prependHTML|noAutoescape} {/if}
+            {$text |escapeHtml}
+            <span class="quote">&CloseCurlyDoubleQuote;</span>
+        </div>
+    {/if}
 {/template}

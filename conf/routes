@@ -13,3 +13,5 @@ GET     /_/a/1/                                 staticDir:public/
 
 GET     /favicon.ico                            staticFile:public/favicon.ico
 GET     /robots.txt                             staticFile:public/robots.txt
+
+GET     /deps.js                                staticFile:closure/closure/goog/deps.js

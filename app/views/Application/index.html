@@ -1,8 +1,7 @@
 #{extends 'layout.html' /}
-#{set bodyId: 'index' /}
 #{set title: SITE_NAME /}
-#{set topBarText: 'Online (' + countOnlineBuddies + '/' + countBuddies + ')' /}
+#{set topBarText: 'Loading...' /}
 
-<div id="buddy-list"></div>
+<div id="buddy-list" data-src="@@{Application.buddyListJson}"></div>
 
 #{set 'moreScripts'} <script>houl.index();</script> #{/}
