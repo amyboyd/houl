@@ -210,7 +210,7 @@ goog.ui.AutoComplete.EventType = {
   /**
    * The list of suggestions has been updated, usually because either the list
    * has opened, or because the user has typed another character and the
-   * suggestions have been updated.
+   * suggestions have been updated, or the user has dismissed the autocomplete.
    */
   SUGGESTIONS_UPDATE: 'suggestionsupdate'
 };
@@ -498,6 +498,7 @@ goog.ui.AutoComplete.prototype.dismiss = function() {
   window.clearTimeout(this.dismissTimer_);
   this.dismissTimer_ = null;
   this.renderer_.dismiss();
+  this.dispatchEvent(goog.ui.AutoComplete.EventType.SUGGESTIONS_UPDATE);
 };
 
 
@@ -652,4 +653,15 @@ goog.ui.AutoComplete.prototype.detachInputs = function(var_args) {
   var inputHandler = /** @type {goog.ui.AutoComplete.InputHandler} */
       (this.selectionHandler_);
   inputHandler.detachInputs.apply(inputHandler, arguments);
+};
+
+
+/**
+ * Forces an update of the display.
+ * @param {boolean=} opt_force Whether to force an update.
+ */
+goog.ui.AutoComplete.prototype.update = function(opt_force) {
+  var inputHandler = /** @type {goog.ui.AutoComplete.InputHandler} */
+      (this.selectionHandler_);
+  inputHandler.update(opt_force);
 };

@@ -166,7 +166,7 @@ goog.dom.getElementsByTagNameAndClass = function(opt_tag, opt_class, opt_el) {
 /**
  * Returns an array of all the elements with the provided className.
  * @see {goog.dom.query}
- * @param {!string} className the name of the class to look for.
+ * @param {string} className the name of the class to look for.
  * @param {Document|Element=} opt_el Optional element to look in.
  * @return { {length: number} } The items found with the class name provided.
  */
@@ -185,7 +185,7 @@ goog.dom.getElementsByClass = function(className, opt_el) {
 /**
  * Returns the first element with the provided className.
  * @see {goog.dom.query}
- * @param {!string} className the name of the class to look for.
+ * @param {string} className the name of the class to look for.
  * @param {Element|Document=} opt_el Optional element to look in.
  * @return {Element} The first item with the class name provided.
  */
@@ -1212,6 +1212,16 @@ goog.dom.isNodeLike = function(obj) {
 
 
 /**
+ * Whether the object looks like an Element.
+ * @param {*} obj The object being tested for Element likeness.
+ * @return {boolean} Whether the object looks like an Element.
+ */
+goog.dom.isElement = function(obj) {
+  return goog.isObject(obj) && obj.nodeType == goog.dom.NodeType.ELEMENT;
+};
+
+
+/**
  * Returns true if the specified value is a Window object. This includes the
  * global window for HTML pages, and iframe windows.
  * @param {*} obj Variable to test.
@@ -1625,6 +1635,11 @@ goog.dom.setFocusableTabIndex = function(element, enable) {
   if (enable) {
     element.tabIndex = 0;
   } else {
+    // Set tabIndex to -1 first, then remove it. This is a workaround for
+    // Safari (confirmed in version 4 on Windows). When removing the attribute
+    // without setting it to -1 first, the element remains keyboard focusable
+    // despite not having a tabIndex attribute anymore.
+    element.tabIndex = -1;
     element.removeAttribute('tabIndex'); // Must be camelCase!
   }
 };
@@ -1987,7 +2002,7 @@ goog.dom.DomHelper.prototype.getElementsByTagNameAndClass = function(opt_tag,
 /**
  * Returns an array of all the elements with the provided className.
  * @see {goog.dom.query}
- * @param {!string} className the name of the class to look for.
+ * @param {string} className the name of the class to look for.
  * @param {Element|Document=} opt_el Optional element to look in.
  * @return { {length: number} } The items found with the class name provided.
  */
@@ -2000,7 +2015,7 @@ goog.dom.DomHelper.prototype.getElementsByClass = function(className, opt_el) {
 /**
  * Returns the first element we find matching the provided class name.
  * @see {goog.dom.query}
- * @param {!string} className the name of the class to look for.
+ * @param {string} className the name of the class to look for.
  * @param {Element|Document=} opt_el Optional element to look in.
  * @return {Element} The first item found with the class name provided.
  */
