@@ -3,3 +3,4 @@ logs/*
 syntax: glob
 tmp
 nbproject/
+public/bundles/
