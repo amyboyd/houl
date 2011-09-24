@@ -20,19 +20,14 @@ public class Bundles extends Controller {
             "public/css/auth.css",
             "public/css/unauth.css");
 
-    private static final Bundle scripts = new JavascriptsBundle("scripts.js",
-            "public/js/jquery-1.5.min.js",
-            "public/js/jquery.scrollTo-min.js",
-            "public/js/templating.js",
-            "public/js/chat.js").setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
-
     private static final Bundle closure = new ClosureBundle(
             "closure.js",
             "closure/closure/bin/build/closurebuilder.py",
-            CompilationLevel.ADVANCED_OPTIMIZATIONS,
+            CompilationLevel.SIMPLE_OPTIMIZATIONS,
             new String[] {
                 "closure/closure/goog",
                 "closure/third_party/closure",
+                "public/js/templates/compiled",
                 "public/js/closure", },
             new String[] {
                 "houl.exports", });
@@ -44,13 +39,6 @@ public class Bundles extends Controller {
             styles.getBundleFile().delete();
         }
         styles.applyToResponse(request, response);
-    }
-
-    public static void scripts() {
-        if (Constants.IS_PROD) {
-            response.cacheFor("70d");
-        }
-        scripts.applyToResponse(request, response);
     }
 
     public static void closure() {
@@ -69,7 +57,7 @@ public class Bundles extends Controller {
         final List<String> jsTemplates = soys.compileToJsSrc(options, SoyMsgBundle.EMPTY);
         play.libs.IO.writeContent(
                 jsTemplates.get(0),
-                Play.getFile("public/js/closure/houl-templates.js"));
+                Play.getFile("public/js/templates/compiled/templates.js"));
 
         closure.applyToResponse(request, response);
     }
