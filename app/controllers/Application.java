@@ -1,10 +1,9 @@
 package controllers;
 
-import java.util.List;
 import models.Buddy;
 import models.BuddyList;
+//import models.MessageList;
 import models.User;
-import play.data.validation.*;
 
 public class Application extends BaseController {
     public static void index() {
@@ -14,30 +13,46 @@ public class Application extends BaseController {
 
         final User user = requireAuthenticatedUser();
         final BuddyList buddyList = new BuddyList(user);
-
+//
         renderArgs.put("countBuddies", buddyList.countAll());
         renderArgs.put("countOnlineBuddies", 2); // @todo
-        renderArgs.put("requests", buddyList.getRequests());
-        renderArgs.put("buddies", buddyList.getAccepted());
-
+//        renderArgs.put("requests", buddyList.getRequests());
+//        renderArgs.put("buddies", buddyList.getAccepted());
         render();
     }
-
-    public static void enterDemo(@Required String user, @Required String demo) {
-        if (Validation.hasErrors()) {
-            flash.error("Please choose a nick name and the demonstration type…");
-            index();
+    
+    public static void buddyListJson() {
+        if (!isAuth()) {
+            renderJSON("{\"error\":\"must login\"}");
         }
 
-        // Dispatch to the demonstration        
-        if (demo.equals("refresh")) {
-            Refresh.index(user);
-        }
-        if (demo.equals("longpolling")) {
-            LongPolling.room(user);
-        }
-        if (demo.equals("websocket")) {
-            WebSocket.room(user);
-        }
+        final User user = requireAuthenticatedUser();
+        final BuddyList buddyList = new BuddyList(user);
+        renderJSON(buddyList.toJsonArray().toString());
+    }
+
+    public static void room(Long userId) {
+        User currentUser = requireAuthenticatedUser();
+
+        notFoundIfNull(userId);
+        User otherUser = User.findById(userId);
+        notFoundIfNull(otherUser);
+
+//        Buddy buddy = new Buddy(currentUser, otherUser);
+//        renderArgs.put("buddy", buddy);
+
+//        MessageList messsageList = new MessageList(currentUser, otherUser);
+//        renderArgs.put("messsageList", messsageList);
+
+//        render();
+    }
+    public static void acceptRequest(Long userId) {
+//        User currentUser = requireAuthenticatedUser();
+//
+//        notFoundIfNull(userId);
+//        User otherUser = User.findById(userId);
+//        notFoundIfNull(otherUser);
+//
+        // @todo
     }
 }

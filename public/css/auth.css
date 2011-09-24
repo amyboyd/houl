@@ -62,6 +62,7 @@
 .buddy {
     padding: 0 7px 7px;
     margin-bottom: 5px;
+    min-height: 58px;
     %{
     fancyDeboss = play.getFile('/public/images/buddy-bg.png');
     base64 = play.libs.Images.toBase64(fancyDeboss)
@@ -70,10 +71,13 @@
     background-position: bottom left;
     background-repeat: repeat-x;
 }
+
 .buddy img {
     float: left;
     margin: 7px 10px 0 0;
 }
+
+/* Name */
 .buddy .buddy-name {
     margin: 0;
     padding: 0;
@@ -83,6 +87,13 @@
     display: inline;
     position: relative;
     top: 4px;
+}
+.buddy .buddy-name a {
+    text-decoration: none;
+    color: inherit;
+}
+.buddy .buddy-name a:hover {
+    text-decoration: underline;
 }
 
 /* Type and time */

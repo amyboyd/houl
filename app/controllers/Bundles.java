@@ -2,6 +2,11 @@ package controllers;
 
 import chatapp.Constants;
 import com.google.javascript.jscomp.CompilationLevel;
+import com.google.template.soy.SoyFileSet;
+import com.google.template.soy.jssrc.SoyJsSrcOptions;
+import com.google.template.soy.msgs.SoyMsgBundle;
+import java.util.List;
+import play.Play;
 import play.libs.optimization.*;
 import play.mvc.Controller;
 
@@ -21,6 +26,17 @@ public class Bundles extends Controller {
             "public/js/templating.js",
             "public/js/chat.js").setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
 
+    private static final Bundle closure = new ClosureBundle(
+            "closure.js",
+            "closure/closure/bin/build/closurebuilder.py",
+            CompilationLevel.ADVANCED_OPTIMIZATIONS,
+            new String[] {
+                "closure/closure/goog",
+                "closure/third_party/closure",
+                "public/js/closure", },
+            new String[] {
+                "houl.exports", });
+
     public static void styles() {
         if (Constants.IS_PROD) {
             response.cacheFor("70d");
@@ -35,5 +51,26 @@ public class Bundles extends Controller {
             response.cacheFor("70d");
         }
         scripts.applyToResponse(request, response);
+    }
+
+    public static void closure() {
+        if (Constants.IS_PROD) {
+            response.cacheFor("70d");
+        } else {
+            closure.getBundleFile().delete();
+        }
+
+        // Compile Soy file into a JS file.
+        final SoyFileSet soys = new SoyFileSet.Builder().add(Play.getFile("public/js/templates/houl.soy")).build();
+        final SoyJsSrcOptions options = new SoyJsSrcOptions();
+        options.setCodeStyle(SoyJsSrcOptions.CodeStyle.CONCAT);
+        options.setShouldProvideRequireSoyNamespaces(true);
+        options.setIsUsingIjData(false);
+        final List<String> jsTemplates = soys.compileToJsSrc(options, SoyMsgBundle.EMPTY);
+        play.libs.IO.writeContent(
+                jsTemplates.get(0),
+                Play.getFile("public/js/closure/houl-templates.js"));
+
+        closure.applyToResponse(request, response);
     }
 }

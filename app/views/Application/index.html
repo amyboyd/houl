@@ -3,29 +3,6 @@
 #{set title: SITE_NAME /}
 #{set topBarText: 'Online (' + countOnlineBuddies + '/' + countBuddies + ')' /}
 
-#{list requests}
-    #{buddy _ /}
-#{/}
-#{list buddies}
-    #{buddy _ /}
-#{/}
+<div id="buddy-list"></div>
 
-
-#{form @enterDemo()}
-    #{if flash.error}
-        <p class="error">${flash.error}</p>
-    #{/if}
-
-    <p>
-        <label for="user">Choose a nick name:</label>
-        <input type="text" name="user" id="user" autocomplete="off">
-    </p>
-
-    <p>
-        <label></label>
-        <input type="submit" id="enter" value="Enter">
-    </p>
-
-    *{ Other options are websocket, refresh }*
-    <input type="hidden" name="demo" value="longpolling" />
-#{/form}
+#{set 'moreScripts'} <script>houl.index();</script> #{/}
