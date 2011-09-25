@@ -81,3 +81,15 @@
         </div>
     {/if}
 {/template}
+
+
+/**
+ * @param requester The potential buddy. The type is "houl.Buddy".
+ */
+{template .request}
+    <div class="request">
+        <p>Do you want to add {$requester.name} to your buddy list?</p>
+        <button class="button-green">Yes, accept the request</button>
+        <button class="button-grey">No</button>
+    </div>
+{/template}

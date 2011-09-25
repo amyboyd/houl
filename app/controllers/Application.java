@@ -1,8 +1,8 @@
 package controllers;
 
+import java.util.Date;
 import models.Buddy;
 import models.BuddyList;
-//import models.MessageList;
 import models.User;
 
 public class Application extends BaseController {
@@ -12,7 +12,7 @@ public class Application extends BaseController {
         }
         render();
     }
-    
+
     public static void buddyListJson() {
         requireHttpMethod("GET");
 
@@ -43,15 +43,35 @@ public class Application extends BaseController {
 //        render();
     }
 
-    public static void requestHandler(Long requesterId) {
+    /**
+     * @param requesterId The {@link User#id} of the user who made the request.
+     * @param response "accept" or "reject".
+     */
+    public static void requestHandler(Long requesterId, String response) {
         requireHttpMethod("POST");
 
-        User currentUser = requireAuthenticatedUser();
-
-        notFoundIfNull(requesterId);
         User requester = User.findById(requesterId);
-        notFoundIfNull(requester);
+        if (requester == null) {
+            error("Requester does not exist (ID " + requesterId + ")");
+        }
 
-        // @todo
+        User currentUser = requireAuthenticatedUser();
+        Buddy relationship = Buddy.findByUsers(requester, currentUser);
+        if (relationship == null) {
+            error("The request does not exist");
+        }
+        else if (relationship.isAccepted()) {
+            error("Already accepted");
+        }
+
+        if (response.equals("accept")) {
+            relationship.acceptedAt = new Date();
+            relationship.save();
+        } else if (response.equals("reject")) {
+            relationship.delete();
+        } else {
+            error("Response must be 'accept' or 'reject', got '" + response + "'");
+        }
+        ok();
     }
 }

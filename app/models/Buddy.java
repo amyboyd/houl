@@ -7,15 +7,13 @@ import play.data.validation.MaxSize;
 import play.db.jpa.Model;
 import play.exceptions.UnexpectedException;
 import play.mvc.Http.Request;
-import play.mvc.Router;
-import play.mvc.Router.ActionDefinition;
 import static play.templates.JavaExtensions.since;
 
 @Entity
 @Table(name = "buddy")
 public class Buddy extends Model {
     /**
-     * Requestor.
+     * Requester.
      */
     @ManyToOne
     public User user1;
@@ -36,6 +34,10 @@ public class Buddy extends Model {
     public Date lastChatAt;
 
     public String lastChatMessage;
+
+    public static Buddy findByUsers(User user1, User user2) {
+        return find("(user1 = ?1 and user2 = ?2) or (user1 = ?2 and user2 = ?1)", user1, user2).first();
+    }
 
     public User getOtherUser() {
         User currentUser = (User) Request.current().args.get("currentUser");

@@ -1,0 +1,18 @@
+%{
+buddyListJson = play.mvc.Router.reverse('Application.buddyListJson')
+buddyListJson.absolute()
+
+requestHandler = play.mvc.Router.reverse('Application.requestHandler')
+requestHandler = requestHandler.add('requesterId', '?');
+requestHandler = requestHandler.add('response', '?')
+requestHandler.absolute()
+
+chatRoom = play.mvc.Router.reverse('Application.chatRoom')
+chatRoom.absolute()
+}%
+<div id="url-list"
+     data-buddy-list="${buddyListJson}"
+     data-request-handler="${requestHandler}"
+     data-chat-room="${chatRoom}"
+     >
+</div>
