@@ -1,8 +1,17 @@
+/* Page containers ***************************************/
 #center-column {
     width: 384px;
     margin: 40px auto 20px;
     border: 3px solid #333;
     background: #fff;
+}
+/* These must be "block", not "none", because "goog.style.showElement()" restores to
+ default when showing an element. */
+#index-page, #request-page, #chat-room-page {
+    display: block;
+}
+#url-list {
+    display: none;
 }
 
 
@@ -87,13 +96,12 @@
     display: inline;
     position: relative;
     top: 4px;
-}
-.buddy .buddy-name a {
     text-decoration: none;
     color: inherit;
 }
-.buddy .buddy-name a:hover {
+.buddy .buddy-name:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 /* Type and time */
@@ -168,35 +176,4 @@
 .buddy .buddy-message .quote:last-child {
     bottom: -5px;
     right: 5px;
-}
-
-
-
-#login p {
-    margin: 5px 0;
-}
-#login label {
-    font-size: 14px;
-    display: block;
-    width: 150px;
-    text-align: right;
-    float: left;
-    margin-right: 5px;
-    padding-top: 2px;
-}
-#login #nick {
-    margin-left: 10px;
-    width: 200px;
-}
-#login #enter {
-    display: block;
-    margin: 10px 0 0 160px;
-}
-#login .error {
-    background: #c00;
-    margin: 0 0 10px 0;
-    padding: 5px;
-    text-align: center;
-    color: #fff;
-    font-size: 14px;
 }

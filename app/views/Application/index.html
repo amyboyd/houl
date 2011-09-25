@@ -2,6 +2,14 @@
 #{set title: SITE_NAME /}
 #{set topBarText: 'Loading...' /}
 
-<div id="buddy-list" data-src="@@{Application.buddyListJson}"></div>
+<div id="index-page"></div>
+<div id="request-page"></div>
+<div id="chat-room-page"></div>
+<div id="url-list"
+     data-buddy-list="@@{Application.buddyListJson}"
+     data-request-handler="@@{Application.requestHandler('%s')}"
+     data-chat-room="@@{Application.chatRoom('%s')}"
+     >
+</div>
 
 #{set 'moreScripts'}<script>houl.pages.index();</script>#{/}

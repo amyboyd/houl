@@ -14,6 +14,8 @@ public class Application extends BaseController {
     }
     
     public static void buddyListJson() {
+        requireHttpMethod("GET");
+
         if (!isAuth()) {
             renderJSON("{\"error\":\"must login\"}");
         }
@@ -23,7 +25,9 @@ public class Application extends BaseController {
         renderJSON(buddyList.toJsonArray().toString());
     }
 
-    public static void room(Long userId) {
+    public static void chatRoom(Long userId) {
+        requireHttpMethod("GET");
+
         User currentUser = requireAuthenticatedUser();
 
         notFoundIfNull(userId);
@@ -38,13 +42,16 @@ public class Application extends BaseController {
 
 //        render();
     }
-    public static void acceptRequest(Long userId) {
-//        User currentUser = requireAuthenticatedUser();
-//
-//        notFoundIfNull(userId);
-//        User otherUser = User.findById(userId);
-//        notFoundIfNull(otherUser);
-//
+
+    public static void requestHandler(Long requesterId) {
+        requireHttpMethod("POST");
+
+        User currentUser = requireAuthenticatedUser();
+
+        notFoundIfNull(requesterId);
+        User requester = User.findById(requesterId);
+        notFoundIfNull(requester);
+
         // @todo
     }
 }

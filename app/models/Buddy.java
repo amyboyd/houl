@@ -78,19 +78,6 @@ public class Buddy extends Model {
         obj.addProperty("imageURL", otherUser.getImageUrl());
         obj.addProperty("status", otherUser.status);
 
-        // URL is either to the chat room if accepted, or to the accept/reject page if a request.
-        if (isRequest()) {
-            ActionDefinition url = Router.reverse("Application.request");
-            url = url.add("id", otherUser.id);
-            url.absolute();
-            obj.addProperty("url", url.toString());
-        } else {
-            ActionDefinition url = Router.reverse("Application.room");
-            url = url.add("id", otherUser.id);
-            url.absolute();
-            obj.addProperty("url", url.toString());
-        }
-
         return obj;
     }
 }
