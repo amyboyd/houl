@@ -23,7 +23,10 @@ public class Bundles extends Controller {
     private static final Bundle closure = new ClosureBundle(
             "closure.js",
             "closure/closure/bin/build/closurebuilder.py",
-            CompilationLevel.WHITESPACE_ONLY,
+//            null,
+//            CompilationLevel.WHITESPACE_ONLY,
+//            CompilationLevel.SIMPLE_OPTIMIZATIONS,
+            CompilationLevel.ADVANCED_OPTIMIZATIONS,
             new String[] {
                 "closure/closure/goog",
                 "closure/third_party/closure",

@@ -1,7 +1,7 @@
 goog.provide('houl.exports');
 
-goog.require('houl');
-goog.require('houl.index');
+goog.require('houl.pages');
 
-goog.exportSymbol('houl', houl);
-goog.exportSymbol('houl.index', houl.index);
+goog.exportSymbol('houl.pages.index', houl.pages.index);
+goog.exportSymbol('houl.pages.request', houl.pages.request);
+goog.exportSymbol('houl.pages.chatRoom', houl.pages.chatRoom);

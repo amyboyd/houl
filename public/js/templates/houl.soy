@@ -4,7 +4,7 @@
  * @param buddy A "houl.Buddy" object.
  */
 {template .buddy}
-    <div class="buddy {if $buddy.isRequest} request-type {elseif $buddy.isOpenChat} open-chat-type {else} other-type {/if}">
+    <div id="buddy-{$buddy.id}" class="buddy {if $buddy.isRequest} request-type {elseif $buddy.isOpenChat} open-chat-type {else} other-type {/if}">
         <img src="{$buddy.imageURL}" alt="" width="48" height="48" />
 
         {if $buddy.isRequest}
