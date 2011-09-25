@@ -7,8 +7,10 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 
 /**
- * See 'models.Buddy.toJsonObject()'.
+ * See 'models.Buddy.toJsonObject()' (Java).
+ *
  * @constructor
+ * @param {obj} json
  */
 houl.Buddy = function(json) {
     this.id = json['id'];
@@ -61,6 +63,8 @@ houl.Buddy.prototype.setEventHooks = function() {
 
 /** @private @type {HTMLDivElement} */
 houl.Buddy.prototype.element = null;
+
+// Public data.
 houl.Buddy.prototype.id = null;
 houl.Buddy.prototype.type = null;
 houl.Buddy.prototype.status = null;

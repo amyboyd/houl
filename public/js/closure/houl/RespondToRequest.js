@@ -17,7 +17,6 @@ houl.RespondToRequest = function(buddy) {
     this.buddy = buddy;
 }
 
-/** @private */
 houl.RespondToRequest.prototype.render = function() {
     // Disable the buddy list from auto-updating so the buttons don't disappear.
     houl.globals.buddyList.setAutoUpdating(false);

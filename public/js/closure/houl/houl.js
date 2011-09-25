@@ -10,7 +10,7 @@ houl.setTopBarText = function(text) {
 
 
 /** @private @type {object<string, HTMLElement>} */
-houl.pageContainers = {
+var pageContainers = {
     'index-page': goog.dom.$('index-page'),
     'request-page': goog.dom.$('request-page'),
     'chat-room-page': goog.dom.$('chat-room-page')
@@ -19,11 +19,11 @@ houl.pageContainers = {
  * @param {string} pageId One of index-page, request-page, etc.
  */
 houl.getAndActivatePageContainer = function(pageId) {
-    for (var id in houl.pageContainers) {
-        var container = houl.pageContainers[id];
+    for (var id in pageContainers) {
+        var container = pageContainers[id];
         goog.style.showElement(container, id == pageId);
     }
-    return houl.pageContainers[pageId];
+    return pageContainers[pageId];
 }
 
 /**
