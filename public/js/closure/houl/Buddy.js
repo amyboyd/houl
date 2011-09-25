@@ -1,6 +1,7 @@
 goog.provide('houl.Buddy');
 
 goog.require('houl');
+goog.require('houl.RespondToRequest');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -50,7 +51,8 @@ houl.Buddy.prototype.setEventHooks = function() {
             evt.preventDefault();
 
             if (thisBuddy.isRequest) {
-                houl.pages.request(thisBuddy);
+                var rtr = new houl.RespondToRequest(thisBuddy);
+                rtr.render();
             } else {
                 houl.pages.chatRoom(thisBuddy);
             }

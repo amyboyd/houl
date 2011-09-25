@@ -2,8 +2,7 @@ goog.provide('houl');
 
 goog.require('goog.dom');
 goog.require('goog.style');
-goog.require('goog.string.format');
-goog.require('goog.array');
+goog.require('goog.string');
 
 houl.setTopBarText = function(text) {
     goog.dom.$('top-bar-inner').innerHTML = text;

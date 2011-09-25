@@ -2,9 +2,10 @@ goog.provide('houl.BuddyList');
 
 goog.require('houl');
 goog.require('houl.Buddy');
+goog.require('houl.globals');
+goog.require('goog.async.Delay');
 goog.require('goog.dom');
 goog.require('goog.net.XhrIo');
-goog.require('goog.async.Delay');
 
 /**
  * The buddy list updates automatically regularly.
@@ -21,9 +22,6 @@ houl.BuddyList = function(element) {
 
     this.element = element;
 }
-
-/** @private @type {number} */
-var AUTO_UPDATE_INTERVAL_IN_SECONDS = 15;
 
 houl.BuddyList.prototype.update = function() {
     var thisBuddyList = this;
@@ -48,21 +46,38 @@ houl.BuddyList.prototype.update = function() {
         houl.setTopBarText('Online (' + thisBuddyList.totalOnline + '/' + thisBuddyList.totalCount + ')');
     });
 
-    thisBuddyList.updateAfterInterval(AUTO_UPDATE_INTERVAL_IN_SECONDS * 1000);
+    if (thisBuddyList.enableAutoUpdating) {
+        thisBuddyList.updateAfterInterval(AUTO_UPDATE_INTERVAL_IN_SECONDS * 1000);
+        if (goog.DEBUG) {
+            console.log("Auto-updating is on, queued to update in " + AUTO_UPDATE_INTERVAL_IN_SECONDS + " seconds");
+        }
+    }
 }
 
 /**
  * @param {number} interval Miliseconds until the buddy list is updated.
  */
 houl.BuddyList.prototype.updateAfterInterval = function(interval) {
-    if (interval < 10) {
-        this.update();
-    } else {
-        // Wait a few seconds then update the buddy list.
-        var delay = new goog.async.Delay(function() {
-            houl.globals.buddyList.update();
-        }, interval);
-        delay.start();
+    // Clear any old delay, because its interval is no longer what we need.
+    if (this.autoUpdateDelay != null) {
+        this.autoUpdateDelay.stop();
+        this.autoUpdateDelay = null;
+    }
+
+    this.autoUpdateDelay = new goog.async.Delay(function() {
+        houl.globals.buddyList.update();
+    }, interval);
+    this.autoUpdateDelay.start();
+}
+
+houl.BuddyList.prototype.setAutoUpdating = function(enabled) {
+    this.enableAutoUpdating = enabled;
+    if (goog.DEBUG) {
+        console.log("Set auto updating: enabled? " + enabled);
+    }
+    if (!enabled && this.autoUpdateDelay != null) {
+        this.autoUpdateDelay.stop();
+        this.autoUpdateDelay = null;
     }
 }
 
@@ -73,6 +88,12 @@ houl.BuddyList.prototype.reset = function() {
     this.totalOnline = 0;
     this.buddies = [];
 }
+
+/** @private @type {boolean} */
+houl.BuddyList.prototype.enableAutoUpdating = true;
+
+/** @private @type {goog.async.Delay} */
+houl.BuddyList.prototype.autoUpdateDelay = null;
 
 /** @type {HTMLDivElement} */
 houl.BuddyList.prototype.element = null;
@@ -85,3 +106,6 @@ houl.BuddyList.prototype.totalOnline = 0;
 
 /** @type {array} */
 houl.BuddyList.prototype.buddies = [];
+
+/** @constant @private @type {number} */
+var AUTO_UPDATE_INTERVAL_IN_SECONDS = 15;
