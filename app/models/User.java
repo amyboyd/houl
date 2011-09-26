@@ -2,6 +2,7 @@ package models;
 
 import chatapp.BCrypt;
 import chatapp.Constants;
+import com.google.gson.JsonObject;
 import java.lang.annotation.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -56,7 +57,7 @@ public class User extends Model {
 
     @Temporal(TemporalType.TIMESTAMP)
     public Date lastOnline;
-    
+
     public static final String NO_USER_IMAGE_URL = play.mvc.Router.reverse(play.Play.getVirtualFile("public/images/no-user-image-48.png"), true);
 
     /**
@@ -96,6 +97,15 @@ public class User extends Model {
             return user;
         }
         return null;
+    }
+
+    public JsonObject toJsonObject() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("id", id);
+        obj.addProperty("name", name);
+        obj.addProperty("imageURL", getImageUrl());
+        obj.addProperty("status", status);
+        return obj;
     }
 
     /**

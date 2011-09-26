@@ -18,7 +18,7 @@ public class Chat extends BaseController {
         renderJSON(chatRoom.toJsonObject().toString());
     }
 
-    public static class LongPolling extends Controller {
+    public static class LongPolling extends BaseController {
         public static void say(Long buddyId, String message) {
             final User user = requireAuthenticatedUser();
             Application.getChatRoomByOtherUserId(buddyId).say(user, message);

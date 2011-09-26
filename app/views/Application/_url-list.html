@@ -12,7 +12,8 @@ roomJson = roomJson.add('buddyId', '?')
 roomJson.absolute()
 
 longPollingSay = play.mvc.Router.reverse('Chat.LongPolling.say')
-longPollingSay = roomJson.add('buddyId', '?')
+longPollingSay = longPollingSay.add('buddyId', '?')
+longPollingSay = longPollingSay.add('message', '?')
 longPollingSay.absolute()
 
 longPollingWait = play.mvc.Router.reverse('Chat.LongPolling.waitMessages')

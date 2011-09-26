@@ -66,19 +66,14 @@ public class Buddy extends Model {
     }
 
     public JsonObject toJsonObject() {
-        JsonObject obj = new JsonObject();
+        JsonObject obj = getOtherUser().toJsonObject();
+
         obj.addProperty("type", isRequest() ? "incoming request" : isOpenChat() ? "open chat" : "other");
         obj.addProperty("lastChatAt", lastChatAt != null ? since(lastChatAt) : null);
         obj.addProperty("lastChatMessage", lastChatMessage);
         obj.addProperty("requestedAt", requestedAt != null ? since(requestedAt) : null);
         obj.addProperty("requestMessage", requestMessage);
         obj.addProperty("acceptedAt", acceptedAt != null ? since(acceptedAt) : null);
-
-        User otherUser = getOtherUser();
-        obj.addProperty("id", otherUser.id);
-        obj.addProperty("name", otherUser.name);
-        obj.addProperty("imageURL", otherUser.getImageUrl());
-        obj.addProperty("status", otherUser.status);
 
         return obj;
     }

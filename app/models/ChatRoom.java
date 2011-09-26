@@ -3,7 +3,6 @@ package models;
 import com.google.gson.*;
 import java.util.*;
 import javax.persistence.*;
-import org.apache.commons.lang.StringUtils;
 import play.data.validation.MaxSize;
 import play.db.jpa.Model;
 import play.libs.F.*;
@@ -33,7 +32,20 @@ public class ChatRoom extends Model {
         obj.add("messages", json);
         obj.addProperty("messagesCount", json.size());
         obj.addProperty("roomName", name);
+
+        for (User user: getUsers()) {
+            obj.add("user" + user.id, user.toJsonObject());
+        }
+
         return obj;
+    }
+
+    public List<User> getUsers() {
+        List<Long> userIDs = new ArrayList<Long>(2);
+        for (String userID: name.split("-")) {
+            userIDs.add(Long.valueOf(userID));
+        }
+        return User.find("id in (?1)", userIDs).fetch();
     }
 
     /**
