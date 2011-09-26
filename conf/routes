@@ -1,7 +1,10 @@
 GET     /                                       Application.index
 *       /app/{action}                           Application.{action}
-WS      /app/ws/join                            WebSocket.ChatRoomSocket.join
-*       /app/{module}/{action}                  {module}.{action}
+GET     /chat/room                              Chat.roomJson
+*       /chat/lp/{action}                       Chat.LongPolling.{action}
+WS      /chat/ws/join                           Chat.WebSocket.join
+*       /account/{action}                       UserAccount.{action}
+*       /user/{action}                          UserAuth.{action}
 
 
 # Static files

@@ -8,6 +8,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.net.XhrIo');
+goog.require('goog.net.WebSocket');
 
 /**
  * @constructor
@@ -18,12 +19,13 @@ houl.ChatRoom = function(buddy) {
     this.element = houl.getAndActivatePageContainer('chat-room-page');
     goog.dom.removeChildren(this.element);
 
-    var url = houl.getURL('chat-room', {
+    var url = houl.getURL('room-json', {
         'buddyId': buddy.id
     });
     goog.net.XhrIo.send(url, function(event) {
         var json = event.target.getResponseJson();
-        alert(json);
+        console.log(json);
+        // @todo
     })
 }
 
@@ -34,7 +36,30 @@ houl.ChatRoom.prototype.render = function() {
     });
     goog.dom.appendChild(this.element, template);
 
+    goog.dom.$('chat-room-new-message-field').focus();
+
     houl.setTopBarText(this.buddy.name);
+
+    this.createWebSocket();
+}
+
+/** @private @return {boolean} */
+houl.ChatRoom.prototype.createWebSocket = function() {
+    var ws = new goog.net.WebSocket();
+ 
+//    var handler = new goog.events.EventHandler();
+//    handler.listen(ws, goog.net.WebSocket.EventType.OPENED, onOpen);
+//    handler.listen(ws, goog.net.WebSocket.EventType.MESSAGE, onMessage);
+ 
+    try {
+        var url = houl.getURL('web-socket', {
+            'buddyId': this.buddy.id
+        });
+        ws.open(url);
+        // @todo
+    } catch (e) {
+        throw "WebSocket exception: " + e;
+    }
 }
 
 /** @private @type {houl.Buddy} */

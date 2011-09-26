@@ -7,12 +7,12 @@ requestHandler = requestHandler.add('requesterId', '?');
 requestHandler = requestHandler.add('response', '?')
 requestHandler.absolute()
 
-roomHistoryJson = play.mvc.Router.reverse('Chat.roomHistoryJson')
-roomHistoryJson = roomHistoryJson.add('buddyId', '?')
-roomHistoryJson.absolute()
+roomJson = play.mvc.Router.reverse('Chat.roomJson')
+roomJson = roomJson.add('buddyId', '?')
+roomJson.absolute()
 
 longPollingSay = play.mvc.Router.reverse('Chat.LongPolling.say')
-longPollingSay = roomHistoryJson.add('buddyId', '?')
+longPollingSay = roomJson.add('buddyId', '?')
 longPollingSay.absolute()
 
 longPollingWait = play.mvc.Router.reverse('Chat.LongPolling.waitMessages')
@@ -26,7 +26,7 @@ webSocket.absolute()
 <div id="url-list"
      data-buddy-list="${buddyListJson}"
      data-request-handler="${requestHandler}"
-     data-chat-room="${roomHistoryJson}"
+     data-room-json="${roomJson}"
      data-long-polling-say="${longPollingSay}"
      data-long-polling-wait="${longPollingWait}"
      data-web-socket="${webSocket}"

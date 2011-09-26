@@ -28,6 +28,14 @@ public class ChatRoom extends Model {
         this.json = new JsonArray();
     }
 
+    public JsonObject toJsonObject() {
+        JsonObject obj = new JsonObject();
+        obj.add("messages", json);
+        obj.addProperty("messagesCount", json.size());
+        obj.addProperty("roomName", name);
+        return obj;
+    }
+
     /**
      * A user says something in the room.
      */
@@ -119,8 +127,15 @@ public class ChatRoom extends Model {
 
     public static ChatRoom get(List<User> users) {
         Collections.sort(users, new AscendingIDcomparator<User>());
-        String name = StringUtils.join(users.iterator(), '-');
-        return get(name);
+        StringBuilder name = new StringBuilder(20);
+        int i = 0;
+        for (User user: users) {
+            if (i++ > 0) {
+                name.append('-');
+            }
+            name.append(user.id);
+        }
+        return get(name.toString());
     }
 
     public static ChatRoom get(String roomName) {

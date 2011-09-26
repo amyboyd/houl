@@ -35,6 +35,10 @@ houl.getAndActivatePageContainer = function(pageId) {
  */
 houl.getURL = function(name, params) {
     var url = goog.dom.$('url-list').getAttribute('data-' + name);
+    if (goog.string.isEmptySafe(url)) {
+        throw "No URL for name '" + name + "'";
+    }
+
     url = goog.string.urlDecode(url);
 
     if (params != null) {

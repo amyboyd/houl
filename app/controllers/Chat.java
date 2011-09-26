@@ -10,19 +10,20 @@ import static play.libs.F.Matcher.*;
 
 public class Chat extends BaseController {
     /**
-     * Get a JSON array of all {@link ChatRoom.Event}s in a {@link ChatRoom}.
+     * Get a JSON array of all {@link ChatRoom.Event}s in a {@link ChatRoom}, and meta data.
      */
-    public static void roomHistoryJson(Long buddyId) {
+    public static void roomJson(Long buddyId) {
         requireHttpMethod("GET");
-        renderJSON(getChatRoomByOtherUserId(buddyId).json.toString());
+        ChatRoom chatRoom = getChatRoomByOtherUserId(buddyId);
+        renderJSON(chatRoom.toJsonObject().toString());
     }
-    
+
     public static class LongPolling extends Controller {
         public static void say(Long buddyId, String message) {
             final User user = requireAuthenticatedUser();
             Application.getChatRoomByOtherUserId(buddyId).say(user, message);
         }
-        
+
         public static void waitMessages(Long buddyId, Long lastReceived) {
             // Here we use continuation to suspend 
             // the execution until a new message has been received
@@ -31,7 +32,7 @@ public class Chat extends BaseController {
             renderJSON(Event.toJsonArray(messages));
         }
     }
-    
+
     public static class WebSocket extends WebSocketController {
         public static void join(Long buddyId) {
             final User user = requireAuthenticatedUser();
@@ -39,7 +40,7 @@ public class Chat extends BaseController {
 
             // Socket connected, join the chat room.
             final EventStream<ChatRoom.Event> roomStream = chatRoom.getEventStream();
-            
+
             while (inbound.isOpen()) {
                 // Wait for an event, either something coming on the inbound socket channel, or ChatRoom messages.
                 Either<WebSocketEvent, ChatRoom.Event> e = await(
