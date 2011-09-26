@@ -1,69 +1,36 @@
-//goog.provide('houl.ChatMessageSeries');
-//
-//goog.require('houl');
-//goog.require('goog.dom');
-//goog.require('goog.events');
-//goog.require('goog.events.EventType');
-//
-///**
-// * @constructor
-// * @param {obj} json
-// */
-//houl.ChatMessageSeries = function(json) {
-//    this.id = json['id'];
-//    this.name = json['name'];
-//    this.type = json['type'];
-//    this.imageURL = json['imageURL'];
-//    this.lastChatAt = json['lastChatAt'];
-//    this.lastChatMessage = json['lastChatMessage'];
-//    this.requestedAt = json['requestedAt'];
-//    this.requestMessage = json['requestMessage'];
-//    this.acceptedAt = json['acceptedAt'];
-//    this.status = json['status'];
-//
-//    // Some shortcut properties.
-//    this.isRequest = (json['type'] === 'incoming request');
-//    this.isOpenChat = (json['type'] === 'open chat');
-//    this.isOtherType = (!this.isRequest && !this.isOpenChat);
-//}
-//
-///**
-// * @param {houl.BuddyList} buddyList
-// */
-//houl.Buddy.prototype.render = function(buddyList) {
-//    var el = document.createElement('div');
-//    el.innerHTML =  houl.templates.buddy({
-//        buddy: this
-//    });
-//    goog.dom.appendChild(buddyList.element, el);
-//    this.element = goog.dom.$('buddy-' + this.id);
-//
-//    this.setEventHooks();
-//}
-//
-///** @private */
-//houl.Buddy.prototype.setEventHooks = function() {
-//    var link = goog.dom.$$('h2', null, this.element)[0];
-//    var thisBuddy = this;
-//    goog.events.listenOnce(link, goog.events.EventType.CLICK,
-//        function(evt) {
-//            evt.preventDefault();
-//
-//            if (thisBuddy.isRequest) {
-//                var rtr = new houl.RespondToRequest(thisBuddy);
-//                rtr.render();
-//            } else {
-//                var chatRoom = new houl.ChatRoom(thisBuddy);
-//                chatRoom.render();
-//            }
-//        });
-//}
-//
-///** @private @type {HTMLDivElement} */
-//houl.Buddy.prototype.element = null;
-//
-//// Public data.
-//houl.Buddy.prototype.id = null;
-//houl.Buddy.prototype.type = null;
-//houl.Buddy.prototype.status = null;
-////
+goog.provide('houl.ChatMessageSeries');
+
+/**
+ * @constructor
+ * @param {houl.User} user
+ */
+houl.ChatMessageSeries = function(user) {
+    this.user = user;
+    this.messages = [];
+    this.firstTimestamp = null;
+}
+
+/**
+ * @param {string} message
+ * @param {number} timestamp Milliseconds since Epoch.
+ */
+houl.ChatMessageSeries.prototype.addMessage = function(message, timestamp) {
+    this.messages.push([message, timestamp]);
+    
+    if (this.firstTimestamp == null) {
+        this.firstTimestamp = timestamp;
+    }
+}
+
+houl.ChatMessageSeries.prototype.toString = function() {
+    return "CMS: " + this.messages.length + " messsages from " + this.user;
+}
+
+/** @type {houl.User} */
+houl.ChatMessageSeries.prototype.user = null;
+
+/** @type {array<array>} */
+houl.ChatMessageSeries.prototype.messages = null;
+
+/** @type {number} Milliseconds since Epoch, for the first message in this series. */
+houl.ChatMessageSeries.prototype.firstTimestamp = null;

@@ -110,20 +110,24 @@
 {/template}
 
 /**
- * @param chatMessageSeries The type is "houl.ChatMessageSeries".
+ * @param chatMessageSeries A "houl.ChatMessageSeries".
  */
 {template .chatMessageSeries}
     <div class="chat-message-series">
-        <img src="{$chatMessageSeries.userImageURL}" alt="" width="48" height="48" />
+        <img src="{$chatMessageSeries.user.imageURL}" alt="" width="48" height="48" />
 
         <div class="chat-message-series-time">
-            {$chatMessageSeries.timestamp}
+            {$chatMessageSeries.firstTimestamp}
         </div>
 
-        <h2 class="chat-message-series-name">{$chatMessageSeries.userName}</h2>
+        <h2 class="chat-message-series-name">{$chatMessageSeries.user.name}</h2>
 
         <div style="clear: right;"></div>
 
-        // @todo - messages
+        {foreach $message in $chatMessageSeries.messages}
+            <div class="chat-message-series-message">
+                {$message.0}
+            </div>
+        {/foreach}
     </div>
 {/template}

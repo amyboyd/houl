@@ -78,7 +78,7 @@ houl.BuddyList.prototype.updateAfterInterval = function(interval) {
 houl.BuddyList.prototype.setAutoUpdating = function(enabled) {
     this.enableAutoUpdating = enabled;
     if (goog.DEBUG) {
-        console.log("Set auto updating: enabled? " + enabled);
+        console.log('Set auto updating: ' + (enabled ? 'on' : 'off'));
     }
     if (!enabled && this.autoUpdateDelay != null) {
         this.autoUpdateDelay.stop();

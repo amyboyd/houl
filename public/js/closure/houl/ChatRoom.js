@@ -3,7 +3,9 @@ goog.provide('houl.ChatRoom');
 goog.require('houl');
 goog.require('houl.globals');
 goog.require('houl.templates');
-goog.require('goog.async.Delay');
+goog.require('houl.User');
+goog.require('houl.ChatMessageSeries');
+goog.require('goog.async.ConditionalDelay');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.events');
@@ -19,37 +21,81 @@ goog.require('goog.net.WebSocket');
 houl.ChatRoom = function(buddy) {
     this.buddy = buddy;
     this.element = houl.getAndActivatePageContainer('chat-room-page');
+    this.chatMessageSeriesArray = [];
+    this.receivedJson = false;
 
     var url = houl.getURL('room-json', {
         'buddyId': buddy.id
     });
+    var thisChatRoom = this;
     goog.net.XhrIo.send(url, function(event) {
-        var json = event.target.getResponseJson();
-        if (goog.DEBUG) {
-            console.log("Chat room JSON:", json);
-        }
-
-    //        var lastMessageUser = null;
-    //        for (var i = 0; i < json.messages.length; i++) {
-    //        // @todo
-    //        }
+        thisChatRoom.parseJson(event.target.getResponseJson());
     });
 }
 
+/**
+ * Parse the room's JSON.
+ */
+houl.ChatRoom.prototype.parseJson = function(json) {
+    if (goog.DEBUG) {
+        console.log("Chat room JSON:", json);
+    }
+
+    var cms = null;
+    for (var i = 0; i < json['messagesCount']; i++) {
+        var message = json['messages'][i];
+        
+        if (cms == null || cms.user.id != message['userId']) {
+            cms = new houl.ChatMessageSeries(new houl.User(json['user' + message['userId']]));
+            this.chatMessageSeriesArray.push(cms);
+        }
+
+        cms.addMessage(message['text'], message['timestamp']);
+    }
+
+    this.receivedJson = true;
+}
+
 houl.ChatRoom.prototype.render = function() {
-    // Clear old chat room messages.
-    goog.dom.removeChildren(this.element);
+    var thisChatRoom = this;
 
-    var template = goog.dom.createElement('div');
-    template.innerHTML =  houl.templates.chatRoom({
-        chatMessageSeriesArray: []
-    });
-    goog.dom.appendChild(this.element, template);
+    function onJsonReceived() {
+        // Clear old chat room messages.
+        goog.dom.removeChildren(thisChatRoom.element);
 
-    houl.globals.buddyList.setAutoUpdating(false);
-    houl.setTopBarText(this.buddy.name);
-    this.setupNewMessageForm();
-    this.createWebSocket();
+        var template = goog.dom.createElement('div');
+        template.innerHTML = houl.templates.chatRoom({
+            chatMessageSeriesArray: thisChatRoom.chatMessageSeriesArray
+        });
+        goog.dom.appendChild(thisChatRoom.element, template);
+
+        houl.globals.buddyList.setAutoUpdating(false);
+        houl.setTopBarText(thisChatRoom.buddy.name);
+        thisChatRoom.setupNewMessageForm();
+//        thisChatRoom.createWebSocket();
+    }
+
+    function onFailure() {
+        alert('Sorry, an error occurred. The chat room couldn\'t open');
+    }
+    
+    function isJsonReceived() {
+        if (thisChatRoom.receivedJson) {
+            return true;
+        }
+        console.log("Waiting for chat room JSON...");
+        return false;
+    }
+    
+    // If there is a JSON request in progress, wait until it completes.
+    if (isJsonReceived()) {
+        onJsonReceived();
+    } else {
+        var delay = new goog.async.ConditionalDelay(isJsonReceived);
+        delay.onSuccess = onJsonReceived;
+        delay.onFailure = onFailure;
+        delay.start(500, 5000);
+    }
 }
 
 /**
@@ -113,12 +159,7 @@ houl.ChatRoom.prototype.say = function(message) {
         'buddyId': this.buddy.id,
         'message': message
     });
-    goog.net.XhrIo.send(sayURL,
-        /** @param {goog.events.Event} evt */
-        function(evt) {
-            // @todo
-            console.log(evt);
-        });
+    goog.net.XhrIo.send(sayURL);
 }
 
 /** @private @return {boolean} */
@@ -146,27 +187,15 @@ houl.ChatRoom.prototype.buddy = null;
 /** @private @type {HTMLElement} */
 houl.ChatRoom.prototype.element = null;
 
+/** @private @type {array<houl.ChatMessageSeries>} */
+houl.ChatRoom.prototype.chatMessageSeriesArray = null;
+
+/** @private @type {boolean} */
+houl.ChatRoom.prototype.receivedJson = false;
+
 //function longPollingPage() {
-//    console.log("Long polling");
-//
-//    $('#message').focus();
-//
 //    var lastReceived = 0;
 //    var waitMessages = "@@{LongPolling.waitMessages}";
-//    var say = "@@{LongPolling.say}";
-//
-//    $('#send').click(function(e) {
-//        var message = $('#message').val();
-//        $('#message').val('').focus();
-//        $.post(say, {user: userNickName, message: message});
-//    });
-//
-//    $('#message').keypress(function(e) {
-//        if(e.charCode == 13 || e.keyCode == 13) {
-//            $('#send').click();
-//            e.preventDefault();
-//        }
-//    })
 //
 //    // Retrieve new messages.
 //    var getMessages = function() {
@@ -193,10 +222,6 @@ houl.ChatRoom.prototype.element = null;
 //}
 //
 //function webSocketPage() {
-//    console.log("WebSocket");
-//
-//    $('#message').focus();
-//
 //    // Create a socket.
 //    var socket = new WebSocket('@@{WebSocket.ChatRoomSocket.join}?user=' + userNickName);
 //
