@@ -38,7 +38,7 @@ houl.ChatRoom = function(buddy) {
  */
 houl.ChatRoom.prototype.parseJson = function(json) {
     if (goog.DEBUG) {
-        console.log("Chat room JSON:", json);
+        console.log('Chat room JSON:', json);
     }
 
     var cms = null;
@@ -59,7 +59,7 @@ houl.ChatRoom.prototype.parseJson = function(json) {
 houl.ChatRoom.prototype.render = function() {
     var thisChatRoom = this;
 
-    function onJsonReceived() {
+    function onReady() {
         // Clear old chat room messages.
         goog.dom.removeChildren(thisChatRoom.element);
 
@@ -79,20 +79,20 @@ houl.ChatRoom.prototype.render = function() {
         alert('Sorry, an error occurred. The chat room couldn\'t open');
     }
     
-    function isJsonReceived() {
+    function isReady() {
         if (thisChatRoom.receivedJson) {
             return true;
         }
-        console.log("Waiting for chat room JSON...");
+        console.log('Waiting for chat room JSON...');
         return false;
     }
     
     // If there is a JSON request in progress, wait until it completes.
-    if (isJsonReceived()) {
-        onJsonReceived();
+    if (isReady()) {
+        onReady();
     } else {
-        var delay = new goog.async.ConditionalDelay(isJsonReceived);
-        delay.onSuccess = onJsonReceived;
+        var delay = new goog.async.ConditionalDelay(isReady);
+        delay.onSuccess = onReady;
         delay.onFailure = onFailure;
         delay.start(500, 5000);
     }
@@ -146,13 +146,13 @@ houl.ChatRoom.prototype.setupNewMessageForm = function() {
 houl.ChatRoom.prototype.say = function(message) {
     if (goog.string.isEmptySafe(message)) {
         if (goog.DEBUG) {
-            console.log("Submitted form, but nothing to say.")
+            console.log('Submitted form, but nothing to say.')
         }
         return;
     }
 
     if (goog.DEBUG) {
-        console.log("Say: " + message);
+        console.log('Say: ' + message);
     }
 
     var sayURL = houl.getURL('long-polling-say', {
@@ -177,7 +177,7 @@ houl.ChatRoom.prototype.createWebSocket = function() {
         ws.open(url);
     // @todo
     } catch (e) {
-        throw "WebSocket exception: " + e;
+        throw 'WebSocket exception: ' + e;
     }
 }
 
@@ -195,12 +195,12 @@ houl.ChatRoom.prototype.receivedJson = false;
 
 //function longPollingPage() {
 //    var lastReceived = 0;
-//    var waitMessages = "@@{LongPolling.waitMessages}";
+//    var waitMessages = '@@{LongPolling.waitMessages}';
 //
 //    // Retrieve new messages.
 //    var getMessages = function() {
 //        $.ajax({
-//            url: waitMessages + "?lastReceived=" + lastReceived,
+//            url: waitMessages + '?lastReceived=' + lastReceived,
 //            success: function(events) {
 //                $(events).each(function() {
 //                    display(this.data);

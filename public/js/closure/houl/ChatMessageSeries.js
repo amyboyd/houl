@@ -23,7 +23,7 @@ houl.ChatMessageSeries.prototype.addMessage = function(message, timestamp) {
 }
 
 houl.ChatMessageSeries.prototype.toString = function() {
-    return "CMS: " + this.messages.length + " messsages from " + this.user;
+    return 'CMS: ' + this.messages.length + ' messsages from ' + this.user;
 }
 
 /** @type {houl.User} */

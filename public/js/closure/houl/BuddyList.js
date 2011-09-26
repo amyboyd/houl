@@ -49,7 +49,7 @@ houl.BuddyList.prototype.update = function() {
     if (thisBuddyList.enableAutoUpdating) {
         thisBuddyList.updateAfterInterval(AUTO_UPDATE_INTERVAL_IN_SECONDS * 1000);
         if (goog.DEBUG) {
-            console.log("Auto-updating is on, queued to update in " + AUTO_UPDATE_INTERVAL_IN_SECONDS + " seconds");
+            console.log('Auto-updating is on, queued to update in ' + AUTO_UPDATE_INTERVAL_IN_SECONDS + ' seconds');
         }
     }
 }

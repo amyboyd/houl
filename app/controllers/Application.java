@@ -3,7 +3,6 @@ package controllers;
 import java.util.Date;
 import models.Buddy;
 import models.BuddyList;
-import models.ChatRoom;
 import models.User;
 
 public class Application extends BaseController {
