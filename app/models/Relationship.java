@@ -66,7 +66,7 @@ public class Relationship extends Model {
     }
 
     public JsonObject toJsonObject() {
-        JsonObject obj = getOtherUser().toJsonObject();
+        JsonObject obj = new JsonObject();
 
         obj.addProperty("type", isRequest() ? "incoming request" : isOpenChat() ? "open chat" : "other");
         obj.addProperty("lastChatAt", lastChatAt != null ? since(lastChatAt) : null);
@@ -74,6 +74,7 @@ public class Relationship extends Model {
         obj.addProperty("requestedAt", requestedAt != null ? since(requestedAt) : null);
         obj.addProperty("requestMessage", requestMessage);
         obj.addProperty("acceptedAt", acceptedAt != null ? since(acceptedAt) : null);
+        obj.add("otherUser", getOtherUser().toJsonObject());
 
         return obj;
     }

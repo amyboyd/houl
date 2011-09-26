@@ -4,8 +4,8 @@
  * @param relationship A "houl.Relationship" object.
  */
 {template .relationship}
-    <div id="relationship-{$relationship.id}" class="relationship {if $relationship.isRequest} request-type {elseif $relationship.isOpenChat} open-chat-type {else} other-type {/if}">
-        <img src="{$relationship.imageURL}" alt="" width="48" height="48" />
+    <div id="relationship-with-user-{$relationship.otherUser.id}" class="relationship {if $relationship.isRequest} request-type {elseif $relationship.isOpenChat} open-chat-type {else} other-type {/if}">
+        <img src="{$relationship.otherUser.imageURL}" alt="" width="48" height="48" />
 
         {if $relationship.isRequest}
             {call .relationshipTypeAndTime}
@@ -30,7 +30,7 @@
         {/if}
 
         // Name and link to room
-        <h2 class="relationship-name" role="link">{$relationship.name}</h2>
+        <h2 class="relationship-name" role="link">{$relationship.otherUser.name}</h2>
 
         <div style="clear: right;"></div>
 
@@ -42,10 +42,10 @@
             {call .relationshipMessage}
                 {param text: $relationship.lastChatMessage /}
             {/call}
-        {elseif $relationship.status}
+        {elseif $relationship.otherUser.status}
             {call .relationshipMessage}
                 {param prependHTML: '<em>Status:</em> ' /}
-                {param text: $relationship.status /}
+                {param text: $relationship.otherUser.status /}
             {/call}
         {/if}
     </div>

@@ -12,6 +12,8 @@ goog.require('goog.net.XhrIo');
  * You can force it to update with 'update()' and 'updateAfterInterval()'.
  * An instance of this class is accessible globally as 'houl.globals.buddyList'.
  *
+ * JSON comes from "models.BuddyList.toJsonArray()" in Java.
+ *
  * @constructor
  * @param {HTMLDivElement} element
  */
@@ -28,21 +30,12 @@ houl.BuddyList.prototype.update = function() {
 
     // Get the buddy list JSON from the server.
     goog.net.XhrIo.send(houl.getURL('buddy-list'), function(event) {
-        var json = event.target.getResponseJson();
-
+        // Reset will clear the relationships, so it must be before parseJson.
         thisList.reset();
-
-        // Render each relationship.
-        for (var i = 0; i < json.length; i++) {
-            var relationship = new houl.Relationship(json[i]);
-            relationship.render(thisList);
-            thisList.buddies.push(relationship);
-            thisList.totalCount++;
-            if (relationship.isOpenChat) {
-                thisList.totalOnline++;
-            }
+        thisList.parseJson(event.target.getResponseJson());
+        for (var i = 0; i < thisList.relationships.length; i++) {
+            thisList.relationships[i].render(thisList);
         }
-
         houl.setTopBarText('Online (' + thisList.totalOnline + '/' + thisList.totalCount + ')');
     });
 
@@ -50,6 +43,22 @@ houl.BuddyList.prototype.update = function() {
         thisList.updateAfterInterval(AUTO_UPDATE_INTERVAL_IN_SECONDS * 1000);
         if (goog.DEBUG) {
             console.log('Auto-updating is on, queued to update in ' + AUTO_UPDATE_INTERVAL_IN_SECONDS + ' seconds');
+        }
+    }
+}
+
+/**
+ * JSON comes from "models.BuddyList.toJsonArray()" in Java.
+ *
+ * @private
+ */
+houl.BuddyList.prototype.parseJson = function(json) {
+    for (var i = 0; i < json.length; i++) {
+        var relationship = new houl.Relationship(json[i]);
+        this.relationships.push(relationship);
+        this.totalCount++;
+        if (relationship.isOpenChat) {
+            this.totalOnline++;
         }
     }
 }
@@ -78,7 +87,7 @@ houl.BuddyList.prototype.updateAfterInterval = function(interval) {
 houl.BuddyList.prototype.setAutoUpdating = function(enabled) {
     this.enableAutoUpdating = enabled;
     if (goog.DEBUG) {
-        console.log('Set auto updating: ' + (enabled ? 'on' : 'off'));
+        console.log('Buddy list\'s auto updating is now: ' + (enabled ? 'on' : 'off'));
     }
     if (!enabled && this.autoUpdateDelay != null) {
         this.autoUpdateDelay.stop();
@@ -91,7 +100,7 @@ houl.BuddyList.prototype.reset = function() {
     goog.dom.removeChildren(this.element);
     this.totalCount = 0;
     this.totalOnline = 0;
-    this.buddies = [];
+    this.relationships = [];
 }
 
 /** @private @type {boolean} */
@@ -110,7 +119,7 @@ houl.BuddyList.prototype.totalCount = 0;
 houl.BuddyList.prototype.totalOnline = 0;
 
 /** @type {array} */
-houl.BuddyList.prototype.buddies = [];
+houl.BuddyList.prototype.relationships = [];
 
 /** @constant @private @type {number} */
-var AUTO_UPDATE_INTERVAL_IN_SECONDS = 15;
+var AUTO_UPDATE_INTERVAL_IN_SECONDS = 5;

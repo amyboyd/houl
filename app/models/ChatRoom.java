@@ -4,21 +4,23 @@ import com.google.gson.*;
 import java.util.*;
 import javax.persistence.*;
 import play.data.validation.MaxSize;
-import play.db.jpa.Model;
+import play.db.jpa.GenericModel;
 import play.libs.F.*;
 
 @Entity
 @Table(name = "chat_room")
-public class ChatRoom extends Model {
-    @Transient
-    private final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(100);
+public class ChatRoom extends GenericModel {
+    @Id
+    @GeneratedValue
+    @OneToOne
+    public Relationship relationship;
 
     @Lob
     @MaxSize(500000)
     public JsonArray events;
 
-    @OneToOne
-    public Relationship relationship;
+    @Transient
+    private final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(100);
 
     private ChatRoom(Relationship relationship) {
         this.events = new JsonArray();
@@ -28,8 +30,8 @@ public class ChatRoom extends Model {
     public JsonObject toJsonObject() {
         JsonObject obj = new JsonObject();
         obj.add("messages", events);
-        obj.add("relationship", relationship.toJsonObject());
         obj.addProperty("messagesCount", events.size());
+        obj.add("relationship", relationship.toJsonObject());
 
         for (User user: getUsers()) {
             obj.add("user" + user.id, user.toJsonObject());

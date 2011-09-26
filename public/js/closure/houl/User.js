@@ -4,7 +4,7 @@ goog.require('houl');
 
 /**
  * @constructor
- * @param {obj} json
+ * @param {obj} json Comes from 'models.User.toJsonObject()' in Java.
  */
 houl.User = function(json) {
     this.id = json['id'];

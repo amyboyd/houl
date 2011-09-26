@@ -2,28 +2,24 @@ goog.provide('houl.Relationship');
 
 goog.require('houl');
 goog.require('houl.ChatRoom');
+goog.require('houl.User');
 goog.require('houl.RespondToRequest');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 
 /**
- * See 'models.Relationship.toJsonObject()' (Java).
- *
  * @constructor
- * @param {obj} json
+ * @param {obj} json Comes from 'models.Relationship.toJsonObject()' in Java.
  */
 houl.Relationship = function(json) {
-    this.id = json['id'];
-    this.name = json['name'];
+    this.otherUser = new houl.User(json['otherUser']);
     this.type = json['type'];
-    this.imageURL = json['imageURL'];
     this.lastChatAt = json['lastChatAt'];
     this.lastChatMessage = json['lastChatMessage'];
     this.requestedAt = json['requestedAt'];
     this.requestMessage = json['requestMessage'];
     this.acceptedAt = json['acceptedAt'];
-    this.status = json['status'];
 
     // Some shortcut properties.
     this.isRequest = (json['type'] === 'incoming request');
@@ -40,7 +36,7 @@ houl.Relationship.prototype.render = function(buddyList) {
         relationship: this
     });
     goog.dom.appendChild(buddyList.element, el);
-    this.element = goog.dom.$('relationship-' + this.id);
+    this.element = goog.dom.$('relationship-with-user-' + this.otherUser.id);
 
     this.setEventHooks();
 }
@@ -57,16 +53,14 @@ houl.Relationship.prototype.setEventHooks = function() {
                 var rtr = new houl.RespondToRequest(thisRelationship);
                 rtr.render();
             } else {
-                var chatRoom = new houl.ChatRoom(thisRelationship);
+                var chatRoom = new houl.ChatRoom(thisRelationship.otherUser);
                 chatRoom.render();
             }
         });
 }
 
-/** @private @type {HTMLDivElement} */
+/** @type {HTMLDivElement} */
 houl.Relationship.prototype.element = null;
 
-// Public data.
-houl.Relationship.prototype.id = null;
-houl.Relationship.prototype.type = null;
-houl.Relationship.prototype.status = null;
+/** @type {houl.User} */
+houl.Relationship.prototype.otherUser = null;

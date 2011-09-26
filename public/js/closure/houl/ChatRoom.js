@@ -15,6 +15,8 @@ goog.require('goog.net.XhrIo');
 goog.require('goog.net.WebSocket');
 
 /**
+ * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
+ *
  * @constructor
  * @param {houl.User} user
  */
@@ -35,12 +37,9 @@ houl.ChatRoom = function(user) {
 
 /**
  * Parse the room's JSON.
+ * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
  */
 houl.ChatRoom.prototype.parseJson = function(json) {
-    if (goog.DEBUG) {
-        console.log('Chat room JSON:', json);
-    }
-
     var cms = null;
     for (var i = 0; i < json['messagesCount']; i++) {
         var message = json['messages'][i];
@@ -83,7 +82,9 @@ houl.ChatRoom.prototype.render = function() {
         if (thisChatRoom.receivedJson) {
             return true;
         }
-        console.log('Waiting for chat room JSON...');
+        if (goog.DEBUG) {
+            console.log('Waiting for chat room JSON...');
+        }
         return false;
     }
     
