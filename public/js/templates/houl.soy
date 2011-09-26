@@ -1,51 +1,51 @@
 {namespace houl.templates}
 
 /**
- * @param buddy A "houl.Buddy" object.
+ * @param relationship A "houl.Relationship" object.
  */
-{template .buddy}
-    <div id="buddy-{$buddy.id}" class="buddy {if $buddy.isRequest} request-type {elseif $buddy.isOpenChat} open-chat-type {else} other-type {/if}">
-        <img src="{$buddy.imageURL}" alt="" width="48" height="48" />
+{template .relationship}
+    <div id="relationship-{$relationship.id}" class="relationship {if $relationship.isRequest} request-type {elseif $relationship.isOpenChat} open-chat-type {else} other-type {/if}">
+        <img src="{$relationship.imageURL}" alt="" width="48" height="48" />
 
-        {if $buddy.isRequest}
-            {call .buddyTypeAndTime}
+        {if $relationship.isRequest}
+            {call .relationshipTypeAndTime}
                 {param type: 'request' /}
-                {param time: $buddy.requestedAt /}
+                {param time: $relationship.requestedAt /}
             {/call}
-        {elseif $buddy.isOpenChat}
-            {call .buddyTypeAndTime}
+        {elseif $relationship.isOpenChat}
+            {call .relationshipTypeAndTime}
                 {param type: 'message' /}
-                {param time: $buddy.lastChatAt/}
+                {param time: $relationship.lastChatAt/}
             {/call}
-        {elseif $buddy.lastChatAt != null}
-            {call .buddyTypeAndTime}
+        {elseif $relationship.lastChatAt != null}
+            {call .relationshipTypeAndTime}
                 {param type: 'message' /}
-                {param time: $buddy.lastChatAt /}
+                {param time: $relationship.lastChatAt /}
             {/call}
         {else}
-            {call .buddyTypeAndTime}
+            {call .relationshipTypeAndTime}
                 {param type: 'added' /}
-                {param time: $buddy.acceptedAt /}
+                {param time: $relationship.acceptedAt /}
             {/call}
         {/if}
 
         // Name and link to room
-        <h2 class="buddy-name" role="link">{$buddy.name}</h2>
+        <h2 class="relationship-name" role="link">{$relationship.name}</h2>
 
         <div style="clear: right;"></div>
 
-        {if $buddy.isRequest}
-            {call .buddyMessage}
-                {param text: $buddy.requestMessage /}
+        {if $relationship.isRequest}
+            {call .relationshipMessage}
+                {param text: $relationship.requestMessage /}
             {/call}
-        {elseif $buddy.lastChatMessage}
-            {call .buddyMessage}
-                {param text: $buddy.lastChatMessage /}
+        {elseif $relationship.lastChatMessage}
+            {call .relationshipMessage}
+                {param text: $relationship.lastChatMessage /}
             {/call}
-        {elseif $buddy.status}
-            {call .buddyMessage}
+        {elseif $relationship.status}
+            {call .relationshipMessage}
                 {param prependHTML: '<em>Status:</em> ' /}
-                {param text: $buddy.status /}
+                {param text: $relationship.status /}
             {/call}
         {/if}
     </div>
@@ -56,8 +56,8 @@
  * @param time
  * @private
  */
-{template .buddyTypeAndTime}
-    <div class="buddy-type-and-time">
+{template .relationshipTypeAndTime}
+    <div class="relationship-type-and-time">
         <strong>{$type}</strong>
         <br />
         {if $time} {$time} {else} just now {/if}
@@ -69,9 +69,9 @@
  * @param text The actual text to be shown.
  * @private
  */
-{template .buddyMessage}
+{template .relationshipMessage}
     {if $text}
-        <div class="buddy-message">
+        <div class="relationship-message">
             <span class="quote">&OpenCurlyDoubleQuote;</span>
             {if $prependHTML} {$prependHTML|noAutoescape} {/if}
             {$text |escapeHtml}
@@ -81,7 +81,7 @@
 {/template}
 
 /**
- * @param requester The potential buddy. The type is "houl.Buddy".
+ * @param requester The other user. A "houl.User" object.
  */
 {template .request}
     <div class="request">

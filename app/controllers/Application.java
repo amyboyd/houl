@@ -1,8 +1,8 @@
 package controllers;
 
 import java.util.Date;
-import models.Buddy;
 import models.BuddyList;
+import models.Relationship;
 import models.User;
 
 public class Application extends BaseController {
@@ -46,7 +46,7 @@ public class Application extends BaseController {
         }
 
         User currentUser = requireAuthenticatedUser();
-        Buddy relationship = Buddy.findByUsers(requester, currentUser);
+        Relationship relationship = Relationship.findByUsers(requester, currentUser);
         if (relationship == null) {
             error("The request does not exist");
         } else if (relationship.isAccepted()) {

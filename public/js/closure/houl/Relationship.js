@@ -1,4 +1,4 @@
-goog.provide('houl.Buddy');
+goog.provide('houl.Relationship');
 
 goog.require('houl');
 goog.require('houl.ChatRoom');
@@ -8,12 +8,12 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 
 /**
- * See 'models.Buddy.toJsonObject()' (Java).
+ * See 'models.Relationship.toJsonObject()' (Java).
  *
  * @constructor
  * @param {obj} json
  */
-houl.Buddy = function(json) {
+houl.Relationship = function(json) {
     this.id = json['id'];
     this.name = json['name'];
     this.type = json['type'];
@@ -34,39 +34,39 @@ houl.Buddy = function(json) {
 /**
  * @param {houl.BuddyList} buddyList
  */
-houl.Buddy.prototype.render = function(buddyList) {
+houl.Relationship.prototype.render = function(buddyList) {
     var el = document.createElement('div');
-    el.innerHTML =  houl.templates.buddy({
-        buddy: this
+    el.innerHTML =  houl.templates.relationship({
+        relationship: this
     });
     goog.dom.appendChild(buddyList.element, el);
-    this.element = goog.dom.$('buddy-' + this.id);
+    this.element = goog.dom.$('relationship-' + this.id);
 
     this.setEventHooks();
 }
 
 /** @private */
-houl.Buddy.prototype.setEventHooks = function() {
+houl.Relationship.prototype.setEventHooks = function() {
     var link = goog.dom.$$('h2', null, this.element)[0];
-    var thisBuddy = this;
+    var thisRelationship = this;
     goog.events.listenOnce(link, goog.events.EventType.CLICK,
         function(evt) {
             evt.preventDefault();
 
-            if (thisBuddy.isRequest) {
-                var rtr = new houl.RespondToRequest(thisBuddy);
+            if (thisRelationship.isRequest) {
+                var rtr = new houl.RespondToRequest(thisRelationship);
                 rtr.render();
             } else {
-                var chatRoom = new houl.ChatRoom(thisBuddy);
+                var chatRoom = new houl.ChatRoom(thisRelationship);
                 chatRoom.render();
             }
         });
 }
 
 /** @private @type {HTMLDivElement} */
-houl.Buddy.prototype.element = null;
+houl.Relationship.prototype.element = null;
 
 // Public data.
-houl.Buddy.prototype.id = null;
-houl.Buddy.prototype.type = null;
-houl.Buddy.prototype.status = null;
+houl.Relationship.prototype.id = null;
+houl.Relationship.prototype.type = null;
+houl.Relationship.prototype.status = null;

@@ -10,8 +10,8 @@ import play.mvc.Http.Request;
 import static play.templates.JavaExtensions.since;
 
 @Entity
-@Table(name = "buddy")
-public class Buddy extends Model {
+@Table(name = "relationship")
+public class Relationship extends Model {
     /**
      * Requester.
      */
@@ -35,7 +35,7 @@ public class Buddy extends Model {
 
     public String lastChatMessage;
 
-    public static Buddy findByUsers(User user1, User user2) {
+    public static Relationship findByUsers(User user1, User user2) {
         return find("(user1 = ?1 and user2 = ?2) or (user1 = ?2 and user2 = ?1)", user1, user2).first();
     }
 
@@ -48,7 +48,7 @@ public class Buddy extends Model {
         } else if (currentUser.equals(user2)) {
             return user1;
         } else {
-            throw new UnexpectedException("User not in this Buddy");
+            throw new UnexpectedException("User not in this relationship");
         }
     }
 

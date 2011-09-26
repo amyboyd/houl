@@ -16,16 +16,16 @@ goog.require('goog.net.WebSocket');
 
 /**
  * @constructor
- * @param {houl.Buddy} buddy
+ * @param {houl.User} user
  */
-houl.ChatRoom = function(buddy) {
-    this.buddy = buddy;
+houl.ChatRoom = function(user) {
+    this.user = user;
     this.element = houl.getAndActivatePageContainer('chat-room-page');
     this.chatMessageSeriesArray = [];
     this.receivedJson = false;
 
     var url = houl.getURL('room-json', {
-        'buddyId': buddy.id
+        'userId': user.id
     });
     var thisChatRoom = this;
     goog.net.XhrIo.send(url, function(event) {
@@ -70,7 +70,7 @@ houl.ChatRoom.prototype.render = function() {
         goog.dom.appendChild(thisChatRoom.element, template);
 
         houl.globals.buddyList.setAutoUpdating(false);
-        houl.setTopBarText(thisChatRoom.buddy.name);
+        houl.setTopBarText(thisChatRoom.user.name);
         thisChatRoom.setupNewMessageForm();
 //        thisChatRoom.createWebSocket();
     }
@@ -156,7 +156,7 @@ houl.ChatRoom.prototype.say = function(message) {
     }
 
     var sayURL = houl.getURL('long-polling-say', {
-        'buddyId': this.buddy.id,
+        'userId': this.user.id,
         'message': message
     });
     goog.net.XhrIo.send(sayURL);
@@ -172,7 +172,7 @@ houl.ChatRoom.prototype.createWebSocket = function() {
 
     try {
         var url = houl.getURL('web-socket', {
-            'buddyId': this.buddy.id
+            'userId': this.user.id
         });
         ws.open(url);
     // @todo
@@ -181,8 +181,8 @@ houl.ChatRoom.prototype.createWebSocket = function() {
     }
 }
 
-/** @private @type {houl.Buddy} */
-houl.ChatRoom.prototype.buddy = null;
+/** @private @type {houl.User} */
+houl.ChatRoom.prototype.user = null;
 
 /** @private @type {HTMLElement} */
 houl.ChatRoom.prototype.element = null;

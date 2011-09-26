@@ -12,31 +12,31 @@ public class Chat extends BaseController {
     /**
      * Get a JSON array of all {@link ChatRoom.Event}s in a {@link ChatRoom}, and meta data.
      */
-    public static void roomJson(Long buddyId) {
+    public static void roomJson(Long userId) {
         requireHttpMethod("GET");
-        ChatRoom chatRoom = getChatRoomByOtherUserId(buddyId);
+        ChatRoom chatRoom = getChatRoomByOtherUserId(userId);
         renderJSON(chatRoom.toJsonObject().toString());
     }
 
     public static class LongPolling extends BaseController {
-        public static void say(Long buddyId, String message) {
+        public static void say(Long userId, String message) {
             final User user = requireAuthenticatedUser();
-            Application.getChatRoomByOtherUserId(buddyId).say(user, message);
+            Application.getChatRoomByOtherUserId(userId).say(user, message);
         }
 
-        public static void waitMessages(Long buddyId, Long lastReceived) {
+        public static void waitMessages(Long userId, Long lastReceived) {
             // Here we use continuation to suspend 
             // the execution until a new message has been received
-            final List<IndexedEvent<Event>> messages = await(getChatRoomByOtherUserId(buddyId).
+            final List<IndexedEvent<Event>> messages = await(getChatRoomByOtherUserId(userId).
                     nextMessages(lastReceived.longValue()));
             renderJSON(Event.toJsonArray(messages));
         }
     }
 
     public static class WebSocket extends WebSocketController {
-        public static void join(Long buddyId) {
+        public static void join(Long userId) {
             final User user = requireAuthenticatedUser();
-            final ChatRoom chatRoom = getChatRoomByOtherUserId(buddyId);
+            final ChatRoom chatRoom = getChatRoomByOtherUserId(userId);
 
             // Socket connected, join the chat room.
             final EventStream<ChatRoom.Event> roomStream = chatRoom.getEventStream();

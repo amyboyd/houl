@@ -4,11 +4,11 @@ import com.google.gson.*;
 import java.util.*;
 
 public class BuddyList {
-    private List<Buddy> buddies;
+    private List<Relationship> relationships;
 
     public BuddyList(User currentUser) {
         // Exclude requests from this user, but include requests to this user.
-        this.buddies = Buddy.find(
+        this.relationships = Relationship.find(
                 "(user1 = ?1 AND acceptedAt is not null) OR user2 = ?1 "
                 + "ORDER BY requestedAt DESC, lastChatAt DESC, acceptedAt DESC",
                 currentUser).fetch();
@@ -16,34 +16,34 @@ public class BuddyList {
 
     public JsonArray toJsonArray() {
         JsonArray array = new JsonArray();
-        for (Buddy request: getRequests()) {
+        for (Relationship request: getRequests()) {
             array.add(request.toJsonObject());
         }
-        for (Buddy accepted: getAccepted()) {
+        for (Relationship accepted: getAccepted()) {
             array.add(accepted.toJsonObject());
         }
         return array;
     }
 
     public int countAll() {
-        return buddies.size();
+        return relationships.size();
     }
 
-    public List<Buddy> getRequests() {
-        List<Buddy> result = new ArrayList<Buddy>(10);
-        for (Buddy buddy: buddies) {
-            if (buddy.isRequest()) {
-                result.add(buddy);
+    public List<Relationship> getRequests() {
+        List<Relationship> result = new ArrayList<Relationship>(10);
+        for (Relationship relationship: relationships) {
+            if (relationship.isRequest()) {
+                result.add(relationship);
             }
         }
         return result;
     }
 
-    public List<Buddy> getAccepted() {
-        List<Buddy> result = new ArrayList<Buddy>(10);
-        for (Buddy buddy: buddies) {
-            if (buddy.isAccepted()) {
-                result.add(buddy);
+    public List<Relationship> getAccepted() {
+        List<Relationship> result = new ArrayList<Relationship>(10);
+        for (Relationship relationship: relationships) {
+            if (relationship.isAccepted()) {
+                result.add(relationship);
             }
         }
         return result;

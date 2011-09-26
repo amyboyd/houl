@@ -11,10 +11,10 @@ goog.require('goog.net.XhrIo');
 
 /**
  * @constructor
- * @param {houl.Buddy} buddy
+ * @param {houl.Relationship} relationship
  */
-houl.RespondToRequest = function(buddy) {
-    this.buddy = buddy;
+houl.RespondToRequest = function(relationship) {
+    this.relationship = relationship;
 }
 
 houl.RespondToRequest.prototype.render = function() {
@@ -22,15 +22,15 @@ houl.RespondToRequest.prototype.render = function() {
     houl.globals.buddyList.setAutoUpdating(false);
 
     // Remove the request message.
-    var messageEl = goog.dom.$$('div', 'buddy-message', this.buddy.element)[0];
+    var messageEl = goog.dom.$$('div', 'relationship-message', this.relationship.element)[0];
     goog.dom.removeNode(messageEl);
 
     // Show site's question ('do you want to accept?') and accept/reject buttons.
     this.element = goog.dom.createElement('div');
     this.element.innerHTML =  houl.templates.request({
-        requester: this.buddy
+        requester: this.relationship.user
     });
-    goog.dom.appendChild(this.buddy.element, this.element);
+    goog.dom.appendChild(this.relationship.element, this.element);
 
     this.acceptButton = goog.dom.$$('button', 'button-green', this.element)[0];
     this.rejectButton = goog.dom.$$('button', 'button-grey', this.element)[0];
@@ -50,11 +50,11 @@ houl.RespondToRequest.prototype.setupAcceptButton = function() {
 
             // Make a HTTP request to accept the request.
             var url = houl.getURL('request-handler', {
-                'requesterId': thisRTR.buddy.id,
+                'requesterId': thisRTR.relationship.user.id,
                 'response': 'accept'
             }); 
             goog.net.XhrIo.send(url, function(event) {
-                thisRTR.element.innerHTML = 'You and ' + thisRTR.buddy.name + ' can now chat!';
+                thisRTR.element.innerHTML = 'You and ' + thisRTR.relationship.user.name + ' can now chat!';
                 houl.globals.buddyList.setAutoUpdating(true);
                 houl.globals.buddyList.updateAfterInterval(2000);
             }, 'POST');
@@ -73,7 +73,7 @@ houl.RespondToRequest.prototype.setupRejectButton = function() {
 
             // Make a HTTP request to reject the request.
             var url = houl.getURL('request-handler', {
-                'requesterId': thisRTR.buddy.id,
+                'requesterId': thisRTR.relationship.user.id,
                 'response': 'reject'
             });
             goog.net.XhrIo.send(url, function(event) {
@@ -83,8 +83,8 @@ houl.RespondToRequest.prototype.setupRejectButton = function() {
         });
 }
 
-/** @private @type {houl.Buddy} */
-houl.RespondToRequest.prototype.buddy = null;
+/** @private @type {houl.Relationship} */
+houl.RespondToRequest.prototype.relationship = null;
 
 /** @private @type {HTMLButtonElement} */
 houl.RespondToRequest.prototype.acceptButton = null;

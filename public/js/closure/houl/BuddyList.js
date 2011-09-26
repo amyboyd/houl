@@ -1,7 +1,7 @@
 goog.provide('houl.BuddyList');
 
 goog.require('houl');
-goog.require('houl.Buddy');
+goog.require('houl.Relationship');
 goog.require('houl.globals');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
@@ -24,30 +24,30 @@ houl.BuddyList = function(element) {
 }
 
 houl.BuddyList.prototype.update = function() {
-    var thisBuddyList = this;
+    var thisList = this;
 
     // Get the buddy list JSON from the server.
     goog.net.XhrIo.send(houl.getURL('buddy-list'), function(event) {
         var json = event.target.getResponseJson();
 
-        thisBuddyList.reset();
+        thisList.reset();
 
-        // Render each buddy.
+        // Render each relationship.
         for (var i = 0; i < json.length; i++) {
-            var buddy = new houl.Buddy(json[i]);
-            buddy.render(thisBuddyList);
-            thisBuddyList.buddies.push(buddy);
-            thisBuddyList.totalCount++;
-            if (buddy.isOpenChat) {
-                thisBuddyList.totalOnline++;
+            var relationship = new houl.Relationship(json[i]);
+            relationship.render(thisList);
+            thisList.buddies.push(relationship);
+            thisList.totalCount++;
+            if (relationship.isOpenChat) {
+                thisList.totalOnline++;
             }
         }
 
-        houl.setTopBarText('Online (' + thisBuddyList.totalOnline + '/' + thisBuddyList.totalCount + ')');
+        houl.setTopBarText('Online (' + thisList.totalOnline + '/' + thisList.totalCount + ')');
     });
 
-    if (thisBuddyList.enableAutoUpdating) {
-        thisBuddyList.updateAfterInterval(AUTO_UPDATE_INTERVAL_IN_SECONDS * 1000);
+    if (thisList.enableAutoUpdating) {
+        thisList.updateAfterInterval(AUTO_UPDATE_INTERVAL_IN_SECONDS * 1000);
         if (goog.DEBUG) {
             console.log('Auto-updating is on, queued to update in ' + AUTO_UPDATE_INTERVAL_IN_SECONDS + ' seconds');
         }

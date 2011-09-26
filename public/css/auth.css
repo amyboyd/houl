@@ -68,7 +68,7 @@
 
 /* Common styles between buddy list and chat room ***/
 
-.buddy,
+.relationship,
 .chat-message-series {
     padding: 0 7px 7px;
     margin: 7px 0 0;
@@ -82,14 +82,14 @@
     background-repeat: repeat-x;
 }
 
-.buddy img,
+.relationship img,
 .chat-message-series img {
     float: left;
     margin: 0 10px 0 0;
 }
 
 /* Name */
-.buddy-name,
+.relationship-name,
 .chat-message-series-name {
     margin: 0;
     padding: 0;
@@ -101,7 +101,7 @@
 }
 
 /* Time */
-.buddy-type-and-time,
+.relationship-type-and-time,
 .chat-message-series-time {
     float: right;
     text-align: right;
@@ -112,7 +112,7 @@
 }
 
 /* Message */
-.buddy-message,
+.relationship-message,
 .chat-message-series-message {
     margin: 2px 0 0 60px;
     font-size: 12px;
@@ -128,65 +128,65 @@
 /* Buddy list ***********************************/
 
 /* Name */
-.buddy-name:hover {
+.relationship-name:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
 /* Type (request, last message, etc.) */
-.buddy.request-type .buddy-type-and-time strong {
+.relationship.request-type .relationship-type-and-time strong {
     color: #bb7ad5;
 }
-.buddy.open-chat-type .buddy-type-and-time strong {
+.relationship.open-chat-type .relationship-type-and-time strong {
     color: #3f83e4;
 }
 
 /* Message/status */
-.buddy-message {
+.relationship-message {
     padding: 2px 13px;
     font-style: italic;
     position: relative;
 }
-.buddy-message em {
+.relationship-message em {
     font-weight: bold;
     font-style: normal;
 }
-.buddy.request-type .buddy-message {
+.relationship.request-type .relationship-message {
     background-color: #e4d7e9;
     border-top-color: #bb7ad5;
     border-bottom-color: #d0acde;
 }
-.buddy.open-chat-type .buddy-message {
+.relationship.open-chat-type .relationship-message {
     background-color: #dae4ef;
     border-color: #3F83E4;
 }
 
 /* Quote marks */
-.buddy .buddy-message .quote {
+.relationship .relationship-message .quote {
     font-size: 19px;
     position: absolute;
     font-weight: bold;
 }
-.buddy.request-type .buddy-message .quote {
+.relationship.request-type .relationship-message .quote {
     color: #bb7ad5;
 }
-.buddy.open-chat-type .buddy-message .quote {
+.relationship.open-chat-type .relationship-message .quote {
     color: #3f83e4;
 }
-.buddy.other-type .buddy-message .quote {
+.relationship.other-type .relationship-message .quote {
     color: #666;
 }
-.buddy .buddy-message .quote:nth-child(1) {
+.relationship .relationship-message .quote:nth-child(1) {
     top: 2px;
     left: 1px;
 }
-.buddy .buddy-message .quote:last-child {
+.relationship .relationship-message .quote:last-child {
     bottom: -5px;
     right: 5px;
 }
 
 /* Request buttons (accept/reject) */
-.buddy .request {
+.relationship .request {
     margin: 2px 0 0 60px;
     padding: 0;
     font-size: 12px;

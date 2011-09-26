@@ -55,7 +55,7 @@ User(User_8):
 
 
 
-Buddy(Buddy_1):
+Relationship(Relationship_1):
     user1: User_1
     user2: User_2
     requestedAt: 2011-09-01 12:12:12
@@ -63,7 +63,7 @@ Buddy(Buddy_1):
     lastChatAt: 2011-09-23 23:59:59
     lastChatMessage: Hey there!
 
-Buddy(Buddy_2):
+Relationship(Relationship_2):
     user1: User_1
     user2: User_3
     requestedAt: 2011-09-01 12:12:12
@@ -71,25 +71,25 @@ Buddy(Buddy_2):
     lastChatAt: 2011-10-01 01:01:01
     lastChatMessage: If you wanna go with Mike tonight then just tell me... I don't really care... I just wanna know so I can cry myself to sleep.
 
-Buddy(Buddy_3):
+Relationship(Relationship_3):
     user1: User_1
     user2: User_4
     requestedAt: 2011-09-01 12:12:12
     acceptedAt: 2011-09-01 12:12:12
 
-Buddy(Buddy_4):
+Relationship(Relationship_4):
     user1: User_1
     user2: User_5
     requestedAt: 2011-09-01 12:12:12
     requestMessage: I found your PIN!
 
-Buddy(Buddy_5):
+Relationship(Relationship_5):
     user1: User_5
     user2: User_6
     requestedAt: 2011-09-01 12:12:12
     requestMessage: Hey there!
 
-Buddy(Buddy_6):
+Relationship(Relationship_6):
     user1: User_8
     user2: User_1
     requestedAt: 2011-09-01 12:12:12
