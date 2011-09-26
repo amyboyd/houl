@@ -20,6 +20,7 @@ public class Chat extends BaseController {
 
     public static class LongPolling extends BaseController {
         public static void say(Long userId, String message) {
+            requireHttpMethod("POST");
             final User user = requireAuthenticatedUser();
             Application.getChatRoomByOtherUserId(userId).say(user, message);
         }

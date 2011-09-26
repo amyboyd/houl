@@ -71,7 +71,7 @@ houl.ChatRoom.prototype.render = function() {
         houl.globals.buddyList.setAutoUpdating(false);
         houl.setTopBarText(thisChatRoom.user.name);
         thisChatRoom.setupNewMessageForm();
-//        thisChatRoom.createWebSocket();
+    //        thisChatRoom.createWebSocket();
     }
 
     function onFailure() {
@@ -160,7 +160,8 @@ houl.ChatRoom.prototype.say = function(message) {
         'userId': this.user.id,
         'message': message
     });
-    goog.net.XhrIo.send(sayURL);
+    // We have to use an empty callback function (not null) or Closure Library ignores the HTTP method.
+    goog.net.XhrIo.send(sayURL, function() { }, 'POST');
 }
 
 /** @private @return {boolean} */
