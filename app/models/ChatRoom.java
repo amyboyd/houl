@@ -13,25 +13,23 @@ public class ChatRoom extends Model {
     @Transient
     private final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(100);
 
-    /**
-     * The IDs of the users in this room, concatenated.
-     */
-    public String name;
-
     @Lob
     @MaxSize(500000)
-    public JsonArray json;
+    public JsonArray events;
 
-    private ChatRoom(String name) {
-        this.name = name;
-        this.json = new JsonArray();
+    @OneToOne
+    public Relationship relationship;
+
+    private ChatRoom(Relationship relationship) {
+        this.events = new JsonArray();
+        this.relationship = relationship;
     }
 
     public JsonObject toJsonObject() {
         JsonObject obj = new JsonObject();
-        obj.add("messages", json);
-        obj.addProperty("messagesCount", json.size());
-        obj.addProperty("roomName", name);
+        obj.add("messages", events);
+        obj.add("relationship", relationship.toJsonObject());
+        obj.addProperty("messagesCount", events.size());
 
         for (User user: getUsers()) {
             obj.add("user" + user.id, user.toJsonObject());
@@ -41,11 +39,10 @@ public class ChatRoom extends Model {
     }
 
     public List<User> getUsers() {
-        List<Long> userIDs = new ArrayList<Long>(2);
-        for (String userID: name.split("-")) {
-            userIDs.add(Long.valueOf(userID));
-        }
-        return User.find("id in (?1)", userIDs).fetch();
+        List<User> users = new ArrayList<User>(2);
+        users.add(relationship.user1);
+        users.add(relationship.user2);
+        return users;
     }
 
     /**
@@ -60,7 +57,7 @@ public class ChatRoom extends Model {
 
     private void publishEvent(Event event) {
         chatEvents.publish(event);
-        json.add(event.toJsonObject());
+        events.add(event.toJsonObject());
     }
 
     /**
@@ -131,34 +128,25 @@ public class ChatRoom extends Model {
     }
 
     //////////////// Chat room factory ////////////////
-    private static Map<String, ChatRoom> INSTANCES = new HashMap<String, ChatRoom>(10);
+    /**
+     * The Map key is a {@link Relationship#id} and the value is the related {@link ChatRoom}.
+     */
+    private static Map<Long, ChatRoom> INSTANCES = new HashMap<Long, ChatRoom>(10);
 
-    public static ChatRoom get(User... users) {
-        return get(Arrays.asList(users));
-    }
-
-    public static ChatRoom get(List<User> users) {
-        Collections.sort(users, new AscendingIDcomparator<User>());
-        StringBuilder name = new StringBuilder(20);
-        int i = 0;
-        for (User user: users) {
-            if (i++ > 0) {
-                name.append('-');
-            }
-            name.append(user.id);
+    public static ChatRoom get(User user1, User user2) {
+        Relationship relationship = Relationship.findByUsers(user1, user2);
+        if (relationship == null) {
+            throw new IllegalArgumentException();
         }
-        return get(name.toString());
-    }
 
-    public static ChatRoom get(String roomName) {
-        if (INSTANCES.containsKey(roomName)) {
-            return INSTANCES.get(roomName);
+        if (INSTANCES.containsKey(relationship.id)) {
+            return INSTANCES.get(relationship.id);
         } else {
-            ChatRoom instance = ChatRoom.find("name", roomName).first();
+            ChatRoom instance = ChatRoom.find("relationship", relationship).first();
             if (instance == null) {
-                instance = new ChatRoom(roomName);
+                instance = new ChatRoom(relationship);
             }
-            INSTANCES.put(roomName, instance);
+            INSTANCES.put(relationship.id, instance);
             return instance;
         }
     }
