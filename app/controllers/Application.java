@@ -3,9 +3,13 @@ package controllers;
 import java.util.Date;
 import models.Buddy;
 import models.BuddyList;
+import models.ChatRoom;
 import models.User;
 
 public class Application extends BaseController {
+    /**
+     * Just the HTML shell for the JS application to run in.
+     */
     public static void index() {
         if (!isAuth()) {
             UserAuth.login(null, null);
@@ -13,6 +17,9 @@ public class Application extends BaseController {
         render();
     }
 
+    /**
+     * Get a JSON array with details of the user's buddies and incoming requests..
+     */
     public static void buddyListJson() {
         requireHttpMethod("GET");
 
@@ -25,25 +32,9 @@ public class Application extends BaseController {
         renderJSON(buddyList.toJsonArray().toString());
     }
 
-    public static void chatRoom(Long userId) {
-        requireHttpMethod("GET");
-
-        User currentUser = requireAuthenticatedUser();
-
-        notFoundIfNull(userId);
-        User otherUser = User.findById(userId);
-        notFoundIfNull(otherUser);
-
-//        Buddy buddy = new Buddy(currentUser, otherUser);
-//        renderArgs.put("buddy", buddy);
-
-//        MessageList messsageList = new MessageList(currentUser, otherUser);
-//        renderArgs.put("messsageList", messsageList);
-
-//        render();
-    }
-
     /**
+     * Accept or reject a request.
+     *
      * @param requesterId The {@link User#id} of the user who made the request.
      * @param response "accept" or "reject".
      */
@@ -59,8 +50,7 @@ public class Application extends BaseController {
         Buddy relationship = Buddy.findByUsers(requester, currentUser);
         if (relationship == null) {
             error("The request does not exist");
-        }
-        else if (relationship.isAccepted()) {
+        } else if (relationship.isAccepted()) {
             error("Already accepted");
         }
 

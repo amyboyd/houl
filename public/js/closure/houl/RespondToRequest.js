@@ -83,6 +83,9 @@ houl.RespondToRequest.prototype.setupRejectButton = function() {
         });
 }
 
+/** @private @type {houl.Buddy} */
+houl.RespondToRequest.prototype.buddy = null;
+
 /** @private @type {HTMLButtonElement} */
 houl.RespondToRequest.prototype.acceptButton = null;
 

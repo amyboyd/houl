@@ -140,4 +140,13 @@ abstract public class BaseController extends Controller {
             redirect(url);
         }
     }
+
+    @Util
+    static ChatRoom getChatRoomByOtherUserId(Long otherUserId) {
+        User currentUser = requireAuthenticatedUser();
+        notFoundIfNull(otherUserId);
+        User otherUser = User.findById(otherUserId);
+        notFoundIfNull(otherUser);
+        return ChatRoom.get(currentUser, otherUser);
+    }
 }

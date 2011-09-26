@@ -1,6 +1,7 @@
 goog.provide('houl.Buddy');
 
 goog.require('houl');
+goog.require('houl.ChatRoom');
 goog.require('houl.RespondToRequest');
 goog.require('goog.dom');
 goog.require('goog.events');
@@ -56,7 +57,8 @@ houl.Buddy.prototype.setEventHooks = function() {
                 var rtr = new houl.RespondToRequest(thisBuddy);
                 rtr.render();
             } else {
-                houl.pages.chatRoom(thisBuddy);
+                var chatRoom = new houl.ChatRoom(thisBuddy);
+                chatRoom.render();
             }
         });
 }

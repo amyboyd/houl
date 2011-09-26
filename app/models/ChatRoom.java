@@ -17,11 +17,11 @@ public class ChatRoom extends Model {
     /**
      * The IDs of the users in this room, concatenated.
      */
-    private String name;
+    public String name;
 
     @Lob
     @MaxSize(500000)
-    private JsonArray json;
+    public JsonArray json;
 
     private ChatRoom(String name) {
         this.name = name;
@@ -69,20 +69,28 @@ public class ChatRoom extends Model {
 
         public final long timestamp;
 
-        public final long user;
+        public final long userId;
 
         protected Event(String type, User user) {
             this.type = type;
             this.timestamp = System.currentTimeMillis();
-            this.user = user.id.longValue();
+            this.userId = user.id.longValue();
         }
 
-        protected JsonObject toJsonObject() {
+        public JsonObject toJsonObject() {
             JsonObject obj = new JsonObject();
             obj.addProperty("type", type);
             obj.addProperty("timestamp", timestamp);
-            obj.addProperty("user", user);
+            obj.addProperty("userId", userId);
             return obj;
+        }
+
+        public static JsonArray toJsonArray(List<IndexedEvent<Event>> events) {
+            JsonArray array = new JsonArray();
+            for (IndexedEvent<Event> event: events) {
+                array.add(event.data.toJsonObject());
+            }
+            return array;
         }
     }
 
@@ -95,7 +103,7 @@ public class ChatRoom extends Model {
         }
 
         @Override
-        protected JsonObject toJsonObject() {
+        public JsonObject toJsonObject() {
             JsonObject obj = super.toJsonObject();
             obj.addProperty("text", text);
             return obj;
@@ -119,7 +127,10 @@ public class ChatRoom extends Model {
         if (INSTANCES.containsKey(roomName)) {
             return INSTANCES.get(roomName);
         } else {
-            ChatRoom instance = new ChatRoom(roomName);
+            ChatRoom instance = ChatRoom.find("name", roomName).first();
+            if (instance == null) {
+                instance = new ChatRoom(roomName);
+            }
             INSTANCES.put(roomName, instance);
             return instance;
         }

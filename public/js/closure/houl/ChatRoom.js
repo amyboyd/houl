@@ -1,13 +1,48 @@
-//// The var `userNickName` should be defined externally.
-//var userNickName = userNickName || "";
-//
-//if (document.body.id === "long-polling") {
-//    longPollingPage();
-//}
-//else if (document.body.id === "web-socket") {
-//    webSocketPage();
-//}
-//
+goog.provide('houl.ChatRoom');
+
+goog.require('houl');
+goog.require('houl.globals');
+goog.require('houl.templates');
+goog.require('goog.async.Delay');
+goog.require('goog.dom');
+goog.require('goog.events');
+goog.require('goog.events.EventType');
+goog.require('goog.net.XhrIo');
+
+/**
+ * @constructor
+ * @param {houl.Buddy} buddy
+ */
+houl.ChatRoom = function(buddy) {
+    this.buddy = buddy;
+    this.element = houl.getAndActivatePageContainer('chat-room-page');
+    goog.dom.removeChildren(this.element);
+
+    var url = houl.getURL('chat-room', {
+        'buddyId': buddy.id
+    });
+    goog.net.XhrIo.send(url, function(event) {
+        var json = event.target.getResponseJson();
+        alert(json);
+    })
+}
+
+houl.ChatRoom.prototype.render = function() {
+    var template = goog.dom.createElement('div');
+    template.innerHTML =  houl.templates.chatRoom({
+        chatMessageSeriesArray: []
+    });
+    goog.dom.appendChild(this.element, template);
+
+    houl.setTopBarText(this.buddy.name);
+}
+
+/** @private @type {houl.Buddy} */
+houl.ChatRoom.prototype.buddy = null;
+
+/** @private @type {HTMLElement} */
+houl.ChatRoom.prototype.element = null;
+
 //function longPollingPage() {
 //    console.log("Long polling");
 //

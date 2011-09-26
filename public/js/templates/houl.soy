@@ -51,7 +51,6 @@
     </div>
 {/template}
 
-
 /**
  * @param type
  * @param time
@@ -64,7 +63,6 @@
         {if $time} {$time} {else} just now {/if}
     </div>
 {/template}
-
 
 /**
  * @param prependHTML Any HTML to be prepended to "text".
@@ -82,7 +80,6 @@
     {/if}
 {/template}
 
-
 /**
  * @param requester The potential buddy. The type is "houl.Buddy".
  */
@@ -91,5 +88,42 @@
         <p>Do you want to add {$requester.name} to your buddy list?</p>
         <button class="button-green">Yes, accept the request</button>
         <button class="button-grey">No</button>
+    </div>
+{/template}
+
+/**
+ * @param chatMessageSeriesArray An array of "houl.ChatMessageSeries".
+ */
+{template .chatRoom}
+    <div id="chat-room">
+        {foreach $cms in $chatMessageSeriesArray}
+            {call .chatMessageSeries}
+                {param chatMessageSeries: $cms /}
+            {/call}
+        {/foreach}
+    </div>
+
+    <div id="chat-room-new-message">
+        <input type="text" id="chat-room-new-message-field" autocomplete="off">
+        <input type="submit" value="send" id="chat-room-new-message-send">
+    </div>
+{/template}
+
+/**
+ * @param chatMessageSeries The type is "houl.ChatMessageSeries".
+ */
+{template .chatMessageSeries}
+    <div class="chat-message-series">
+        <img src="{$chatMessageSeries.userImageURL}" alt="" width="48" height="48" />
+
+        <div class="chat-message-series-time">
+            {$chatMessageSeries.timestamp}
+        </div>
+
+        <h2 class="chat-message-series-name">{$chatMessageSeries.userName}</h2>
+
+        <div style="clear: right;"></div>
+
+        // @todo - messages
     </div>
 {/template}
