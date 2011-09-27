@@ -18,6 +18,7 @@ longPollingSay.absolute()
 
 longPollingWait = play.mvc.Router.reverse('Chat.LongPolling.waitMessages')
 longPollingWait = longPollingWait.add('userId', '?')
+longPollingWait = longPollingWait.add('lastReceived', '?')
 longPollingWait.absolute()
 
 webSocket = play.mvc.Router.reverse('Chat.WebSocket.join')

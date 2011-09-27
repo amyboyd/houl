@@ -82,6 +82,21 @@ public class ChatRoom extends GenericModel {
 //        return chatEvents.archive();
 //    }
 
+    public static JsonObject toJsonObject(List<IndexedEvent<Event>> events) {
+        JsonArray array = new JsonArray();
+        Long lastId = null;
+        for (IndexedEvent<Event> event: events) {
+            array.add(event.data.toJsonObject());
+            lastId = event.id;
+        }
+
+        JsonObject obj = new JsonObject();
+        obj.addProperty("lastId", lastId);
+        obj.add("messages", array);
+
+        return obj;
+    }
+
     ///////////// Chat room events //////////////////
     public static abstract class Event {
         public final String type;
@@ -102,14 +117,6 @@ public class ChatRoom extends GenericModel {
             obj.addProperty("timestamp", timestamp);
             obj.addProperty("userId", userId);
             return obj;
-        }
-
-        public static JsonArray toJsonArray(List<IndexedEvent<Event>> events) {
-            JsonArray array = new JsonArray();
-            for (IndexedEvent<Event> event: events) {
-                array.add(event.data.toJsonObject());
-            }
-            return array;
         }
     }
 

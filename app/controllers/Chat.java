@@ -30,7 +30,7 @@ public class Chat extends BaseController {
             // the execution until a new message has been received
             final List<IndexedEvent<Event>> messages = await(getChatRoomByOtherUserId(userId).
                     nextMessages(lastReceived.longValue()));
-            renderJSON(Event.toJsonArray(messages));
+            renderJSON(ChatRoom.toJsonObject(messages).toString());
         }
     }
 

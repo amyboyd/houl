@@ -71,6 +71,7 @@ houl.ChatRoom.prototype.render = function() {
         houl.globals.buddyList.setAutoUpdating(false);
         houl.setTopBarText(thisChatRoom.user.name);
         thisChatRoom.setupNewMessageForm();
+        thisChatRoom.waitForMessages();
     //        thisChatRoom.createWebSocket();
     }
 
@@ -162,6 +163,23 @@ houl.ChatRoom.prototype.say = function(message) {
     });
     // We have to use an empty callback function (not null) or Closure Library ignores the HTTP method.
     goog.net.XhrIo.send(sayURL, function() { }, 'POST');
+}
+
+/** @private */
+houl.ChatRoom.prototype.waitForMessages = function() {
+    var url = houl.getURL('long-polling-wait', {
+        'userId': this.user.id,
+        'lastReceived': null // @todo
+    });
+
+    var thisChatRoom = this;
+
+    goog.net.XhrIo.send(url,
+        /** @param {goog.events.Event} event */
+        function(event) {
+            console.log(event.target.getResponseJson());
+            thisChatRoom.waitForMessages();
+        });
 }
 
 /** @private @return {boolean} */
