@@ -2,6 +2,7 @@ goog.provide('houl.ChatMessageSeries');
 
 goog.require('houl.templates');
 goog.require('goog.dom');
+goog.require('goog.date.relative');
 
 /**
  * @constructor
@@ -11,6 +12,7 @@ houl.ChatMessageSeries = function(user) {
     this.user = user;
     this.messages = [];
     this.firstTimestamp = null;
+    this.firstTimestampRelative = null;
 }
 
 /**
@@ -22,6 +24,7 @@ houl.ChatMessageSeries.prototype.addMessage = function(message, timestamp) {
 
     if (this.firstTimestamp == null) {
         this.firstTimestamp = timestamp;
+        this.firstTimestampRelative = goog.date.relative.formatPast(timestamp);
         this.htmlId = 'cms-' + this.user.id + "-" + this.firstTimestamp;
     }
 }
@@ -62,3 +65,6 @@ houl.ChatMessageSeries.prototype.messages = null;
 
 /** @type {number} Milliseconds since Epoch, for the first message in this series. */
 houl.ChatMessageSeries.prototype.firstTimestamp = null;
+
+/** @type {string} "2 minutes ago", etc */
+houl.ChatMessageSeries.prototype.firstTimestampRelative = null;

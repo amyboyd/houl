@@ -176,7 +176,10 @@ houl.ChatRoom.prototype.waitForMessages = function() {
             for (var i = 0; i < messagesCount; i++) {
                 var message = json['messages'][i];
 
-                if (lastCms == null || lastCms.user.id != message['userId']) {
+                if (lastCms == null
+                    || lastCms.user.id != message['userId']
+                    // Over 2 minutes old.
+                    || (message['timestamp'] - lastCms.firstTimestamp) > 180000) {
                     if (lastCms != null) {
                         lastCms.render(thisChatRoom);
                     }
