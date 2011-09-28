@@ -37,9 +37,8 @@
 
 /* Actual content **********************************/
 #center-column #content {
-    padding: 5px 0 0;
-    height: 365px;
-    max-height: 365px;
+    height: 370px;
+    max-height: 370px;
     overflow-y: scroll;
 }
 
@@ -47,7 +46,8 @@
 /* Bottom buttons **********************************/
 #bottom-buttons {
 }
-#bottom-buttons a {
+#bottom-buttons div {
+    cursor: pointer;
     width: 96px;
     height: 41px;
     float: left;
@@ -214,4 +214,21 @@
 .chat-room-new-message-send {
     float: right;
     margin-right: 6px;
+}
+
+
+/* Options page ******************************/
+
+#options-page {
+    background-color: #ddd;
+    color: #000;
+    height: 100%;
+    width: 100%;
+}
+
+#options-page .option {
+    height: 50px;
+}
+#options-page .option h4 {
+    margin-top: 0;
 }

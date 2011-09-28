@@ -13,7 +13,8 @@ houl.setTopBarText = function(text) {
 var pageContainers = {
     'index-page': goog.dom.$('index-page'),
     'request-page': goog.dom.$('request-page'),
-    'chat-room-page': goog.dom.$('chat-room-page')
+    'chat-room-page': goog.dom.$('chat-room-page'),
+    'options-page': goog.dom.$('options-page')
 };
 /**
  * @param {string} pageId One of index-page, request-page, etc.
