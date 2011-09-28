@@ -16,19 +16,17 @@ public class Chat extends BaseController {
         renderJSON(chatRoom.toJsonObject().toString());
     }
 
-    public static class LongPolling extends BaseController {
-        public static void say(Long userId, String message) {
-            requireHttpMethod("POST");
-            final User user = requireAuthenticatedUser();
-            Application.getChatRoomByOtherUserId(userId).say(user, message);
-        }
+    public static void say(Long userId, String message) {
+        requireHttpMethod("POST");
+        final User user = requireAuthenticatedUser();
+        Application.getChatRoomByOtherUserId(userId).say(user, message);
+    }
 
-        public static void waitMessages(Long userId, Long lastReceived) {
-            // Here we use continuation to suspend 
-            // the execution until a new message has been received
-            final List<IndexedEvent<Event>> messages = await(getChatRoomByOtherUserId(userId).
-                    nextMessages(lastReceived.longValue()));
-            renderJSON(ChatRoom.toJsonObject(messages).toString());
-        }
+    public static void waitForMessages(Long userId, Long lastReceived) {
+        // Here we use continuation to suspend 
+        // the execution until a new message has been received
+        final List<IndexedEvent<Event>> messages = await(getChatRoomByOtherUserId(userId).
+                nextMessages(lastReceived.longValue()));
+        renderJSON(ChatRoom.toJsonObject(messages).toString());
     }
 }

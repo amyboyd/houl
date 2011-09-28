@@ -12,7 +12,6 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.net.XhrIo');
-goog.require('goog.net.WebSocket');
 
 /**
  * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
@@ -149,7 +148,7 @@ houl.ChatRoom.prototype.say = function(message) {
         console.log('Say: ' + message);
     }
 
-    var sayURL = houl.getURL('long-polling-say', {
+    var sayURL = houl.getURL('say', {
         'userId': this.otherUser.id,
         'message': message
     });
@@ -159,7 +158,7 @@ houl.ChatRoom.prototype.say = function(message) {
 
 /** @private */
 houl.ChatRoom.prototype.waitForMessages = function() {
-    var url = houl.getURL('long-polling-wait', {
+    var url = houl.getURL('wait-for-messages', {
         'userId': this.otherUser.id,
         'lastReceived': this.lastReceivedEventId
     });
