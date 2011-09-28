@@ -1,5 +1,8 @@
 package models;
 
+import play.libs.F.IndexedEvent;
+import play.libs.F.Promise;
+import models.ChatRoom.Message;
 import com.google.gson.*;
 import java.util.*;
 import javax.persistence.*;
@@ -35,6 +38,9 @@ public class Relationship extends Model {
 
     public String lastChatMessage;
 
+    @Lob
+    public String eventsJson;
+
     public static Relationship findByUsers(User user1, User user2) {
         return find("(user1 = ?1 and user2 = ?2) or (user1 = ?2 and user2 = ?1)", user1, user2).first();
     }
@@ -65,6 +71,32 @@ public class Relationship extends Model {
         return (lastChatAt != null && lastChatAt.after(oneHourAgo));
     }
 
+    public void say(User user, String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return;
+        }
+
+        ChatRoom room = getChatRoom();
+
+        room.publish(new Message(user.id, text));
+        eventsJson = room.toJsonArray().toString();
+        lastChatAt = new Date();
+        lastChatMessage = text;
+        save();
+    }
+
+    /**
+     * For long polling, as we are sometimes disconnected, we need to pass
+     * the last event seen ID, to be sure to not miss any message.
+     */
+    public Promise<List<IndexedEvent<ChatRoom.Event>>> nextMessages(long lastReceived) {
+        return getChatRoom().nextMessages(lastReceived);
+    }
+
+    public ChatRoom getChatRoom() {
+        return ChatRoom.get(this);
+    }
+
     public JsonObject toJsonObject() {
         JsonObject obj = new JsonObject();
 
@@ -75,6 +107,11 @@ public class Relationship extends Model {
         obj.addProperty("requestMessage", requestMessage);
         obj.addProperty("acceptedAt", acceptedAt != null ? since(acceptedAt) : null);
         obj.add("otherUser", getOtherUser().toJsonObject());
+
+        JsonObject users = new JsonObject();
+        users.add(user1.id.toString(), user1.toJsonObject());
+        users.add(user2.id.toString(), user2.toJsonObject());
+        obj.add("users", users);
 
         return obj;
     }

@@ -17,6 +17,7 @@ import play.data.binding.NoBinding;
 import play.data.validation.*;
 import play.db.jpa.Model;
 import play.libs.Codec;
+import play.mvc.Http.Request;
 import play.templates.JavaExtensions;
 
 @Entity
@@ -105,6 +106,12 @@ public class User extends Model {
         obj.addProperty("name", name);
         obj.addProperty("imageURL", getImageUrl());
         obj.addProperty("status", status);
+        
+        User currentUser = (Request.current().args.containsKey("currentUser")
+                ? (User) Request.current().args.get("currentUser")
+                : null);
+        obj.addProperty("isCurrentUser", Boolean.valueOf(this.equals(currentUser)));
+
         return obj;
     }
 

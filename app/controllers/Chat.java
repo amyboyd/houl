@@ -12,21 +12,17 @@ public class Chat extends BaseController {
      */
     public static void roomJson(Long userId) {
         requireHttpMethod("GET");
-        ChatRoom chatRoom = getChatRoomByOtherUserId(userId);
-        renderJSON(chatRoom.toJsonObject().toString());
+        renderJSON(getRelationshipWithOtherUser(userId).toJsonObject().toString());
     }
 
     public static void say(Long userId, String message) {
         requireHttpMethod("POST");
-        final User user = requireAuthenticatedUser();
-        Application.getChatRoomByOtherUserId(userId).say(user, message);
+        getRelationshipWithOtherUser(userId).say(requireAuthenticatedUser(), message);
     }
 
-    public static void waitForMessages(Long userId, Long lastReceived) {
-        // Here we use continuation to suspend 
-        // the execution until a new message has been received
-        final List<IndexedEvent<Event>> messages = await(getChatRoomByOtherUserId(userId).
-                nextMessages(lastReceived.longValue()));
+    public static void waitForMessages(Long userId, long lastReceived) {
+        // Suspend the execution until a new message has been received.
+        List<IndexedEvent<Event>> messages = await(getRelationshipWithOtherUser(userId).nextMessages(lastReceived));
         renderJSON(ChatRoom.toJsonObject(messages).toString());
     }
 }

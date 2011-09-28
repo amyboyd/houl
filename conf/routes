@@ -1,6 +1,6 @@
 GET     /                                       Application.index
 *       /app/{action}                           Application.{action}
-GET     /chat/{action}                          Chat.{action}
+*       /chat/{action}                          Chat.{action}
 *       /account/{action}                       UserAccount.{action}
 *       /user/{action}                          UserAuth.{action}
 

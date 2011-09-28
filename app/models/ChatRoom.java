@@ -2,85 +2,52 @@ package models;
 
 import com.google.gson.*;
 import java.util.*;
-import javax.persistence.*;
-import play.data.validation.MaxSize;
-import play.db.jpa.GenericModel;
 import play.libs.F.*;
 
-@Entity
-@Table(name = "chat_room")
-public class ChatRoom extends GenericModel {
-    @Id
-    @GeneratedValue
-    @OneToOne
-    public Relationship relationship;
+public class ChatRoom {
+    private ArchivedEventStream<ChatRoom.Event> events;
 
-    @Lob
-    @MaxSize(500000)
-    public JsonArray events;
-
-    @Transient
-    private final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(100);
+    private ChatRoom() {
+        events = new ArchivedEventStream<ChatRoom.Event>(100);
+    }
 
     private ChatRoom(Relationship relationship) {
-        this.events = new JsonArray();
-        this.relationship = relationship;
-    }
+        this();
 
-    public JsonObject toJsonObject() {
-        JsonObject obj = new JsonObject();
-        obj.add("relationship", relationship.toJsonObject());
-
-        JsonObject users = new JsonObject();
-        for (User user: getUsers()) {
-            users.add(user.id.toString(), user.toJsonObject());
+        // Publish all old events to the event stream.
+        if (relationship.eventsJson != null && !relationship.eventsJson.isEmpty()) {
+            JsonArray array = new JsonParser().parse(relationship.eventsJson).getAsJsonArray();
+            for (JsonElement event: array) {
+                JsonObject obj = event.getAsJsonObject();
+                final String type = obj.get("type").getAsString();
+                if (type.equals("message")) {
+                    publish(new Message(obj.get("userId").getAsLong(), obj.get("text").getAsString()));
+                } else {
+                    throw new IllegalArgumentException("Event type is: " + type);
+                }
+            }
         }
-        obj.add("users", users);
-
-        return obj;
-    }
-
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<User>(2);
-        users.add(relationship.user1);
-        users.add(relationship.user2);
-        return users;
-    }
-
-    /**
-     * A user says something in the room.
-     */
-    public void say(User user, String text) {
-        if (text == null || text.trim().isEmpty()) {
-            return;
-        }
-        publishEvent(new Message(user.id.longValue(), text));
-    }
-
-    private void publishEvent(Event event) {
-        chatEvents.publish(event);
-        events.add(event.toJsonObject());
     }
 
     /**
      * For long polling, as we are sometimes disconnected, we need to pass 
-     * the last event seen id, to be sure to not miss any message
+     * the last event seen ID, to be sure to not miss any message.
      */
-    public Promise<List<IndexedEvent<ChatRoom.Event>>> nextMessages(long lastReceived) {
-        return chatEvents.nextEvents(lastReceived);
+    Promise<List<IndexedEvent<ChatRoom.Event>>> nextMessages(long lastReceived) {
+        return events.nextEvents(lastReceived);
     }
 
-    public EventStream<Event> getEventStream() {
-        return chatEvents.eventStream();
+    void publish(Event event) {
+        events.publish(event);
     }
-//
-//    /**
-//     * For active refresh, we need to retrieve the whole message archive at
-//     * each refresh
-//     */
-//    public List<ChatRoom.Event> archive() {
-//        return chatEvents.archive();
-//    }
+
+    JsonArray toJsonArray() {
+        JsonArray array = new JsonArray();
+        for (Event event: events.archive()) {
+            array.add(event.toJsonObject());
+        }
+        return array;
+    }
 
     public static JsonObject toJsonObject(List<IndexedEvent<Event>> events) {
         JsonArray array = new JsonArray();
@@ -105,15 +72,6 @@ public class ChatRoom extends GenericModel {
 
         public final long userId;
 
-        protected static Event reverseFromJson(JsonObject obj) {
-            final String type = obj.get("type").getAsString();
-            if (type.equals("message")) {
-                return new Message(obj.get("userId").getAsLong(), obj.get("text").getAsString());
-            } else {
-                throw new IllegalArgumentException("Event type is: " + type);
-            }
-        }
-
         protected Event(String type, long userId) {
             this.type = type;
             this.timestamp = System.currentTimeMillis();
@@ -130,9 +88,9 @@ public class ChatRoom extends GenericModel {
     }
 
     public static class Message extends Event {
-        public final String text;
+        private final String text;
 
-        private Message(long userId, String text) {
+        public Message(long userId, String text) {
             super("message", userId);
             this.text = text;
         }
@@ -151,27 +109,10 @@ public class ChatRoom extends GenericModel {
      */
     private static Map<Long, ChatRoom> INSTANCES = new HashMap<Long, ChatRoom>(10);
 
-    public static ChatRoom get(User user1, User user2) {
-        Relationship relationship = Relationship.findByUsers(user1, user2);
-        if (relationship == null) {
-            throw new IllegalArgumentException();
+    static ChatRoom get(Relationship relationship) {
+        if (!INSTANCES.containsKey(relationship.id)) {
+            INSTANCES.put(relationship.id, new ChatRoom(relationship));
         }
-
-        if (INSTANCES.containsKey(relationship.id)) {
-            return INSTANCES.get(relationship.id);
-        } else {
-            ChatRoom instance = ChatRoom.find("relationship", relationship).first();
-            // Publish all existing events to its event stream.
-            if (instance != null) {
-                for (JsonElement eventJson: instance.events) {
-                    Event event = Event.reverseFromJson(eventJson.getAsJsonObject());
-                    instance.publishEvent(event);
-                }
-            } else {
-                instance = new ChatRoom(relationship);
-            }
-            INSTANCES.put(relationship.id, instance);
-            return instance;
-        }
+        return INSTANCES.get(relationship.id);
     }
 }
