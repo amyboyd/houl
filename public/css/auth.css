@@ -7,7 +7,7 @@
 }
 /* These must be "block", not "none", because "goog.style.showElement()" restores to
  default when showing an element. */
-#index-page, #request-page, #chat-room-page, #options-page {
+#loading-page, #index-page, #request-page, #chat-room-page, #options-page {
     display: block;
     height: 370px;
     max-height: 370px;
@@ -138,6 +138,11 @@
 
 
 /* Buddy list ***********************************/
+
+.empty-buddy-list p {
+    padding-left: 2em;
+    padding-right: 2em;
+}
 
 /* Name */
 .relationship-name:hover {

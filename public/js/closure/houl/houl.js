@@ -11,6 +11,7 @@ houl.setTopBarText = function(text) {
 
 /** @private @type {object<string, HTMLElement>} */
 var pageContainers = {
+    'loading-page': goog.dom.$('loading-page'),
     'index-page': goog.dom.$('index-page'),
     'request-page': goog.dom.$('request-page'),
     'chat-room-page': goog.dom.$('chat-room-page'),

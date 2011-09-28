@@ -33,9 +33,13 @@ houl.BuddyList.prototype.update = function() {
         // Reset will clear the relationships, so it must be before parseJson.
         thisList.reset();
         thisList.parseJson(event.target.getResponseJson());
-        for (var i = 0; i < thisList.relationships.length; i++) {
-            thisList.relationships[i].render(thisList);
-        }
+
+        var template = goog.dom.createDom('div');
+        template.innerHTML = houl.templates.buddyList({
+            buddyList: thisList
+        });
+        goog.dom.appendChild(thisList.element, template);
+
         houl.setTopBarText('Online (' + thisList.totalOnline + '/' + thisList.totalCount + ')');
     });
 

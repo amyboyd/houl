@@ -1,6 +1,22 @@
 {namespace houl.templates}
 
 /**
+ * @param buddyList A "houl.BuddyList" object.
+ */
+{template .buddyList}
+    {foreach $relationship in $buddyList.relationships}
+        {call .relationship}
+            {param relationship: $relationship /}
+        {/call}
+    {ifempty}
+        <div class="empty-buddy-list">
+            <p>To add a friend, click the icon in the bottom left corner.</p>
+            <p>Give friends and people you meet your PIN so they can add you.</p>
+        </div>
+    {/foreach}
+{/template}
+
+/**
  * @param relationship A "houl.Relationship" object.
  */
 {template .relationship}
