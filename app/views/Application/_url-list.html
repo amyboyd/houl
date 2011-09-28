@@ -1,7 +1,4 @@
 %{
-buddyListJson = play.mvc.Router.reverse('Application.buddyListJson')
-buddyListJson.absolute()
-
 requestHandler = play.mvc.Router.reverse('Application.requestHandler')
 requestHandler = requestHandler.add('requesterId', '?');
 requestHandler = requestHandler.add('response', '?')
@@ -20,13 +17,17 @@ waitForMessages = play.mvc.Router.reverse('Chat.waitForMessages')
 waitForMessages = waitForMessages.add('userId', '?')
 waitForMessages = waitForMessages.add('lastReceived', '?')
 waitForMessages.absolute()
+
+addBuddy = play.mvc.Router.reverse('Application.addBuddy')
+addBuddy = addBuddy.add('pinOrEmail', '?')
+addBuddy.absolute()
 }%
 <div id="url-list"
-     data-buddy-list="${buddyListJson}"
+     data-buddy-list="@@{Application.buddyListJson}"
      data-request-handler="${requestHandler}"
      data-room-json="${roomJson}"
      data-say="${say}"
      data-wait-for-messages="${waitForMessages}"
      data-logout="@@{UserAuth.logout}"
-     >
-</div>
+     data-add-buddy="${addBuddy}"
+     ></div>

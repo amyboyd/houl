@@ -45,6 +45,12 @@ public class Relationship extends Model {
         return find("(user1 = ?1 and user2 = ?2) or (user1 = ?2 and user2 = ?1)", user1, user2).first();
     }
 
+    public Relationship(User requester, User otherUser) {
+        this.user1 = requester;
+        this.user2 = otherUser;
+        this.requestedAt = new Date();
+    }
+
     public User getOtherUser() {
         User currentUser = (User) Request.current().args.get("currentUser");
         if (currentUser == null) {

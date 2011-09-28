@@ -55,7 +55,7 @@
     background-image: url("@@{'/public/images/sprite.jpg'}");
     background-repeat: no-repeat;
 }
-#bottom-buttons-add {
+#bottom-buttons-add-buddy {
     background-position: 0 -148px;
 }
 #bottom-buttons-houl {

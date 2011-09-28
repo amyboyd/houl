@@ -4,6 +4,7 @@ import java.util.Date;
 import models.BuddyList;
 import models.Relationship;
 import models.User;
+import play.mvc.Http;
 
 public class Application extends BaseController {
     /**
@@ -61,6 +62,27 @@ public class Application extends BaseController {
         } else {
             error("Response must be 'accept' or 'reject', got '" + response + "'");
         }
+        ok();
+    }
+
+    public static void addBuddy(String pinOrEmail) {
+        requireHttpMethod("POST");
+        play.Logger.info(pinOrEmail);
+
+        User user = User.find("email = ?1 OR pin = ?1", pinOrEmail).first();
+        if (user == null) {
+            response.status = Http.StatusCode.FORBIDDEN; // 403
+            renderText("Sorry, there is no user with that PIN/email");
+        }
+
+        Relationship relationship = Relationship.findByUsers(requireAuthenticatedUser(), user);
+        if (relationship != null) {
+            response.status = Http.StatusCode.FORBIDDEN; // 403
+            renderText("You have already added or requested to add that user.");
+        }
+
+        relationship = new Relationship(requireAuthenticatedUser(), user);
+        relationship.save();
         ok();
     }
 }
