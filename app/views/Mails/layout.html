@@ -2,6 +2,7 @@
     <head>
         <style type="text/css">
             body { font: 13px "Arial", sans-serif; line-height: 1.5em; }
+            #header { background-color: #d8e7ec; padding: 7px; }
             #logo-link { text-decoration: none; }
             p    { margin: 0 0 1em; }
             p.footer { font: 12px; color: #AAA; }
@@ -12,9 +13,11 @@
         <base href="${play.configuration.getProperty('application.baseUrl')}" />
     </head>
     <body>
-        <a id="logo-link" href="${play.configuration.getProperty('application.baseUrl')}">
-            <img src="@@{'/public/images/logo-150x50-transparent.png'}" width="150" height="50" alt="${chatapp.Constants.SITE_NAME}" />
-        </a>
+        <div id="header">
+            <a id="logo-link" href="${play.configuration.getProperty('application.baseUrl')}">
+                <img src="@@{'/public/images/houl-150x64.png'}" width="150" height="64" alt="${chatapp.Constants.SITE_NAME}" />
+            </a>
+        </div>
 
         <p><hr /></p>
 

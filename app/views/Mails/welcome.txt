@@ -1,5 +1,5 @@
 Welcome to ${chatapp.Constants.SITE_NAME}!
 
-Confirm your email address by clicking this link: @@{UserAccount.confirmEmail(user.id, user.getValidationCode())}
+Your unique PIN is ${user.pin}. Share this with your friends and people you meet!
 
-(Remember to bookmark us in your browser!)
+Confirm your email address by clicking this link: @@{UserAccount.confirmEmail(user.id, user.getValidationCode())}

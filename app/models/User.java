@@ -59,6 +59,8 @@ public class User extends Model {
     @Temporal(TemporalType.TIMESTAMP)
     public Date lastOnline;
 
+    public String pin;
+
     public static final String NO_USER_IMAGE_URL = play.mvc.Router.reverse(play.Play.getVirtualFile("public/images/no-user-image-48.png"), true);
 
     /**
@@ -106,7 +108,7 @@ public class User extends Model {
         obj.addProperty("name", name);
         obj.addProperty("imageURL", getImageUrl());
         obj.addProperty("status", status);
-        
+
         User currentUser = (Request.current().args.containsKey("currentUser")
                 ? (User) Request.current().args.get("currentUser")
                 : null);
@@ -160,6 +162,17 @@ public class User extends Model {
     protected void prePersist() {
         if (registeredAt == null) {
             registeredAt = new Date();
+        }
+        if (pin == null) {
+            generatePIN();
+        }
+    }
+
+    private void generatePIN() {
+        pin = UUID.randomUUID().toString().substring(0, 4).toUpperCase();
+        long userAlreadyUsingPin = User.count("pin", pin);
+        if (userAlreadyUsingPin > 0) {
+            generatePIN();
         }
     }
 
