@@ -34,13 +34,11 @@ houl.BuddyList.prototype.update = function() {
         thisList.reset();
         thisList.parseJson(event.target.getResponseJson());
 
-        var template = goog.dom.createDom('div');
-        template.innerHTML = houl.templates.buddyList({
-            buddyList: thisList
-        });
-        goog.dom.appendChild(thisList.element, template);
-
-        houl.setTopBarText('Online (' + thisList.totalOnline + '/' + thisList.totalCount + ')');
+        if (thisList.relationships.length > 0) {
+            thisList.renderNotEmptyList();
+        } else {
+            thisList.renderEmptyList();
+        }
     });
 
     if (thisList.enableAutoUpdating) {
@@ -49,6 +47,26 @@ houl.BuddyList.prototype.update = function() {
             console.log('Auto-updating is on, queued to update in ' + AUTO_UPDATE_INTERVAL_IN_SECONDS + ' seconds');
         }
     }
+}
+
+/** @private */
+houl.BuddyList.prototype.renderEmptyList = function() {
+    var template = goog.dom.createDom('div');
+    template.innerHTML = houl.templates.buddyList({
+        buddyList: this
+    });
+    goog.dom.appendChild(this.element, template);
+
+    houl.setTopBarText('Houl');
+}
+
+/** @private */
+houl.BuddyList.prototype.renderNotEmptyList = function() {
+    for (var i = 0; i < this.relationships.length; i++) {
+        this.relationships[i].render(this);
+    }
+
+    houl.setTopBarText('Online (' + this.totalOnline + '/' + this.totalCount + ')');
 }
 
 /**
