@@ -9,9 +9,11 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 
 houl.pages.index = function() {
+    goog.dom.removeNode(goog.dom.$('loading-page'));
+
     houl.globals.buddyList = new houl.BuddyList(houl.getAndActivatePageContainer('index-page'));
     houl.globals.buddyList.update();
-    
+
     // Hook up the bottom buttons.
     goog.events.listen(goog.dom.$('bottom-buttons-options'), goog.events.EventType.CLICK,
         /** @param {goog.events.BrowserEvent} */

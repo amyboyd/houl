@@ -7,8 +7,11 @@
 }
 /* These must be "block", not "none", because "goog.style.showElement()" restores to
  default when showing an element. */
-#index-page, #request-page, #chat-room-page {
+#index-page, #request-page, #chat-room-page, #options-page {
     display: block;
+    height: 370px;
+    max-height: 370px;
+    overflow-y: scroll;
 }
 #url-list {
     display: none;
@@ -37,9 +40,6 @@
 
 /* Actual content **********************************/
 #center-column #content {
-    height: 370px;
-    max-height: 370px;
-    overflow-y: scroll;
 }
 
 
@@ -125,6 +125,15 @@
     border-width: 2px 0;
     border-style: solid;
     background-color: #e6e6e6;
+}
+
+
+/* Loading page *********************************/
+
+#loading-page {
+    text-align: center;
+    padding: 30px 0 0;
+    background-color: #d8e7ec;
 }
 
 
@@ -222,8 +231,6 @@
 #options-page {
     background-color: #ddd;
     color: #000;
-    height: 100%;
-    width: 100%;
 }
 
 #options-page .option {
