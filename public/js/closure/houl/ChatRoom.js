@@ -99,8 +99,8 @@ houl.ChatRoom.prototype.render = function() {
  * @private
  */
 houl.ChatRoom.prototype.setupNewMessageForm = function() {
-    var field = goog.dom.$('chat-room-new-message-field');
-    var submit = goog.dom.$('chat-room-new-message-send');
+    var field = goog.dom.$$(null, 'chat-room-new-message-field', this.element)[0];
+    var submit = goog.dom.$$(null, 'chat-room-new-message-send', this.element)[0];
     var thisChatRoom = this;
 
     function resetField() {

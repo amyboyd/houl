@@ -11,6 +11,7 @@ houl.User = function(json) {
     this.name = json['name'];
     this.imageURL = json['imageURL'];
     this.status = json['status'];
+    this.isCurrentUser = json['isCurrentUser'];
 }
 
 houl.User.prototype.toString = function() {
@@ -28,3 +29,6 @@ houl.User.prototype.imageURL = null;
 
 /** @type {string} The user's status (like a Twitter user's last tweet). */
 houl.User.prototype.status = null;
+
+/** @type {boolean} */
+houl.User.prototype.isCurrentUser = null;

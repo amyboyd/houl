@@ -103,9 +103,9 @@
         {/foreach}
     </div>
 
-    <div id="chat-room-new-message">
-        <input type="text" id="chat-room-new-message-field" autocomplete="off">
-        <input type="submit" value="send" id="chat-room-new-message-send">
+    <div class="chat-room-new-message">
+        <input type="text" class="chat-room-new-message-field" autocomplete="off">
+        <input type="submit" value="send" class="chat-room-new-message-send button-green">
     </div>
 {/template}
 
@@ -120,7 +120,9 @@
             {$chatMessageSeries.firstTimestamp}
         </div>
 
-        <h2 class="cms-name">{$chatMessageSeries.user.name}</h2>
+        <h2 class="cms-name">
+            {if $chatMessageSeries.user.isCurrentUser} You {else} {$chatMessageSeries.user.name} {/if}
+        </h2>
 
         <div style="clear: right;"></div>
 

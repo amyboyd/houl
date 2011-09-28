@@ -38,6 +38,9 @@
 /* Actual content **********************************/
 #center-column #content {
     padding: 5px 0 0;
+    height: 365px;
+    max-height: 365px;
+    overflow-y: scroll;
 }
 
 
@@ -198,4 +201,17 @@
 .cms-message {
     padding: 2px 7px;
     margin-top: 6px;
+}
+.chat-room-new-message {
+    margin-top: 5px;
+}
+.chat-room-new-message-field {
+    float: left;
+    width: 74%;
+    margin-left: 6px;
+    line-height: 21px;
+}
+.chat-room-new-message-send {
+    float: right;
+    margin-right: 6px;
 }
