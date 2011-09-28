@@ -121,7 +121,7 @@ public class UserAuth extends BaseController {
         // Login.
         session.put(LOGIN_SESSION, email);
         response.setCookie(REMEMBER_COOKIE, Crypto.sign(email) + "-" + email, "30d");
-        flash.success("We hope you enjoy using %s! Remember to bookmark us.", Constants.SITE_NAME);
+        flash.success("Welcome to %s. Your unique PIN is %s", Constants.SITE_NAME, user.pin);
         redirectToForwardURL();
         redirect("/");
     }

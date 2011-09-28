@@ -3,6 +3,8 @@ goog.provide("houl.Options");
 goog.require("houl");
 goog.require("houl.globals");
 goog.require("goog.dom");
+goog.require("goog.events");
+goog.require("goog.events.EventType");
 
 /**
  * @constructor
@@ -19,4 +21,9 @@ houl.Options.prototype.render = function() {
     var template = goog.dom.createDom('div');
     template.innerHTML = houl.templates.options();
     goog.dom.appendChild(container, template);
+    
+    goog.events.listen(goog.dom.$('logout-option'), goog.events.EventType.CLICK,
+        function() {
+            window.location = houl.getURL('logout');
+        });
 }

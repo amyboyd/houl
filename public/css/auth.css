@@ -235,6 +235,13 @@
 
 #options-page .option {
     height: 50px;
+    cursor: pointer;
+}
+#options-page .option-img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    float: left;
 }
 #options-page .option h4 {
     margin-top: 0;
