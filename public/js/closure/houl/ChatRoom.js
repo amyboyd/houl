@@ -18,16 +18,17 @@ goog.require('goog.net.WebSocket');
  * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
  *
  * @constructor
- * @param {houl.User} user
+ * @param {houl.User} otherUser
  */
-houl.ChatRoom = function(user) {
-    this.user = user;
+houl.ChatRoom = function(otherUser) {
+    this.otherUser = otherUser;
     this.element = houl.getAndActivatePageContainer('chat-room-page');
     this.chatMessageSeriesArray = [];
     this.receivedJson = false;
+    this.lastReceivedId = 0;
 
     var url = houl.getURL('room-json', {
-        'userId': user.id
+        'userId': otherUser.id
     });
     var thisChatRoom = this;
     goog.net.XhrIo.send(url, function(event) {
@@ -40,18 +41,10 @@ houl.ChatRoom = function(user) {
  * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
  */
 houl.ChatRoom.prototype.parseJson = function(json) {
-    var cms = null;
-    for (var i = 0; i < json['messagesCount']; i++) {
-        var message = json['messages'][i];
-        
-        if (cms == null || cms.user.id != message['userId']) {
-            cms = new houl.ChatMessageSeries(new houl.User(json['user' + message['userId']]));
-            this.chatMessageSeriesArray.push(cms);
-        }
-
-        cms.addMessage(message['text'], message['timestamp']);
+    this.users = json['users'];
+    for (var id in json['users']) {
+        this.users[id] = new houl.User(json['users'][id]);
     }
-
     this.receivedJson = true;
 }
 
@@ -64,15 +57,14 @@ houl.ChatRoom.prototype.render = function() {
 
         var template = goog.dom.createElement('div');
         template.innerHTML = houl.templates.chatRoom({
-            chatMessageSeriesArray: thisChatRoom.chatMessageSeriesArray
+            chatMessageSeriesArray: []
         });
         goog.dom.appendChild(thisChatRoom.element, template);
 
         houl.globals.buddyList.setAutoUpdating(false);
-        houl.setTopBarText(thisChatRoom.user.name);
+        houl.setTopBarText(thisChatRoom.otherUser.name);
         thisChatRoom.setupNewMessageForm();
         thisChatRoom.waitForMessages();
-    //        thisChatRoom.createWebSocket();
     }
 
     function onFailure() {
@@ -158,7 +150,7 @@ houl.ChatRoom.prototype.say = function(message) {
     }
 
     var sayURL = houl.getURL('long-polling-say', {
-        'userId': this.user.id,
+        'userId': this.otherUser.id,
         'message': message
     });
     // We have to use an empty callback function (not null) or Closure Library ignores the HTTP method.
@@ -168,8 +160,8 @@ houl.ChatRoom.prototype.say = function(message) {
 /** @private */
 houl.ChatRoom.prototype.waitForMessages = function() {
     var url = houl.getURL('long-polling-wait', {
-        'userId': this.user.id,
-        'lastReceived': null // @todo
+        'userId': this.otherUser.id,
+        'lastReceived': this.lastReceivedEventId
     });
 
     var thisChatRoom = this;
@@ -177,32 +169,36 @@ houl.ChatRoom.prototype.waitForMessages = function() {
     goog.net.XhrIo.send(url,
         /** @param {goog.events.Event} event */
         function(event) {
-            console.log(event.target.getResponseJson());
+            var json = event.target.getResponseJson();
+            var lastCms = (thisChatRoom.chatMessageSeriesArray.length > 0
+                ? thisChatRoom.chatMessageSeriesArray[thisChatRoom.chatMessageSeriesArray.length - 1]
+                : null);
+            var messagesCount = json['messages'].length;
+            for (var i = 0; i < messagesCount; i++) {
+                var message = json['messages'][i];
+
+                if (lastCms == null || lastCms.user.id != message['userId']) {
+                    if (lastCms != null) {
+                        lastCms.render(thisChatRoom);
+                    }
+
+                    lastCms = new houl.ChatMessageSeries(new houl.User(thisChatRoom.users[message['userId']]));
+                    thisChatRoom.chatMessageSeriesArray.push(lastCms);
+                }
+
+                lastCms.addMessage(message['text'], message['timestamp']);
+            }
+            lastCms.render(thisChatRoom);
+            thisChatRoom.lastReceivedEventId = json['lastId'];
             thisChatRoom.waitForMessages();
         });
 }
 
-/** @private @return {boolean} */
-houl.ChatRoom.prototype.createWebSocket = function() {
-    var ws = new goog.net.WebSocket();
-
-    //    var handler = new goog.events.EventHandler();
-    //    handler.listen(ws, goog.net.WebSocket.EventType.OPENED, onOpen);
-    //    handler.listen(ws, goog.net.WebSocket.EventType.MESSAGE, onMessage);
-
-    try {
-        var url = houl.getURL('web-socket', {
-            'userId': this.user.id
-        });
-        ws.open(url);
-    // @todo
-    } catch (e) {
-        throw 'WebSocket exception: ' + e;
-    }
-}
-
 /** @private @type {houl.User} */
-houl.ChatRoom.prototype.user = null;
+houl.ChatRoom.prototype.otherUser = null;
+
+/** @private @type {obj<number, houl.User>} */
+houl.ChatRoom.prototype.users = null;
 
 /** @private @type {HTMLElement} */
 houl.ChatRoom.prototype.element = null;
@@ -213,64 +209,5 @@ houl.ChatRoom.prototype.chatMessageSeriesArray = null;
 /** @private @type {boolean} */
 houl.ChatRoom.prototype.receivedJson = false;
 
-//function longPollingPage() {
-//    var lastReceived = 0;
-//    var waitMessages = '@@{LongPolling.waitMessages}';
-//
-//    // Retrieve new messages.
-//    var getMessages = function() {
-//        $.ajax({
-//            url: waitMessages + '?lastReceived=' + lastReceived,
-//            success: function(events) {
-//                $(events).each(function() {
-//                    display(this.data);
-//                    lastReceived = this.id;
-//                });
-//                getMessages();
-//            },
-//            dataType: 'json'
-//        });
-//    }
-//
-//    getMessages();
-//
-//    // Display a message.
-//    var display = function(event) {
-//        $('#thread').append(tmpl('message_tmpl', {event: event}));
-//        $('#thread').scrollTo('max');
-//    }
-//}
-//
-//function webSocketPage() {
-//    // Create a socket.
-//    var socket = new WebSocket('@@{WebSocket.ChatRoomSocket.join}?user=' + userNickName);
-//
-//    // Display a message.
-//    var display = function(event) {
-//        $('#thread').append(tmpl('message_tmpl', {event: event}));
-//        $('#thread').scrollTo('max');
-//    }
-//
-//    // Message received on the socket.
-//    socket.onmessage = function(event) {
-//        var parts = /^([^:]+):([^:]+)(:(.*))?$/.exec(event.data)
-//        display({
-//            type: parts[1],
-//            user: parts[2],
-//            text: parts[4]
-//        });
-//    }
-//
-//    $('#send').click(function(e) {
-//        var message = $('#message').val();
-//        $('#message').val('');
-//        socket.send(message);
-//    });
-//
-//    $('#message').keypress(function(e) {
-//        if(e.charCode == 13 || e.keyCode == 13) {
-//            $('#send').click();
-//            e.preventDefault();
-//        }
-//    });
-//}
+/** @private @type {numnber} */
+houl.ChatRoom.prototype.lastReceivedEventId = 0;

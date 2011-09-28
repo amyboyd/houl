@@ -69,7 +69,7 @@
 /* Common styles between buddy list and chat room ***/
 
 .relationship,
-.chat-message-series {
+.cms {
     padding: 0 7px 7px;
     margin: 7px 0 0;
     min-height: 58px;
@@ -83,14 +83,14 @@
 }
 
 .relationship img,
-.chat-message-series img {
+.cms img {
     float: left;
     margin: 0 10px 0 0;
 }
 
 /* Name */
 .relationship-name,
-.chat-message-series-name {
+.cms-name {
     margin: 0;
     padding: 0;
     font-size: 19px;
@@ -102,7 +102,7 @@
 
 /* Time */
 .relationship-type-and-time,
-.chat-message-series-time {
+.cms-time {
     float: right;
     text-align: right;
     color: #666;
@@ -113,7 +113,7 @@
 
 /* Message */
 .relationship-message,
-.chat-message-series-message {
+.cms-message {
     margin: 2px 0 0 60px;
     font-size: 12px;
     line-height: 15px;
@@ -195,7 +195,7 @@
 
 
 /* Chat room ***********************************/
-.chat-message-series-message {
+.cms-message {
     padding: 2px 7px;
     margin-top: 6px;
 }

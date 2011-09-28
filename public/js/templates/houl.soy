@@ -95,7 +95,7 @@
  * @param chatMessageSeriesArray An array of "houl.ChatMessageSeries".
  */
 {template .chatRoom}
-    <div class="chat-room">
+    <div class="chat-room-cms-list">
         {foreach $cms in $chatMessageSeriesArray}
             {call .chatMessageSeries}
                 {param chatMessageSeries: $cms /}
@@ -113,21 +113,23 @@
  * @param chatMessageSeries A "houl.ChatMessageSeries".
  */
 {template .chatMessageSeries}
-    <div class="chat-message-series">
+    <div class="cms">
         <img src="{$chatMessageSeries.user.imageURL}" alt="" width="48" height="48" />
 
-        <div class="chat-message-series-time">
+        <div class="cms-time">
             {$chatMessageSeries.firstTimestamp}
         </div>
 
-        <h2 class="chat-message-series-name">{$chatMessageSeries.user.name}</h2>
+        <h2 class="cms-name">{$chatMessageSeries.user.name}</h2>
 
         <div style="clear: right;"></div>
 
-        {foreach $message in $chatMessageSeries.messages}
-            <div class="chat-message-series-message">
-                {$message.0}
-            </div>
-        {/foreach}
+        <div class="cms-message-list">
+            {foreach $message in $chatMessageSeries.messages}
+                <div class="cms-message">
+                    {$message.0}
+                </div>
+            {/foreach}
+        </div>
     </div>
 {/template}

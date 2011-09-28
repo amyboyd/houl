@@ -29,13 +29,13 @@ public class ChatRoom extends GenericModel {
 
     public JsonObject toJsonObject() {
         JsonObject obj = new JsonObject();
-        obj.add("messages", events);
-        obj.addProperty("messagesCount", events.size());
         obj.add("relationship", relationship.toJsonObject());
 
+        JsonObject users = new JsonObject();
         for (User user: getUsers()) {
-            obj.add("user" + user.id, user.toJsonObject());
+            users.add(user.id.toString(), user.toJsonObject());
         }
+        obj.add("users", users);
 
         return obj;
     }
@@ -54,7 +54,7 @@ public class ChatRoom extends GenericModel {
         if (text == null || text.trim().isEmpty()) {
             return;
         }
-        publishEvent(new Message(user, text));
+        publishEvent(new Message(user.id.longValue(), text));
     }
 
     private void publishEvent(Event event) {
@@ -105,10 +105,19 @@ public class ChatRoom extends GenericModel {
 
         public final long userId;
 
-        protected Event(String type, User user) {
+        protected static Event reverseFromJson(JsonObject obj) {
+            final String type = obj.get("type").getAsString();
+            if (type.equals("message")) {
+                return new Message(obj.get("userId").getAsLong(), obj.get("text").getAsString());
+            } else {
+                throw new IllegalArgumentException("Event type is: " + type);
+            }
+        }
+
+        protected Event(String type, long userId) {
             this.type = type;
             this.timestamp = System.currentTimeMillis();
-            this.userId = user.id.longValue();
+            this.userId = userId;
         }
 
         public JsonObject toJsonObject() {
@@ -123,8 +132,8 @@ public class ChatRoom extends GenericModel {
     public static class Message extends Event {
         public final String text;
 
-        private Message(User user, String text) {
-            super("message", user);
+        private Message(long userId, String text) {
+            super("message", userId);
             this.text = text;
         }
 
@@ -152,7 +161,13 @@ public class ChatRoom extends GenericModel {
             return INSTANCES.get(relationship.id);
         } else {
             ChatRoom instance = ChatRoom.find("relationship", relationship).first();
-            if (instance == null) {
+            // Publish all existing events to its event stream.
+            if (instance != null) {
+                for (JsonElement eventJson: instance.events) {
+                    Event event = Event.reverseFromJson(eventJson.getAsJsonObject());
+                    instance.publishEvent(event);
+                }
+            } else {
                 instance = new ChatRoom(relationship);
             }
             INSTANCES.put(relationship.id, instance);
