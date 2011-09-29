@@ -21,6 +21,9 @@ waitForMessages.absolute()
 addBuddy = play.mvc.Router.reverse('Application.addBuddy')
 addBuddy = addBuddy.add('pinOrEmail', '?')
 addBuddy.absolute()
+
+userJson = play.mvc.Router.reverse('Application.userJson')
+userJson.absolute()
 }%
 <div id="url-list"
      data-buddy-list="@@{Application.buddyListJson}"
@@ -30,4 +33,5 @@ addBuddy.absolute()
      data-wait-for-messages="${waitForMessages}"
      data-logout="@@{UserAuth.logout}"
      data-add-buddy="${addBuddy}"
+     data-user="${userJson}"
      ></div>

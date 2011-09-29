@@ -19,7 +19,9 @@ houl.Options.prototype.render = function() {
     houl.setTopBarText('Options');
 
     var template = goog.dom.createDom('div');
-    template.innerHTML = houl.templates.options();
+    template.innerHTML = houl.templates.options({
+        user: houl.User.currentUser
+    });
     goog.dom.appendChild(container, template);
     
     goog.events.listen(goog.dom.$('logout-option'), goog.events.EventType.CLICK,

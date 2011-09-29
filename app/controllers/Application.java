@@ -32,6 +32,11 @@ public class Application extends BaseController {
         renderJSON(buddyList.toJsonArray().toString());
     }
 
+    public static void userJson() {
+        requireHttpMethod("GET");
+        renderJSON(requireAuthenticatedUser().toJsonObject().toString());
+    }
+
     /**
      * Accept or reject a request.
      *

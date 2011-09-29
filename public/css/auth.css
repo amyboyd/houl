@@ -243,11 +243,17 @@
     cursor: pointer;
 }
 #options-page .option-img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     display: block;
     float: left;
 }
+#options-page .option-right {
+    margin-left: 40px;
+}
 #options-page .option h4 {
+    margin-top: 0;
+}
+#options-page .option p {
     margin-top: 0;
 }

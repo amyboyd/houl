@@ -154,11 +154,39 @@
 
 /**
  * The options page.
+ *
+ * @param user
  */
 {template .options}
     {call .optionsOption}
-        {param title: 'Profile' /}
+        {param title: 'Your PIN number is ' + $user.pin /}
         {param htmlId: 'profile-option' /}
+    {/call}
+    {call .optionsOption}
+        {param title: 'Change your name' /}
+        {param description: 'Currently \'' + $user.name + '\'' /}
+        {param htmlId: 'change-name-option' /}
+    {/call}
+    {call .optionsOption}
+        {param title: 'Update your status' /}
+        {param htmlId: 'status-option' /}
+    {/call}
+    {call .optionsOption}
+        {param title: 'Upload a photo of yourself' /}
+        {param htmlId: 'photo-option' /}
+    {/call}
+    {call .optionsOption}
+        {param title: 'Link your Facebook account' /}
+        {param htmlId: 'facebook-option' /}
+    {/call}
+    {call .optionsOption}
+        {param title: 'Link your Twitter account' /}
+        {param htmlId: 'twitter-option' /}
+    {/call}
+    {call .optionsOption}
+        {param title: 'Feedback' /}
+        {param description: 'Send us your feedback and any suggestions' /}
+        {param htmlId: 'feedback-option' /}
     {/call}
     {call .optionsOption}
         {param title: 'Logout' /}
@@ -177,15 +205,17 @@
 {template .optionsOption}
     <div class="option" id="{$htmlId}">
         {if $img}
-            <img src="{$img}" alt="img" height="20" width="20" class="option-img" />
+            <img src="{$img}" alt="img" height="30" width="30" class="option-img" />
         {else}
             <span class="option-img"></span>
         {/if}
 
-        <h4>{$title}</a</h4>
+        <div class="option-right">
+            <h4>{$title}</a</h4>
 
-        {if $description}
-            <span>{$description}</span>
-        {/if}
+            {if $description}
+                <p>{$description}</p>
+            {/if}
+        </div>
     </div>
 {/template}
