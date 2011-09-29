@@ -2,15 +2,19 @@ goog.provide('houl.BuddyList');
 
 goog.require('houl');
 goog.require('houl.Relationship');
-goog.require('houl.globals');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
 goog.require('goog.net.XhrIo');
 
 /**
+ * @type {houl.BuddyList}
+ */
+houl.BuddyList.instance = null;
+
+/**
  * The buddy list updates automatically regularly.
  * You can force it to update with 'update()' and 'updateAfterInterval()'.
- * An instance of this class is accessible globally as 'houl.globals.buddyList'.
+ * An instance of this class is accessible globally as 'houl.BuddyList.instance'.
  *
  * JSON comes from "models.BuddyList.toJsonArray()" in Java.
  *
@@ -96,7 +100,7 @@ houl.BuddyList.prototype.updateAfterInterval = function(interval) {
     }
 
     this.autoUpdateDelay = new goog.async.Delay(function() {
-        houl.globals.buddyList.update();
+        houl.BuddyList.instance.update();
     }, interval);
     this.autoUpdateDelay.start();
 }

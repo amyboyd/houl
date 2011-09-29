@@ -1,7 +1,6 @@
 goog.provide('houl.pages');
 
 goog.require('houl');
-goog.require('houl.globals');
 goog.require('houl.BuddyList');
 goog.require('houl.Options');
 goog.require('goog.dom');
@@ -11,8 +10,8 @@ goog.require('goog.net.XhrIo');
 goog.require('goog.string');
 
 houl.pages.index = function() {
-    houl.globals.buddyList = new houl.BuddyList(houl.getAndActivatePageContainer('index-page'));
-    houl.globals.buddyList.update();
+    houl.BuddyList.instance = new houl.BuddyList(houl.getAndActivatePageContainer('index-page'));
+    houl.BuddyList.instance.update();
     goog.dom.removeNode(goog.dom.$('loading-page'));
     setupBottomButtons();
 }
@@ -35,7 +34,7 @@ function setupBottomButtons() {
             if (xhr.getStatus() == 200) {
                 // Added the buddy successfully.
                 alert('Your request has been sent');
-                houl.globals.buddyList.update();
+                houl.BuddyList.instance.update();
             } else if (xhr.getStatus() === 403) {
                 alert(xhr.getResponseText());
             } else {

@@ -1,7 +1,7 @@
 goog.provide('houl.RespondToRequest');
 
 goog.require('houl');
-goog.require('houl.globals');
+goog.require('houl.BuddyList');
 goog.require('houl.templates');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
@@ -19,7 +19,7 @@ houl.RespondToRequest = function(relationship) {
 
 houl.RespondToRequest.prototype.render = function() {
     // Disable the buddy list from auto-updating so the buttons don't disappear.
-    houl.globals.buddyList.setAutoUpdating(false);
+    houl.BuddyList.instance.setAutoUpdating(false);
 
     // Remove the request message.
     var messageEl = goog.dom.$$('div', 'relationship-message', this.relationship.element)[0];
@@ -55,8 +55,8 @@ houl.RespondToRequest.prototype.setupAcceptButton = function() {
             }); 
             goog.net.XhrIo.send(url, function(event) {
                 thisRTR.element.innerHTML = 'You and ' + thisRTR.relationship.otherUser.name + ' can now chat!';
-                houl.globals.buddyList.setAutoUpdating(true);
-                houl.globals.buddyList.updateAfterInterval(2000);
+                houl.BuddyList.instance.setAutoUpdating(true);
+                houl.BuddyList.instance.updateAfterInterval(2000);
             }, 'POST');
             
         });
@@ -77,8 +77,8 @@ houl.RespondToRequest.prototype.setupRejectButton = function() {
                 'response': 'reject'
             });
             goog.net.XhrIo.send(url, function(event) {
-                houl.globals.buddyList.setAutoUpdating(true);
-                houl.globals.buddyList.update();
+                houl.BuddyList.instance.setAutoUpdating(true);
+                houl.BuddyList.instance.update();
             }, 'POST');
         });
 }

@@ -1,7 +1,7 @@
 goog.provide('houl.ChatRoom');
 
 goog.require('houl');
-goog.require('houl.globals');
+goog.require('houl.BuddyList');
 goog.require('houl.templates');
 goog.require('houl.User');
 goog.require('houl.ChatMessageSeries');
@@ -60,7 +60,7 @@ houl.ChatRoom.prototype.render = function() {
         });
         goog.dom.appendChild(thisChatRoom.element, template);
 
-        houl.globals.buddyList.setAutoUpdating(false);
+        houl.BuddyList.instance.setAutoUpdating(false);
         houl.setTopBarText(thisChatRoom.otherUser.name);
         thisChatRoom.setupNewMessageForm();
         thisChatRoom.waitForMessages();
