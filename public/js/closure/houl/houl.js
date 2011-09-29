@@ -4,6 +4,11 @@ goog.require('goog.dom');
 goog.require('goog.style');
 goog.require('goog.string');
 
+/**
+ * @type {houl.BuddyList}
+ */
+houl.globalBuddyList = null;
+
 houl.setTopBarText = function(text) {
     goog.dom.$('top-bar-inner').innerHTML = text;
 }

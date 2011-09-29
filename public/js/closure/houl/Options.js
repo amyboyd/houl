@@ -1,6 +1,7 @@
 goog.provide("houl.Options");
 
 goog.require("houl");
+goog.require("houl.templates");
 goog.require("houl.BuddyList");
 goog.require("goog.dom");
 goog.require("goog.events");
@@ -13,7 +14,7 @@ houl.Options = function() {
 }
 
 houl.Options.prototype.render = function() {
-    houl.BuddyList.instance.setAutoUpdating(false);
+    houl.globalBuddyList.setAutoUpdating(false);
 
     var container = houl.getAndActivatePageContainer('options-page');
     goog.dom.removeChildren(container);

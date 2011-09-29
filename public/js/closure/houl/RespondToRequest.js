@@ -1,7 +1,6 @@
 goog.provide('houl.RespondToRequest');
 
 goog.require('houl');
-goog.require('houl.BuddyList');
 goog.require('houl.templates');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
@@ -19,7 +18,7 @@ houl.RespondToRequest = function(relationship) {
 
 houl.RespondToRequest.prototype.render = function() {
     // Disable the buddy list from auto-updating so the buttons don't disappear.
-    houl.BuddyList.instance.setAutoUpdating(false);
+    houl.globalBuddyList.setAutoUpdating(false);
 
     // Remove the request message.
     var messageEl = goog.dom.$$('div', 'relationship-message', this.relationship.element)[0];
@@ -55,8 +54,8 @@ houl.RespondToRequest.prototype.setupAcceptButton = function() {
             }); 
             goog.net.XhrIo.send(url, function(event) {
                 thisRTR.element.innerHTML = 'You and ' + thisRTR.relationship.otherUser.name + ' can now chat!';
-                houl.BuddyList.instance.setAutoUpdating(true);
-                houl.BuddyList.instance.updateAfterInterval(2000);
+                houl.globalBuddyList.setAutoUpdating(true);
+                houl.globalBuddyList.updateAfterInterval(2000);
             }, 'POST');
             
         });
@@ -65,7 +64,7 @@ houl.RespondToRequest.prototype.setupAcceptButton = function() {
 /** @private */
 houl.RespondToRequest.prototype.setupRejectButton = function() {
     var thisRTR = this;
-    
+
     goog.events.listenOnce(this.rejectButton, goog.events.EventType.CLICK,
         function(evt) {
             goog.dom.setTextContent(thisRTR.rejectButton, 'One second...');
@@ -77,8 +76,8 @@ houl.RespondToRequest.prototype.setupRejectButton = function() {
                 'response': 'reject'
             });
             goog.net.XhrIo.send(url, function(event) {
-                houl.BuddyList.instance.setAutoUpdating(true);
-                houl.BuddyList.instance.update();
+                houl.globalBuddyList.setAutoUpdating(true);
+                houl.globalBuddyList.update();
             }, 'POST');
         });
 }

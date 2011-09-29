@@ -1,7 +1,6 @@
 goog.provide('houl.ChatRoom');
 
 goog.require('houl');
-goog.require('houl.BuddyList');
 goog.require('houl.templates');
 goog.require('houl.User');
 goog.require('houl.ChatMessageSeries');
@@ -12,6 +11,7 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.net.XhrIo');
+goog.require('goog.string');
 
 /**
  * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
@@ -60,7 +60,7 @@ houl.ChatRoom.prototype.render = function() {
         });
         goog.dom.appendChild(thisChatRoom.element, template);
 
-        houl.BuddyList.instance.setAutoUpdating(false);
+        houl.globalBuddyList.setAutoUpdating(false);
         houl.setTopBarText(thisChatRoom.otherUser.name);
         thisChatRoom.setupNewMessageForm();
         thisChatRoom.waitForMessages();

@@ -4,6 +4,7 @@ goog.require('houl');
 goog.require('houl.ChatRoom');
 goog.require('houl.User');
 goog.require('houl.RespondToRequest');
+goog.require('houl.templates');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
