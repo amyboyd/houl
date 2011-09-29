@@ -52,3 +52,12 @@ html, body {
     background: -moz-linear-gradient(top,  #a7da39,  #6a9211);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#a7da39', endColorstr='#6a9211');
 }
+
+
+/* Flash message *****************************************************/
+#flash-message {
+    padding: 10px;
+    margin: 5px;
+    background-color: #FFFFBD;
+}
+

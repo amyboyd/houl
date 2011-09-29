@@ -1,7 +1,7 @@
 <section id="unauth-content">
     #{debug-form-errors errors /}
-    #{if flash?.success}<p class="flash-message">${flash.success}</p>#{/if}
-    #{if flash?.error}<p class="flash-message">${flash.error}</p>#{/if}
+    #{if flash?.success}<p id="flash-message">${flash.success}</p>#{/if}
+    #{if flash?.error}<p id="flash-message">${flash.error}</p>#{/if}
 
     #{doLayout /}
     
