@@ -20,7 +20,8 @@ var pageContainers = {
     'index-page': goog.dom.$('index-page'),
     'request-page': goog.dom.$('request-page'),
     'chat-room-page': goog.dom.$('chat-room-page'),
-    'options-page': goog.dom.$('options-page')
+    'options-page': goog.dom.$('options-page'),
+    'edit-profile-page': goog.dom.$('edit-profile-page')
 };
 /**
  * @param {string} pageId One of index-page, request-page, etc.

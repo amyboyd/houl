@@ -92,13 +92,13 @@
     padding: 0 7px 7px;
     margin: 7px 0 0;
     min-height: 58px;
-    %{
+/*    %{
     fancyDeboss = play.getFile('/public/images/buddy-bg.png');
     base64 = play.libs.Images.toBase64(fancyDeboss)
     }%
     background-image: url('${base64}');
     background-position: bottom left;
-    background-repeat: repeat-x;
+    background-repeat: repeat-x;*/
 }
 
 .relationship img,
@@ -247,24 +247,80 @@
 }
 
 
-/* Options page ******************************/
+/* Common styles on options page, edit profile page *****/
 
-#options-page .option {
-    height: 50px;
+#options-page .option,
+#edit-profile-page .option {
+    padding: 0 10px 0 8px;
     cursor: pointer;
+    border-bottom: 1px dashed #aaa;
 }
-#options-page .option-img {
-    width: 30px;
-    height: 30px;
-    display: block;
+#options-page .option:hover,
+#edit-profile-page .option:hover,
+#options-page .option:active,
+#edit-profile-page .option:active {
+    background-color: #eef;
+}
+#options-page .option h3,
+#edit-profile-page .option h3 {
+    margin: 15px 0 2px 15px;
+    font-size: 19px;
+}
+#options-page .option p,
+#edit-profile-page .option p {
+    margin: 0 0 15px 15px;
+    font-size: 12px;
+}
+#options-page .option-right,
+#edit-profile-page .option-right {
     float: left;
 }
-#options-page .option-right {
-    margin-left: 40px;
+
+#options-page .option-img,
+#edit-profile-page .option-img {
+    float: left;
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 18px 0 0 7px;
 }
-#options-page .option h4 {
+
+
+/* Edit profile page ***************************************/
+
+#edit-profile-page {
+    padding-top: 15px;
+}
+#edit-profile-image {
+    float: left;
+    width: 53px;
+    margin: 0 0 6px 15px;
+    padding: 5px;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px dashed #aaa;
+}
+#edit-profile-image:hover {
+    background-color: #eef;
+}
+#edit-profile-right {
+    float: left;
+    margin: 6px 5px 0 15px;
+}
+#edit-profile-right h2 {
+    margin: 0 0 5px;
+    padding: 0;
+}
+#edit-profile-pin {
+    font-size: 13px;
     margin-top: 0;
 }
-#options-page .option p {
-    margin-top: 0;
+#edit-profile-status {
+    font-size: 13px;
+}
+#edit-profile-status em {
+    font-weight: bold;
+    font-style: normal;
+    text-transform: uppercase;
 }

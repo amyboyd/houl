@@ -109,6 +109,7 @@ public class User extends Model {
         obj.addProperty("imageURL", getImageUrl());
         obj.addProperty("status", status);
         obj.addProperty("pin", pin);
+        obj.addProperty("email", email);
 
         User currentUser = (Request.current().args.containsKey("currentUser")
                 ? (User) Request.current().args.get("currentUser")

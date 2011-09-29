@@ -2,7 +2,7 @@ goog.provide("houl.Options");
 
 goog.require("houl");
 goog.require("houl.templates");
-goog.require("houl.BuddyList");
+goog.require("houl.EditProfile");
 goog.require("goog.dom");
 goog.require("goog.events");
 goog.require("goog.events.EventType");
@@ -25,9 +25,21 @@ houl.Options.prototype.render = function() {
     });
     goog.dom.appendChild(container, template);
 
+    goog.events.listen(goog.dom.$('profile-option'), goog.events.EventType.CLICK, editProfile);
+    goog.events.listen(goog.dom.$('feedback-option'), goog.events.EventType.CLICK, feedback);
     goog.events.listen(goog.dom.$('logout-option'), goog.events.EventType.CLICK, logout);
 
     houl.setTopBarText('Options');
+}
+
+/** @private */
+function editProfile() {
+    new houl.EditProfile().render();
+}
+
+/** @private */
+function feedback() {
+    
 }
 
 /** @private */

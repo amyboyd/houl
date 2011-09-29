@@ -158,64 +158,98 @@
  * @param user
  */
 {template .options}
-    {call .optionsOption}
-        {param title: 'Your PIN number is ' + $user.pin /}
+    {call .option}
+        {param img: '/_/a/1/images/options/profile.png' /}
+        {param title: 'Profile' /}
+        {param description: 'Your PIN is ' + $user.pin /}
         {param htmlId: 'profile-option' /}
     {/call}
-    {call .optionsOption}
-        {param title: 'Change your name' /}
-        {param description: 'Currently \'' + $user.name + '\'' /}
-        {param htmlId: 'change-name-option' /}
-    {/call}
-    {call .optionsOption}
-        {param title: 'Update your status' /}
-        {param htmlId: 'status-option' /}
-    {/call}
-    {call .optionsOption}
-        {param title: 'Upload a photo of yourself' /}
-        {param htmlId: 'photo-option' /}
-    {/call}
-    {call .optionsOption}
-        {param title: 'Link your Facebook account' /}
-        {param htmlId: 'facebook-option' /}
-    {/call}
-    {call .optionsOption}
-        {param title: 'Link your Twitter account' /}
-        {param htmlId: 'twitter-option' /}
-    {/call}
-    {call .optionsOption}
+    {call .option}
+        {param img: '/_/a/1/images/options/feedback.png' /}
         {param title: 'Feedback' /}
         {param description: 'Send us your feedback and any suggestions' /}
         {param htmlId: 'feedback-option' /}
     {/call}
-    {call .optionsOption}
+    {call .option}
+        {param img: '/_/a/1/images/options/logout.png' /}
         {param title: 'Logout' /}
+        {param description: 'Logout of your Houl account' /}
         {param htmlId: 'logout-option' /}
     {/call}
 {/template}
 
 /**
- * An option on the options page.
+ * The edit profile page.
+ *
+ * @param user
+ */
+{template .editProfile}
+    <div id="edit-profile-image">
+        <img src="{$user.imageURL}" alt="" with="48" height="48" />
+        <br />
+        Upload photo
+    </div>
+
+    <div id="edit-profile-right">
+        <h2>{$user.name}</h2>
+        <p id="edit-profile-pin">PIN: {$user.pin}</p>
+        <p id="edit-profile-status">
+            <em>Status:</em> {if $user.status} {$user.status} {else} none {/if}
+        </p>
+    </div>
+
+    <div class="clearfix"></div>
+
+    {call .option}
+        {param img: '/_/a/1/images/options/email.png' /}
+        {param title: $user.email /}
+        {param description: 'Your email address is not shown to anyone' /}
+        {param htmlId: 'email-option' /}
+    {/call}
+    {call .option}
+        {param img: '/_/a/1/images/options/password.png' /}
+        {param title: 'Change Password' /}
+        {param description: 'Change your current password' /}
+        {param htmlId: 'password-option' /}
+    {/call}
+    {call .option}
+        {param img: '/_/a/1/images/options/facebook.png' /}
+        {param title: 'Link With Facebook' /}
+        {param description: 'Automatically post your status updates to Facebook' /}
+        {param htmlId: 'facebook-option' /}
+    {/call}
+    {call .option}
+        {param img: '/_/a/1/images/options/twitter.png' /}
+        {param title: 'Link With Twitter' /}
+        {param description: 'Automatically post your status updates to Twitter' /}
+        {param htmlId: 'twitter-option' /}
+    {/call}
+{/template}
+
+/**
+ * An option on the options page, or edit profile page.
  *
  * @param img
  * @param title
  * @param description
  * @param htmlId
  */
-{template .optionsOption}
+{template .option}
     <div class="option" id="{$htmlId}">
         {if $img}
-            <img src="{$img}" alt="img" height="30" width="30" class="option-img" />
+            <img src="{$img}" alt="img" height="32" width="32" class="option-img" />
         {else}
             <span class="option-img"></span>
         {/if}
 
         <div class="option-right">
-            <h4>{$title}</a</h4>
+            <h3>{$title}</h3>
 
             {if $description}
                 <p>{$description}</p>
             {/if}
         </div>
+
+        <div class="clearfix"></div>
     </div>
 {/template}
