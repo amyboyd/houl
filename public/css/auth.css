@@ -1,35 +1,21 @@
 /* Page containers ***************************************/
 #center-column {
-    width: 384px;
-    margin: 40px auto 20px;
-    border: 3px solid #19444D;
-    background: #fff;
-}
-/* These must be "block", not "none", because "goog.style.showElement()" restores to
- default when showing an element. */
-#loading-page, #index-page, #request-page, #chat-room-page, #options-page {
-    display: block;
-    height: 370px;
-    max-height: 370px;
-    overflow-y: scroll;
-}
-#url-list {
-    display: none;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
 }
 
 
 /* Top bar *****************************************/
-#center-column #top-bar {
-    background-image: url("@@{'/public/images/sprite.jpg'}");
-    background-position: 0 -34px;
-    background-repeat: repeat-x;
+#top-bar {
+    height: 34px;
+    background-color: #fff;
 }
-#center-column #top-bar h1 {
+#top-bar h1 {
     background-image: url("@@{'/public/images/sprite.jpg'}");
     background-position: 0 0;
     background-repeat: no-repeat;
     height: 34px;
-    max-width: 385px;
     padding: 0 0 0 9px;
     margin: 0;
     line-height: 34px;
@@ -39,17 +25,30 @@
 
 
 /* Actual content **********************************/
-#center-column #content {
+#content {
+    /* Width is set by JavaScript to take up all remaining height. */
+    height: 80%;
+    overflow-y: scroll;
+    background-color: #fff;
+}
+#loading-page, #index-page, #request-page, #chat-room-page, #options-page {
+    /* These must be explicilty "display:block;", because "goog.style.showElement()" restores to
+     default style (must be block, not none or null). */
+    display: block;
+}
+#url-list {
+    display: none;
 }
 
 
 /* Bottom buttons **********************************/
 #bottom-buttons {
+    height: 47px;
 }
 #bottom-buttons div {
     cursor: pointer;
-    width: 96px;
-    height: 41px;
+    width: 25%;
+    height: 100%;
     float: left;
     text-decoration: none;
     background-repeat: no-repeat;
@@ -249,11 +248,6 @@
 
 
 /* Options page ******************************/
-
-#options-page {
-    background-color: #ddd;
-    color: #000;
-}
 
 #options-page .option {
     height: 50px;

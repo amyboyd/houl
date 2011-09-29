@@ -1,3 +1,8 @@
+#{if play.mode.isDev()}
+    GET     /deps.js                                staticFile:closure/closure/goog/deps.js
+    GET     /user/deps.js                           staticFile:closure/closure/goog/deps.js
+#{/}
+
 GET     /                                       Application.index
 *       /app/{action}                           Application.{action}
 *       /chat/{action}                          Chat.{action}
@@ -14,5 +19,3 @@ GET     /_/a/1/                                 staticDir:public/
 
 GET     /favicon.ico                            staticFile:public/favicon.ico
 GET     /robots.txt                             staticFile:public/robots.txt
-
-GET     /deps.js                                staticFile:closure/closure/goog/deps.js

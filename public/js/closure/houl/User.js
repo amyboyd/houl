@@ -1,13 +1,5 @@
 goog.provide('houl.User');
 
-goog.require('houl');
-goog.require('goog.net.XhrIo');
-
-goog.net.XhrIo.send(houl.getURL('user'), function(evt) {
-    var json = evt.target.getResponseJson();
-    houl.User.currentUser = new houl.User(json);
-});
-
 /** @type {houl.User} The authenticated user. */
 houl.User.currentUser = null;
 

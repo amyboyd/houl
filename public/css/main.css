@@ -1,13 +1,22 @@
-html {
-    overflow: -moz-scrollbars-vertical; 
-    overflow-y: scroll;
-}
 html, body {
-    background: #bada55;
     padding: 0;
     margin: 0;
+    height: 100%;
+    width: 100%;
+}
+html {
+    background: #bada55;
     font-family: "Droid Sans", Helvetica, Arial, Sans;
 }
+body {
+    background: #fff;
+    border-left: 3px solid #19444D;
+    border-right: 3px solid #19444D;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+
 .clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }

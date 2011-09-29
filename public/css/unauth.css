@@ -1,8 +1,6 @@
 #unauth-content {
-    margin: 30px auto 10px;
-    width: 600px;
-    border: 8px solid #333;
-    padding: 20px;
+    margin: 0 auto;
+    padding: 30px 10px 10px;
     background: #fff;
     text-align: left;
 }

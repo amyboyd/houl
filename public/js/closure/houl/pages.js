@@ -3,14 +3,16 @@ goog.provide('houl.pages');
 goog.require('houl');
 goog.require('houl.BuddyList');
 goog.require('houl.BottomButtons');
+goog.require('houl.User');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.net.XhrIo');
 goog.require('goog.string');
 goog.require('goog.ui.AnimatedZippy');
+goog.require('goog.net.XhrIo');
 
-houl.pages.index = function() {
+houl.pages.initAuthPage = function() {
     houl.globalBuddyList = new houl.BuddyList(houl.getAndActivatePageContainer('index-page'));
     houl.globalBuddyList.update();
 
@@ -18,19 +20,50 @@ houl.pages.index = function() {
 
     goog.dom.removeNode(goog.dom.$('loading-page'));
 
-    // Give user enough time to see the flash message, then remove it.
-    setTimeout(removeFlashMessage, 5000);
+    setContentHeight();
+    setCurrentUser();
+    removeFlashMessage();
 }
 
-/** @private */
+houl.pages.initUnauthPage = function() {
+    removeFlashMessage();
+}
+
+/**
+ * @private
+ */
+function setCurrentUser() {
+    goog.net.XhrIo.send(houl.getURL('user'), function(evt) {
+        var json = evt.target.getResponseJson();
+        houl.User.currentUser = new houl.User(json);
+    });
+}
+
+/**
+ * @private
+ */
+function setContentHeight() {
+    var content = goog.dom.$('content');
+    var topBar = goog.dom.$('top-bar');
+    var bottomButtons = goog.dom.$('bottom-buttons');
+    content.style.height = (document.body.clientHeight - topBar.clientHeight - bottomButtons.clientHeight) + "px";
+}
+
+/**
+ * Give user enough time to see the flash message, then remove it.
+ * @private
+ */
 function removeFlashMessage() {
-    var flash = goog.dom.$('flash-message');
-    if (flash) {
-        if (goog.DEBUG) {
-            console.log("Removing flash message");
+    setTimeout(function() {
+        var flash = goog.dom.$('flash-message');
+        if (flash) {
+            if (goog.DEBUG) {
+                console.log("Removing flash message");
+            }
+            new goog.ui.AnimatedZippy(flash, flash, true).collapse();
         }
-        new goog.ui.AnimatedZippy(flash, flash, true).collapse();
-    }
+    }, 5000);
 }
 
-goog.exportSymbol('houl.pages.index', houl.pages.index);
+goog.exportSymbol('houl.pages.initAuthPage', houl.pages.initAuthPage);
+goog.exportSymbol('houl.pages.initUnauthPage', houl.pages.initUnauthPage);

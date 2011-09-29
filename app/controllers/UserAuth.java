@@ -164,7 +164,7 @@ public class UserAuth extends BaseController {
     }
 
     public static void forgotPassword() {
-        render("users/UserAuth/forgot-password.html");
+        render("UserAuth/forgot-password.html");
     }
 
     public static void forgotPasswordHandler(final String email) {
@@ -180,7 +180,7 @@ public class UserAuth extends BaseController {
             Mails.forgotPassword(user);
             flash.success("We have sent an email to your registered email address. Please open the email and follow the instructions inside. You will be able to reset your password.");
             Logger.info("User forgot password. Emailed reset instructions to %s", email);
-            redirect("/");
+            login(null, null);
         } else {
             flash.error("That email address is not registered to any user.");
             params.flash();
@@ -200,7 +200,7 @@ public class UserAuth extends BaseController {
         if (user == null) {
             error("No user with ID: " + u);
         } else if (user.getValidationCode().equals(vc)) {
-            render("users/UserAuth/reset-password.html", user);
+            render("UserAuth/reset-password.html", user);
         } else {
             error("Wrong code for user " + user.name);
         }
@@ -240,7 +240,7 @@ public class UserAuth extends BaseController {
      * Form to change password.
      */
     public static void changePassword(String forward) {
-        render("users/UserAuth/change-password.html", forward);
+        render("UserAuth/change-password.html", forward);
     }
 
     /**
