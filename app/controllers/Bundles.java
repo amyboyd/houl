@@ -16,16 +16,15 @@ import play.mvc.Controller;
 public class Bundles extends Controller {
     private static final Bundle styles = new StylesheetsBundle("style.css",
             "public/css/main.css",
-            "public/css/messaging.css",
             "public/css/auth.css",
             "public/css/unauth.css");
 
     private static final Bundle closure = new ClosureBundle(
             "closure.js",
             "closure/closure/bin/build/closurebuilder.py",
-//            null,
-//            CompilationLevel.WHITESPACE_ONLY,
-//            CompilationLevel.SIMPLE_OPTIMIZATIONS,
+            //null,
+            //CompilationLevel.WHITESPACE_ONLY,
+            //CompilationLevel.SIMPLE_OPTIMIZATIONS,
             CompilationLevel.ADVANCED_OPTIMIZATIONS,
             new String[] {
                 "closure/closure/goog",
@@ -33,7 +32,7 @@ public class Bundles extends Controller {
                 "public/js/templates/compiled",
                 "public/js/closure", },
             new String[] {
-                "houl.exports", });
+                "houl.pages", });
 
     public static void styles() {
         if (Constants.IS_PROD) {

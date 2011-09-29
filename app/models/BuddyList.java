@@ -10,7 +10,10 @@ public class BuddyList {
         // Exclude requests from this user, but include requests to this user.
         this.relationships = Relationship.find(
                 "(user1 = ?1 AND acceptedAt is not null) OR user2 = ?1 "
-                + "ORDER BY requestedAt DESC, lastChatAt DESC, acceptedAt DESC",
+                + "ORDER BY FIELD(lastChatAt, null) DESC,"
+                + "requestedAt DESC,"
+                + "lastChatAt DESC,"
+                + "acceptedAt DESC",
                 currentUser).fetch();
     }
 

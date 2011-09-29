@@ -184,7 +184,7 @@ houl.ChatRoom.prototype.waitForMessages = function() {
                         lastCms.render(thisChatRoom);
                     }
 
-                    lastCms = new houl.ChatMessageSeries(new houl.User(thisChatRoom.users[message['userId']]));
+                    lastCms = new houl.ChatMessageSeries(thisChatRoom.users[message['userId']]);
                     thisChatRoom.chatMessageSeriesArray.push(lastCms);
                 }
 
