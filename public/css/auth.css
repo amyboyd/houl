@@ -2,7 +2,7 @@
 #center-column {
     width: 384px;
     margin: 40px auto 20px;
-    border: 3px solid #333;
+    border: 3px solid #19444D;
     background: #fff;
 }
 /* These must be "block", not "none", because "goog.style.showElement()" restores to
@@ -52,20 +52,37 @@
     height: 41px;
     float: left;
     text-decoration: none;
-    background-image: url("@@{'/public/images/sprite.jpg'}");
     background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-color: #19444D;
+}
+#bottom-buttons-home {
+    %{
+    fancyDeboss = play.getFile('/public/images/home.png');
+    base64 = play.libs.Images.toBase64(fancyDeboss)
+    }%
+    background-image: url('${base64}');
 }
 #bottom-buttons-add-buddy {
-    background-position: 0 -148px;
+    %{
+    fancyDeboss = play.getFile('/public/images/add-buddy.png');
+    base64 = play.libs.Images.toBase64(fancyDeboss)
+    }%
+    background-image: url('${base64}');
 }
 #bottom-buttons-houl {
-    background-position: -96px -148px;
-}
-#bottom-buttons-unknown {
-    background-position: -192px -148px;
+    %{
+    fancyDeboss = play.getFile('/public/images/houl.png');
+    base64 = play.libs.Images.toBase64(fancyDeboss)
+    }%
+    background-image: url('${base64}');
 }
 #bottom-buttons-options {
-    background-position: -288px -148px;
+    %{
+    fancyDeboss = play.getFile('/public/images/options.png');
+    base64 = play.libs.Images.toBase64(fancyDeboss)
+    }%
+    background-image: url('${base64}');
 }
 
 
