@@ -102,7 +102,7 @@ public class UserAuth extends BaseController {
         if (errorMessage != null) {
             // Errors -- go back to the form.
             Logger.info("At least one error in registration form. Email = %s, password = %s, password2 = %s", email, password, password2);
-            flash.put("userRegisterError", errorMessage);
+            flash.error(errorMessage);
             params.flash();
             Validation.keep();
 
@@ -133,7 +133,7 @@ public class UserAuth extends BaseController {
         checkAuthenticity();
 
         if (email.isEmpty()) {
-            flash.put("userLoginError", "Please enter your email address first.");
+            flash.error("Please enter your email address first.");
             redirect(request.headers.get("referer").value());
         }
 
@@ -147,7 +147,7 @@ public class UserAuth extends BaseController {
             redirectToForwardURL();
             redirect("/");
         } else {
-            flash.put("userLoginError", "Incorrect email/password combination.");
+            flash.error("Incorrect email/password combination.");
             params.flash();
             redirect(request.headers.get("referer").value());
         }
