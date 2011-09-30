@@ -45,6 +45,10 @@ public class Bootstrap extends Job {
         if (!bundlesDir.exists()) {
             bundlesDir.mkdirs();
         }
+        File compiledSoyTemplatesDir = Play.getFile("public/js/templates/compiled");
+        if (!compiledSoyTemplatesDir.exists()) {
+            compiledSoyTemplatesDir.mkdirs();
+        }
 
         Logger.info("Finished bootstrap");
         isRunning = false;
