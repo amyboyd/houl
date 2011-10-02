@@ -158,117 +158,17 @@ public class UserAuth extends BaseController {
      */
     public static void logout() {
         session.clear();
-        response.setCookie(REMEMBER_COOKIE, "", "30d");
+        response.setCookie(REMEMBER_COOKIE, "", "1d");
         flash.success("You have been logged out.");
-        redirect("/");
+        login(null, null);
     }
 
-    public static void forgotPassword() {
-        render("UserAuth/forgot-password.html");
-    }
-
-    public static void forgotPasswordHandler(final String email) {
-        checkAuthenticity();
-
-        if (email.isEmpty()) {
-            flash.error("Please enter your email address first.");
-            forgotPassword();
-        }
-
-        User user = User.findByEmail(email);
-        if (user != null) {
-            Mails.forgotPassword(user);
-            flash.success("We have sent an email to your registered email address. Please open the email and follow the instructions inside. You will be able to reset your password.");
-            Logger.info("User forgot password. Emailed reset instructions to %s", email);
-            login(null, null);
-        } else {
-            flash.error("That email address is not registered to any user.");
-            params.flash();
-            Logger.info("User forgot password. Email being tried is not registered: %s", email);
-            forgotPassword();
-        }
-    }
-
-    /**
-     * @param u User ID.
-     * @param vc Must match user's validation code.
-     */
-    public static void resetPassword(final Long u, final String vc) {
-        Logger.info("On reset password page, user ID %d, validation code %s, IP address %s", u, vc, request.remoteAddress);
-
-        final User user = User.findById(u);
-        if (user == null) {
-            error("No user with ID: " + u);
-        } else if (user.getValidationCode().equals(vc)) {
-            render("UserAuth/reset-password.html", user);
-        } else {
-            error("Wrong code for user " + user.name);
-        }
-    }
-
-    public static void resetPasswordHandler(final Long u, final String vc,
-            final String password, final String password2) {
-        Logger.info("On reset password handler, user ID %d, validation code %s, IP address %s", u, vc, request.remoteAddress);
-
-        checkAuthenticity();
-
-        final User user = User.findById(u);
-        if (user == null) {
-            error("No user with ID: " + u);
-        } else if (!password.equals(password2)) {
-            flash.error("The two passwords you entered do not match.");
-            resetPassword(u, vc);
-        } else if (user.getValidationCode().equals(vc)) {
-            // Everything is OK - change password.
-            user.setPassword(password);
-            user.save();
-            play.Logger.info("User %s has reset their password", user.name);
-
-            // Login.
-            session.put(LOGIN_SESSION, user.email);
-            response.setCookie(REMEMBER_COOKIE, Crypto.sign(user.email) + "-" + user.email, "30d");
-            user.onLogin();
-
-            flash.success("Your password has been reset and you are now logged in.");
-            redirect("/");
-        } else {
-            error("Wrong code for user " + user.name);
-        }
-    }
-
-    /**
-     * Form to change password.
-     */
-    public static void changePassword(String forward) {
-        render("UserAuth/change-password.html", forward);
-    }
-
-    /**
-     * Save new password. The user must enter hir old password correctly, then
-     * a new password twice. No confirmation email is sent.
-     */
-    public static void changePasswordHandler(String forward,
-            String oldPassword, String newPassword1, String newPassword2) {
-        checkAuthenticity();
+    public static void changePasswordHandler(String password) {
         requireHttpMethod("POST");
 
         final User user = requireAuthenticatedUser();
-
-        Validation.isTrue("oldPassword", user.checkPassword(oldPassword)).message("The old password you entered is not correct");
-        Validation.required("newPassword1", newPassword1).message("Please enter your new password");
-        Validation.required("newPassword2", newPassword2).message("Please enter your new password again. This is to ensure you didn't make a type.");
-        Validation.equals("newPassword1", newPassword1, "newPassword2", newPassword2).message("Your new password was typed differently in each field, but must be the same");
-
-        if (Validation.hasErrors()) {
-            params.flash();
-            Validation.keep();
-            changePassword(params.get("forward"));
-        }
-
-        // All is OK.
-        user.password = newPassword1;
+        user.password = password;
         user.save();
-        flash.success("Your password has been changed");
-        redirectToForwardURL();
+        ok();
     }
 }

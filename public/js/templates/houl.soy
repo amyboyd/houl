@@ -246,7 +246,7 @@
             <h3>{$title}</h3>
 
             {if $description}
-                <p>{$description}</p>
+                <p class="option-description">{$description}</p>
             {/if}
         </div>
 
@@ -255,7 +255,7 @@
 {/template}
 
 /**
- * The "send feedback" page.
+ * The "send feedback" form.
  */
 {template .sendFeedback}
     <p id="send-feedback-form">
@@ -263,4 +263,23 @@
         <br />
         <button>Send</button>
     </p>
+{/template}
+
+/**
+ * The "change password" form.
+ */
+{template .changePassword}
+    <div id="change-password-form">
+        <p>
+            Type your new password:<br />
+            <input type="password" name="password" />
+        </p>
+        <p>
+            Type your new password again:<br />
+            <input type="password" name="password2" />
+        </p>
+        <p>
+            <button>Save</button>
+        </p>
+    </div>
 {/template}

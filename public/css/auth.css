@@ -254,6 +254,7 @@
     padding: 0 10px 0 8px;
     cursor: pointer;
     border-bottom: 1px dashed #aaa;
+    font-size: 12px;
 }
 #options-page .option:hover,
 #edit-profile-page .option:hover,
@@ -266,10 +267,9 @@
     margin: 15px 0 2px 15px;
     font-size: 19px;
 }
-#options-page .option p,
-#edit-profile-page .option p {
+#options-page .option .option-description,
+#edit-profile-page .option .option-description {
     margin: 0 0 15px 15px;
-    font-size: 12px;
 }
 #options-page .option-right,
 #edit-profile-page .option-right {
@@ -286,9 +286,14 @@
 }
 
 
-/* Options page */
-#send-feedback-form {
-    margin-left: 55px !important;
+/* Options page ********************************************/
+#send-feedback-form,
+#change-password-form  {
+    margin-left: 55px;
+}
+#send-feedback-form p,
+#change-password-form p {
+    margin: 0 0 15px;
 }
 
 

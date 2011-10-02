@@ -28,6 +28,10 @@ userJson.absolute()
 sendFeedback = play.mvc.Router.reverse('Application.sendFeedback')
 sendFeedback = sendFeedback.add('message', '?')
 sendFeedback.absolute()
+
+changePassword = play.mvc.Router.reverse('UserAuth.changePasswordHandler')
+changePassword = changePassword.add('password', '?')
+changePassword.absolute()
 }%
 <div id="url-list"
      data-buddy-list="@@{Application.buddyListJson}"
@@ -39,4 +43,5 @@ sendFeedback.absolute()
      data-add-buddy="${addBuddy}"
      data-user="${userJson}"
      data-send-feedback="${sendFeedback}"
+     data-change-password="${changePassword}"
      ></div>
