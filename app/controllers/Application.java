@@ -90,4 +90,8 @@ public class Application extends BaseController {
         relationship.save();
         ok();
     }
+    
+    public static void sendFeedback(String message) {
+        Mails.userFeedback(message);
+    }
 }

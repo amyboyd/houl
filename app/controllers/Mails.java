@@ -45,6 +45,14 @@ public class Mails extends Mailer {
         send(user);
     }
 
+    public static void userFeedback(String message) {
+        setSubject("User feedback");
+        addRecipient(EMAIL_ADDRESS);
+        setFrom(EMAIL_ADDRESS);
+
+        send(message);
+    }
+
     private static String formatAddress(final User user) {
         if (user.email == null) {
             if (Bootstrap.isRunning) {
