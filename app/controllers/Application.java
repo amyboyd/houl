@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.util.Date;
 import models.BuddyList;
 import models.Relationship;
@@ -112,5 +113,9 @@ public class Application extends BaseController {
         final User user = requireAuthenticatedUser();
         user.status = status;
         user.save();
+    }
+
+    public static void uploadPhoto(String filename, File file) {
+        requireHttpMethod("POST");
     }
 }

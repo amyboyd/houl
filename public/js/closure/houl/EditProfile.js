@@ -9,6 +9,7 @@ goog.require('goog.events.EventType');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.soy');
 goog.require('goog.net.XhrIo');
+goog.require('alienmegacorp.FileUpload');
 
 /**
  * @constructor
@@ -27,6 +28,7 @@ houl.EditProfile.prototype.render = function() {
     });
     goog.dom.appendChild(container, template);
 
+    goog.events.listenOnce(goog.dom.$$('span', null, goog.dom.$('edit-profile-image'))[0], goog.events.EventType.CLICK, uploadPhoto);
     goog.events.listenOnce(goog.dom.$('edit-profile-name-icon'), goog.events.EventType.CLICK, changeName);
     goog.events.listenOnce(goog.dom.$('edit-profile-status-icon'), goog.events.EventType.CLICK, postStatusUpdate);
     goog.events.listenOnce(goog.dom.$('password-option'), goog.events.EventType.CLICK, changePassword);
@@ -34,6 +36,82 @@ houl.EditProfile.prototype.render = function() {
     goog.events.listenOnce(goog.dom.$('twitter-option'), goog.events.EventType.CLICK, linkTwitter);
 
     houl.setTopBarText('Profile');
+}
+
+/**
+ * @private
+ * @const
+ * @type {number}
+ */
+var MAX_FILE_SIZE = 3145728000;
+
+function uploadPhoto(evt) {
+    var container = /** @type {HTMLElement} */ (evt.currentTarget.parentNode);
+    goog.dom.removeChildren(container);
+
+    var input = goog.dom.createDom('input', {
+        'type': 'file'
+    });
+    var submit = goog.dom.createDom('input', {
+        'type': 'submit',
+        'value': 'Save'
+    });
+
+    goog.dom.appendChild(container, input);
+    goog.dom.appendChild(container, goog.dom.createDom('br'));
+    goog.dom.appendChild(container, submit);
+    input.click();
+
+    goog.events.listen(submit, goog.events.EventType.CLICK, function() {
+        if (input.files.length < 1) {
+            return;
+        }
+
+        goog.dom.removeChildren(container);
+
+        new alienmegacorp.FileUpload(input.files[0], houl.getURL('upload-photo'),
+            /**
+             * Complete.
+             * @param {XMLHttpRequest} xhr
+             */
+            function(xhr) {
+                houl.User.currentUser.update(function() {
+                    var ep = new houl.EditProfile();
+                    ep.render();
+                });
+            },
+            /**
+             * Progress.
+             */
+            function(percent) {
+                goog.dom.setTextContent(container, 'Uploading... ' + percent + '%');
+            },
+            /**
+             * Validator.
+             */
+            function (file) {
+                // Limit file size.
+                var size = (typeof file.size !== 'undefined' ? file.size :
+                    (typeof file.fileSize !== 'undefined' ? file.fileSize :
+                        undefined));
+                if (size > MAX_FILE_SIZE) {
+                    setFeedbackText('The maximum file size that can be uploaded is '
+                        + goog.format.fileSize(MAX_FILE_SIZE, 1) + '. Your file is '
+                        + goog.format.fileSize(file.size, 1) + '.');
+                    input.value = null;
+                    return false;
+                }
+
+                // Only allow images.
+                if (file.type.indexOf('image/') !== 0) {
+                    setFeedbackText('The file must be a JPEG image');
+                    input.value = null;
+                    return false;
+                }
+
+                return true;
+            });
+    });
 }
 
 /** @private */

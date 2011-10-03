@@ -309,13 +309,16 @@
 }
 #edit-profile-image {
     float: left;
-    width: 53px;
     margin: 0 0 6px 15px;
     padding: 5px;
     text-align: center;
     font-size: 13px;
-    cursor: pointer;
     border: 1px dashed #aaa;
+}
+#edit-profile-image span {
+    cursor: pointer;
+    text-decoration: underline;
+    width: 53px;
 }
 #edit-profile-image:hover {
     background-color: #eef;
