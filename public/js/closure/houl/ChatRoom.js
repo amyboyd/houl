@@ -192,12 +192,16 @@ houl.ChatRoom.prototype.waitForMessages = function() {
             }
             lastCms.render(thisChatRoom);
             thisChatRoom.lastReceivedEventId = json['lastId'];
+            thisChatRoom.scrollToBottom();
             thisChatRoom.waitForMessages();
-
-            // Ensure the message form is still visible.
-            var messageFormButton = goog.dom.$$(null, 'chat-room-new-message-send', thisChatRoom.element)[0];
-            messageFormButton.scrollIntoView();
         });
+}
+
+houl.ChatRoom.prototype.scrollToBottom = function() {
+    var messageFormButton = goog.dom.$$(null, 'chat-room-new-message-send', thisChatRoom.element)[0];
+    if (messageFormButton != null) {
+        messageFormButton.scrollIntoView();
+    }
 }
 
 /** @private @type {houl.User} */
