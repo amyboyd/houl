@@ -198,7 +198,7 @@ houl.ChatRoom.prototype.waitForMessages = function() {
 }
 
 houl.ChatRoom.prototype.scrollToBottom = function() {
-    var messageFormButton = goog.dom.$$(null, 'chat-room-new-message-send', thisChatRoom.element)[0];
+    var messageFormButton = goog.dom.$$(null, 'chat-room-new-message-send', this.element)[0];
     if (messageFormButton != null) {
         messageFormButton.scrollIntoView();
     }
