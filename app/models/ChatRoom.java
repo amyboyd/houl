@@ -21,7 +21,8 @@ public class ChatRoom {
                 JsonObject obj = event.getAsJsonObject();
                 final String type = obj.get("type").getAsString();
                 if (type.equals("message")) {
-                    publish(new Message(obj.get("userId").getAsLong(), obj.get("text").getAsString()));
+                    publish(new Message(obj.get("userId").getAsLong(), obj.get("text").getAsString(), obj.get("timestamp").
+                            getAsLong()));
                 } else {
                     throw new IllegalArgumentException("Event type is: " + type);
                 }
@@ -78,6 +79,12 @@ public class ChatRoom {
             this.userId = userId;
         }
 
+        protected Event(String type, long userId, long timestamp) {
+            this.type = type;
+            this.userId = userId;
+            this.timestamp = timestamp;
+        }
+
         public JsonObject toJsonObject() {
             JsonObject obj = new JsonObject();
             obj.addProperty("type", type);
@@ -92,6 +99,11 @@ public class ChatRoom {
 
         public Message(long userId, String text) {
             super("message", userId);
+            this.text = text;
+        }
+
+        public Message(long userId, String text, long timestamp) {
+            super("message", userId, timestamp);
             this.text = text;
         }
 
