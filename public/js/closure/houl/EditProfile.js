@@ -5,6 +5,7 @@ goog.require('houl.templates');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
+goog.require('goog.soy');
 
 /**
  * @constructor
@@ -18,8 +19,7 @@ houl.EditProfile.prototype.render = function() {
     var container = houl.getAndActivatePageContainer('edit-profile-page');
     goog.dom.removeChildren(container);
 
-    var template = goog.dom.createDom('div');
-    template.innerHTML = houl.templates.editProfile({
+    var template = goog.soy.renderAsElement(houl.templates.editProfile, {
         user: houl.User.currentUser
     });
     goog.dom.appendChild(container, template);

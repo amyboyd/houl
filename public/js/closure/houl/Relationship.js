@@ -8,6 +8,7 @@ goog.require('houl.templates');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
+goog.require('goog.soy');
 
 /**
  * @constructor
@@ -32,11 +33,10 @@ houl.Relationship = function(json) {
  * @param {houl.BuddyList} buddyList
  */
 houl.Relationship.prototype.render = function(buddyList) {
-    var el = document.createElement('div');
-    el.innerHTML =  houl.templates.relationship({
+    var template = goog.soy.renderAsElement(houl.templates.relationship, {
         relationship: this
     });
-    goog.dom.appendChild(buddyList.element, el);
+    goog.dom.appendChild(buddyList.element, template);
     this.element = goog.dom.$('relationship-with-user-' + this.otherUser.id);
 
     this.setEventHooks();

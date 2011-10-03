@@ -9,6 +9,7 @@ goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("goog.net.XhrIo");
 goog.require("goog.ui.Textarea");
+goog.require("goog.soy");
 
 /**
  * @constructor
@@ -22,8 +23,7 @@ houl.Options.prototype.render = function() {
     var container = houl.getAndActivatePageContainer('options-page');
     goog.dom.removeChildren(container);
 
-    var template = goog.dom.createDom('div');
-    template.innerHTML = houl.templates.options({
+    var template = goog.soy.renderAsElement(houl.templates.options, {
         user: houl.User.currentUser
     });
     goog.dom.appendChild(container, template);

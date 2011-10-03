@@ -7,6 +7,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.net.XhrIo');
+goog.require('goog.soy');
 
 /**
  * @constructor
@@ -25,8 +26,7 @@ houl.RespondToRequest.prototype.render = function() {
     goog.dom.removeNode(messageEl);
 
     // Show site's question ('do you want to accept?') and accept/reject buttons.
-    this.element = goog.dom.createElement('div');
-    this.element.innerHTML =  houl.templates.request({
+    this.element =  goog.soy.renderAsElement(houl.templates.request, {
         requester: this.relationship.otherUser
     });
     goog.dom.appendChild(this.relationship.element, this.element);

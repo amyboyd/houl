@@ -11,6 +11,7 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.net.XhrIo');
+goog.require('goog.soy');
 goog.require('goog.string');
 
 /**
@@ -54,8 +55,7 @@ houl.ChatRoom.prototype.render = function() {
         // Clear old chat room messages.
         goog.dom.removeChildren(thisChatRoom.element);
 
-        var template = goog.dom.createElement('div');
-        template.innerHTML = houl.templates.chatRoom({
+        var template = goog.soy.renderAsElement(houl.templates.chatRoom, {
             chatMessageSeriesArray: []
         });
         goog.dom.appendChild(thisChatRoom.element, template);

@@ -6,6 +6,7 @@ goog.require('houl.templates');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
 goog.require('goog.net.XhrIo');
+goog.require('goog.soy');
 
 /**
  * The buddy list updates automatically regularly.
@@ -51,8 +52,7 @@ houl.BuddyList.prototype.update = function() {
 
 /** @private */
 houl.BuddyList.prototype.renderEmptyList = function() {
-    var template = goog.dom.createDom('div');
-    template.innerHTML = houl.templates.buddyList({
+    var template = goog.soy.renderAsElement(houl.templates.buddyList, {
         buddyList: this
     });
     goog.dom.appendChild(this.element, template);
