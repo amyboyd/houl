@@ -46,11 +46,11 @@ function feedback(clickEvt) {
     container.innerHTML += houl.templates.sendFeedback();
 
     var form = goog.dom.$('send-feedback-form');
-
     var textarea = goog.dom.$$('textarea', null, form)[0];
+    var submit = goog.dom.$$('button', null, form)[0];
+
     new goog.ui.Textarea().decorate(textarea);
 
-    var submit = goog.dom.$$('button', null, form)[0];
     goog.events.listenOnce(submit, [goog.events.EventType.CLICK, goog.events.EventType.KEYPRESS],
         /**
          * When the "send" button is clicked, disable the button to prevent further clicks,

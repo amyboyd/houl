@@ -193,6 +193,10 @@ houl.ChatRoom.prototype.waitForMessages = function() {
             lastCms.render(thisChatRoom);
             thisChatRoom.lastReceivedEventId = json['lastId'];
             thisChatRoom.waitForMessages();
+
+            // Ensure the message form is still visible.
+            var messageFormButton = goog.dom.$$(null, 'chat-room-new-message-send', thisChatRoom.element)[0];
+            messageFormButton.scrollIntoView();
         });
 }
 
