@@ -38,51 +38,68 @@ houl.EditProfile.prototype.render = function() {
 
 /** @private */
 function changeName() {
-    var nameEl = goog.dom.$('edit-profile-name');
-    goog.dom.removeChildren(nameEl);
+    createTextInputAndSaveButton(function(val) {
+        return houl.getURL('change-name', {
+            'name': val
+        });
+    }, goog.dom.$('edit-profile-name'), houl.User.currentUser.name);
+}
 
-    // Create a form with an input and submit button.
+/** @private */
+function postStatusUpdate() {
+    createTextInputAndSaveButton(function(val) {
+        return houl.getURL('post-status-update', {
+            'status': val
+        });
+    }, goog.dom.$('edit-profile-status'), houl.User.currentUser.status);
+}
+
+/**
+ * Create a form with an input and submit button.
+ *
+ * @param {function<string>} urlCallback Returns the URL to save to.
+ * @param {HTMLElement} containerElement
+ * @param {string} initialValue
+ * @private
+ */
+function createTextInputAndSaveButton(urlCallback, containerElement, initialValue) {
+    goog.dom.removeChildren(containerElement);
+
     var input = goog.dom.createDom('input', {
-        'value': houl.User.currentUser.name,
+        'value': initialValue,
         'type': 'text'
     });
     var submit = goog.dom.createDom('input', {
         'value': 'Save',
         'type': 'submit'
     });
-    goog.dom.appendChild(nameEl, input);
-    goog.dom.appendChild(nameEl, submit);
+    goog.dom.appendChild(containerElement, input);
+    goog.dom.appendChild(containerElement, submit);
 
     function onClick(evt) {
-        if (evt.isMouseActionButton) saveName(evt);
+        if (evt.isMouseActionButton) save(evt);
     }
 
     function onEnter(evt) {
-        if (evt.keyCode == goog.events.KeyCodes.ENTER) saveName(evt);
+        if (evt.keyCode == goog.events.KeyCodes.ENTER) save(evt);
     }
 
-    function saveName(evt) {
+    function save(evt) {
         evt.preventDefault();
 
-        var newName = goog.dom.forms.getValue(input);
-        var url = houl.getURL('change-name', {
-            'name': newName
-        });
+        var value = goog.dom.forms.getValue(input);
+        var url = urlCallback(value);
         goog.net.XhrIo.send(url, function() {
-            houl.User.currentUser.name = newName;
-            var ep = new houl.EditProfile();
-            ep.render();
+            houl.User.currentUser.update(function() {
+                var ep = new houl.EditProfile();
+                ep.render();
+            });
         }, 'POST');
     }
 
     goog.events.listen(input, goog.events.EventType.KEYPRESS, onEnter);
     goog.events.listen(submit, goog.events.EventType.KEYPRESS, onEnter);
     goog.events.listen(submit, goog.events.EventType.CLICK, onClick);
-}
-
-/** @private */
-function postStatusUpdate() {
-    // @todo
 }
 
 /** @private */

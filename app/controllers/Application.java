@@ -32,9 +32,14 @@ public class Application extends BaseController {
         renderJSON(buddyList.toJsonArray().toString());
     }
 
-    public static void userJson() {
+    public static void currentUser() {
         requireHttpMethod("GET");
         renderJSON(requireAuthenticatedUser().toJsonObject().toString());
+    }
+
+    public static void user(Long id) {
+        requireHttpMethod("GET");
+        renderJSON(User.<User>findById(id).toJsonObject().toString());
     }
 
     /**
@@ -67,7 +72,6 @@ public class Application extends BaseController {
         } else {
             error("Response must be 'accept' or 'reject', got '" + response + "'");
         }
-        ok();
     }
 
     public static void addBuddy(String pinOrEmail) {
@@ -88,7 +92,6 @@ public class Application extends BaseController {
 
         relationship = new Relationship(requireAuthenticatedUser(), user);
         relationship.save();
-        ok();
     }
     
     public static void sendFeedback(String message) {
@@ -101,6 +104,13 @@ public class Application extends BaseController {
         final User user = requireAuthenticatedUser();
         user.name = name;
         user.save();
-        ok();
+    }
+
+    public static void postStatusUpdate(String status) {
+        requireHttpMethod("POST");
+
+        final User user = requireAuthenticatedUser();
+        user.status = status;
+        user.save();
     }
 }

@@ -22,8 +22,12 @@ addBuddy = play.mvc.Router.reverse('Application.addBuddy')
 addBuddy = addBuddy.add('pinOrEmail', '?')
 addBuddy.absolute()
 
-userJson = play.mvc.Router.reverse('Application.userJson')
-userJson.absolute()
+user = play.mvc.Router.reverse('Application.user')
+user = user.add('id', '?')
+user.absolute()
+
+currentUser = play.mvc.Router.reverse('Application.currentUser')
+currentUser.absolute()
 
 sendFeedback = play.mvc.Router.reverse('Application.sendFeedback')
 sendFeedback = sendFeedback.add('message', '?')
@@ -32,6 +36,10 @@ sendFeedback.absolute()
 changeName = play.mvc.Router.reverse('Application.changeName')
 changeName = changeName.add('name', '?')
 changeName.absolute()
+
+postStatusUpdate = play.mvc.Router.reverse('Application.postStatusUpdate')
+postStatusUpdate = postStatusUpdate.add('status', '?')
+postStatusUpdate.absolute()
 
 changePassword = play.mvc.Router.reverse('UserAuth.changePasswordHandler')
 changePassword = changePassword.add('password', '?')
@@ -47,9 +55,11 @@ emoticonsDir = play.mvc.Router.reverse(play.Play.getVirtualFile('/public/images/
      data-wait-for-messages="${waitForMessages}"
      data-logout="@@{UserAuth.logout}"
      data-add-buddy="${addBuddy}"
-     data-user="${userJson}"
+     data-user="${user}"
+     data-current-user="${currentUser}"
      data-send-feedback="${sendFeedback}"
      data-change-name="${changeName}"
      data-change-password="${changePassword}"
+     data-post-status-update="${postStatusUpdate}"
      data-emoticons-dir="${emoticonsDir}"
      ></div>

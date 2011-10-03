@@ -1,5 +1,8 @@
 goog.provide('houl.User');
 
+goog.require('houl');
+goog.require('goog.net.XhrIo');
+
 /** @type {houl.User} The authenticated user. */
 houl.User.currentUser = null;
 
@@ -8,6 +11,23 @@ houl.User.currentUser = null;
  * @param {obj} json Comes from 'models.User.toJsonObject()' in Java.
  */
 houl.User = function(json) {
+    this.setValuesFromJSON(json);
+}
+
+houl.User.prototype.update = function(onComplete) {
+    var url = houl.getURL('user', {
+        'id': this.id
+    });
+    var thisUser = this;
+
+    goog.net.XhrIo.send(url, function(evt) {
+        thisUser.setValuesFromJSON(evt.target.getResponseJson());
+        onComplete();
+    });
+}
+
+/** @private */
+houl.User.prototype.setValuesFromJSON = function(json) {
     this.id = json['id'];
     this.name = json['name'];
     this.imageURL = json['imageURL'];
