@@ -94,4 +94,13 @@ public class Application extends BaseController {
     public static void sendFeedback(String message) {
         Mails.userFeedback(message);
     }
+    
+    public static void changeName(String name) {
+        requireHttpMethod("POST");
+
+        final User user = requireAuthenticatedUser();
+        user.name = name;
+        user.save();
+        ok();
+    }
 }

@@ -29,6 +29,10 @@ sendFeedback = play.mvc.Router.reverse('Application.sendFeedback')
 sendFeedback = sendFeedback.add('message', '?')
 sendFeedback.absolute()
 
+changeName = play.mvc.Router.reverse('Application.changeName')
+changeName = changeName.add('name', '?')
+changeName.absolute()
+
 changePassword = play.mvc.Router.reverse('UserAuth.changePasswordHandler')
 changePassword = changePassword.add('password', '?')
 changePassword.absolute()
@@ -45,6 +49,7 @@ emoticonsDir = play.mvc.Router.reverse(play.Play.getVirtualFile('/public/images/
      data-add-buddy="${addBuddy}"
      data-user="${userJson}"
      data-send-feedback="${sendFeedback}"
+     data-change-name="${changeName}"
      data-change-password="${changePassword}"
      data-emoticons-dir="${emoticonsDir}"
      ></div>

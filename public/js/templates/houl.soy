@@ -191,10 +191,16 @@
     </div>
 
     <div id="edit-profile-right">
-        <h2>{$user.name}</h2>
+        <h2 id="edit-profile-name">
+            {$user.name}
+            <img src="/_/a/1/images/edit.png" alt="Edit" width="20" height="20"
+                 id="edit-profile-name-icon" />
+        </h2>
         <p id="edit-profile-pin">PIN: {$user.pin}</p>
         <p id="edit-profile-status">
             <em>Status:</em> {if $user.status} {$user.status} {else} none {/if}
+            <img src="/_/a/1/images/edit.png" alt="Edit" width="16" height="16"
+                 id="edit-profile-status-icon" />
         </p>
     </div>
 

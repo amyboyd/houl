@@ -324,7 +324,7 @@
     float: left;
     margin: 6px 5px 0 15px;
 }
-#edit-profile-right h2 {
+#edit-profile-name {
     margin: 0 0 5px;
     padding: 0;
 }
@@ -339,4 +339,17 @@
     font-weight: bold;
     font-style: normal;
     text-transform: uppercase;
+}
+#edit-profile-name-icon,
+#edit-profile-status-icon {
+    cursor: pointer;
+    position: relative;
+    left: 2px;
+}
+#edit-profile-name-icon:hover,
+#edit-profile-status-icon:hover {
+    background-color: #eef;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
