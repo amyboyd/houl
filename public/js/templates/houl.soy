@@ -130,7 +130,7 @@
  */
 {template .chatMessageSeries}
     <div class="cms">
-        <img src="{$chatMessageSeries.user.imageURL}" alt="" width="48" height="48" />
+        <img class="cms-user-image" src="{$chatMessageSeries.user.imageURL}" alt="" width="48" height="48" />
 
         <div class="cms-time">
             {$chatMessageSeries.firstTimestampRelative}
@@ -145,7 +145,7 @@
         <div class="cms-message-list">
             {foreach $message in $chatMessageSeries.messages}
                 <div class="cms-message">
-                    {$message.0}
+                    {$message.0 |noescape}
                 </div>
             {/foreach}
         </div>

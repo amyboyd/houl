@@ -102,7 +102,7 @@
 }
 
 .relationship img,
-.cms img {
+.cms .cms-user-image {
     float: left;
     margin: 0 10px 0 0;
 }
@@ -231,6 +231,11 @@
 .cms-message {
     padding: 2px 7px;
     margin-top: 6px;
+}
+/* Emoticons */
+.cms-message img {
+    position: relative;
+    top: 3px;
 }
 .chat-room-new-message {
     margin-top: 5px;

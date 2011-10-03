@@ -1,8 +1,10 @@
 goog.provide('houl.ChatMessageSeries');
 
+goog.require('houl');
 goog.require('houl.templates');
 goog.require('goog.dom');
 goog.require('goog.date.relative');
+goog.require('goog.string');
 
 /**
  * @constructor
@@ -20,6 +22,9 @@ houl.ChatMessageSeries = function(user) {
  * @param {number} timestamp Milliseconds since Epoch.
  */
 houl.ChatMessageSeries.prototype.addMessage = function(message, timestamp) {
+    message = goog.string.htmlEscape(message);
+    message = insertEmoticonImages(message);
+
     this.messages.push([message, timestamp]);
 
     if (this.firstTimestamp == null) {
@@ -68,3 +73,20 @@ houl.ChatMessageSeries.prototype.firstTimestamp = null;
 
 /** @type {string} "2 minutes ago", etc */
 houl.ChatMessageSeries.prototype.firstTimestampRelative = null;
+
+function insertEmoticonImages(message) {
+    var emoticonsDir = houl.getURL('emoticons-dir');
+
+    function replaceSmileyWithImage(smiley, imageNumber) {
+        message = message.replace(smiley, '<img src="' + emoticonsDir + '/' + imageNumber + '.png" alt="' + smiley + '" width="16" height="16" />', 'gm');
+    }
+
+    replaceSmileyWithImage(':)', 1);
+    replaceSmileyWithImage(':@', 2);
+    replaceSmileyWithImage(":'(", 3);
+    replaceSmileyWithImage(':D', 4);
+    replaceSmileyWithImage(':(', 5);
+    replaceSmileyWithImage(":')", 6);
+    replaceSmileyWithImage(':P', 7);
+    return message;
+}

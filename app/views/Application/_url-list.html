@@ -32,6 +32,8 @@ sendFeedback.absolute()
 changePassword = play.mvc.Router.reverse('UserAuth.changePasswordHandler')
 changePassword = changePassword.add('password', '?')
 changePassword.absolute()
+
+emoticonsDir = play.mvc.Router.reverse(play.Play.getVirtualFile('/public/images/emoticons'), true)
 }%
 <div id="url-list"
      data-buddy-list="@@{Application.buddyListJson}"
@@ -44,4 +46,5 @@ changePassword.absolute()
      data-user="${userJson}"
      data-send-feedback="${sendFeedback}"
      data-change-password="${changePassword}"
+     data-emoticons-dir="${emoticonsDir}"
      ></div>
