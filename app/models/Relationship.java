@@ -27,6 +27,8 @@ public class Relationship extends Model {
     @ManyToOne
     public User user2;
 
+    public boolean user1HasBeenHouledAtByUser2, user2HasBeenHouledAtByUser1;
+
     public Date requestedAt;
 
     @MaxSize(255)
@@ -112,6 +114,8 @@ public class Relationship extends Model {
         obj.addProperty("requestedAt", requestedAt != null ? since(requestedAt) : null);
         obj.addProperty("requestMessage", requestMessage);
         obj.addProperty("acceptedAt", acceptedAt != null ? since(acceptedAt) : null);
+        obj.addProperty("user1HasBeenHouledAtByUser2", user1HasBeenHouledAtByUser2);
+        obj.addProperty("user2HasBeenHouledAtByUser1", user2HasBeenHouledAtByUser1);
         obj.add("otherUser", getOtherUser().toJsonObject());
 
         JsonObject users = new JsonObject();
@@ -120,5 +124,13 @@ public class Relationship extends Model {
         obj.add("users", users);
 
         return obj;
+    }
+
+    public void houlAtUser(User userToBeHouledAt) {
+        if (userToBeHouledAt.equals(user1)) {
+            user1HasBeenHouledAtByUser2 = true;
+        } else if (userToBeHouledAt.equals(user2)) {
+            user2HasBeenHouledAtByUser1 = true;
+        }
     }
 }

@@ -128,4 +128,13 @@ public class Application extends BaseController {
         user.avatarURL = avatar.getURL(UserAvatar.Variant.SMALL);
         user.save();
     }
+
+    public static void sendHoul(Long buddyId) {
+        User buddy = User.findById(buddyId);
+        notFoundIfNull(buddy);
+
+        Relationship relationship = Relationship.findByUsers(buddy, requireAuthenticatedUser());
+        relationship.houlAtUser(buddy);
+        relationship.save();
+    }
 }

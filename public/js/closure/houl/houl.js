@@ -19,6 +19,7 @@ var pageContainers = {
     'loading-page': goog.dom.$('loading-page'),
     'index-page': goog.dom.$('index-page'),
     'request-page': goog.dom.$('request-page'),
+    'send-houl-page': goog.dom.$('send-houl-page'),
     'chat-room-page': goog.dom.$('chat-room-page'),
     'options-page': goog.dom.$('options-page'),
     'edit-profile-page': goog.dom.$('edit-profile-page')

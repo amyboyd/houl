@@ -356,3 +356,11 @@
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
+
+
+/* Send houl page ***********************************/
+
+#send-houl p {
+    margin-left: 6px;
+    margin-right: 6px;
+}

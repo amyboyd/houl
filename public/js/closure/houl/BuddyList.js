@@ -140,7 +140,7 @@ houl.BuddyList.prototype.totalCount = 0;
 /** @type {number} */
 houl.BuddyList.prototype.totalOnline = 0;
 
-/** @type {array} */
+/** @type {array<houl.Relationship>} */
 houl.BuddyList.prototype.relationships = [];
 
 /** @constant @private @type {number} */

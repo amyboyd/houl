@@ -1,12 +1,14 @@
 goog.provide("houl.BottomButtons");
 
 goog.require("houl");
+goog.require("houl.templates");
 goog.require("houl.Options");
 goog.require("goog.dom");
-goog.require("goog.string");
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("goog.net.XhrIo");
+goog.require("goog.string");
+goog.require("goog.soy");
 
 houl.BottomButtons.setup = function() {
     common('bottom-buttons-home', home);
@@ -59,8 +61,38 @@ function addBuddy() {
 
 /** @private */
 function sendHoul() {
-    // @todo
-    alert("send a houl");
+    houl.globalBuddyList.setAutoUpdating(false);
+
+    var container = houl.getAndActivatePageContainer('send-houl-page');
+    goog.dom.removeChildren(container);
+
+    container.appendChild(goog.soy.renderAsElement(houl.templates.sendHoul, {
+        buddyList: houl.globalBuddyList
+    }));
+
+    var buttons = goog.dom.$$('button', null, container);
+    for (var i = 0; i < buttons.length; i++) {
+        setupSendHoulButton(buttons[i]);
+    }
+}
+
+/**
+ * @private
+ * @param {HTMLButtonElement} button
+ */
+function setupSendHoulButton(button) {
+    goog.events.listen(button, goog.events.EventType.CLICK,
+        function(evt) {
+            var success = goog.dom.createDom('span');
+            goog.dom.setTextContent(success, 'Houl sent');
+            goog.dom.insertSiblingAfter(success, evt.target);
+            goog.dom.removeNode(evt.target);
+
+            var url = houl.getURL('send-houl', {
+                'buddyId': evt.target.getAttribute('data-buddy-id')
+            });
+            goog.net.XhrIo.send(url);
+        });
 }
 
 /** @private */

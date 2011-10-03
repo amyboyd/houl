@@ -22,6 +22,8 @@ houl.Relationship = function(json) {
     this.requestedAt = json['requestedAt'];
     this.requestMessage = json['requestMessage'];
     this.acceptedAt = json['acceptedAt'];
+    this.user1HasBeenHouledAtByUser2 = json['user1HasBeenHouledAtByUser2'];
+    this.user2HasBeenHouledAtByUser1 = json['user2HasBeenHouledAtByUser1'];
 
     // Some shortcut properties.
     this.isRequest = (json['type'] === 'incoming request');

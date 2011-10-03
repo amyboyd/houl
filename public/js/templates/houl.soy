@@ -289,3 +289,27 @@
         </p>
     </div>
 {/template}
+
+/**
+ * Choose the buddy to send a houl to.
+ *
+ * @param buddyList A "houl.BuddyList".
+ */
+{template .sendHoul}
+    <div id="send-houl">
+        <p>Send a houl to any of your buddies to get their attention.</p>
+ 
+        <p>The buddy you choose will be notified you want to chat.</p>
+
+        {foreach $relationship in $buddyList.relationships}
+            <div class="relationship">
+                <img src="{$relationship.otherUser.avatarURL}" alt="" width="48" height="48" />
+                <h2 class="relationship-name">{$relationship.otherUser.name}</h2>
+                <br />
+                <button class="send-houl-button" data-buddy-id="{$relationship.otherUser.id}">
+                    Houl at {$relationship.otherUser.name}
+                </button>
+            </div>
+        {/foreach}
+    </div>
+{/template}
