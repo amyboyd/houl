@@ -21,7 +21,7 @@
  */
 {template .relationship}
     <div id="relationship-with-user-{$relationship.otherUser.id}" class="relationship {if $relationship.isRequest} request-type {elseif $relationship.isOpenChat} open-chat-type {else} other-type {/if}">
-        <img src="{$relationship.otherUser.imageURL}" alt="" width="48" height="48" />
+        <img src="{$relationship.otherUser.avatarURL}" alt="" width="48" height="48" />
 
         {if $relationship.isRequest}
             {call .relationshipTypeAndTime}
@@ -130,7 +130,7 @@
  */
 {template .chatMessageSeries}
     <div class="cms">
-        <img class="cms-user-image" src="{$chatMessageSeries.user.imageURL}" alt="" width="48" height="48" />
+        <img class="cms-user-image" src="{$chatMessageSeries.user.avatarURL}" alt="" width="48" height="48" />
 
         <div class="cms-time">
             {$chatMessageSeries.firstTimestampRelative}
@@ -185,7 +185,7 @@
  */
 {template .editProfile}
     <div id="edit-profile-image">
-        <img src="{$user.imageURL}" alt="" with="48" height="48" />
+        <img src="{$user.avatarURL}" alt="" with="48" height="48" />
         <br />
         <span>Upload photo</span>
     </div>

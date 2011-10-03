@@ -1,10 +1,10 @@
 package controllers;
 
-import java.io.File;
 import java.util.Date;
 import models.BuddyList;
 import models.Relationship;
 import models.User;
+import models.UserAvatar;
 import play.mvc.Http;
 
 public class Application extends BaseController {
@@ -94,11 +94,11 @@ public class Application extends BaseController {
         relationship = new Relationship(requireAuthenticatedUser(), user);
         relationship.save();
     }
-    
+
     public static void sendFeedback(String message) {
         Mails.userFeedback(message);
     }
-    
+
     public static void changeName(String name) {
         requireHttpMethod("POST");
 
@@ -115,7 +115,17 @@ public class Application extends BaseController {
         user.save();
     }
 
-    public static void uploadPhoto(String filename, File file) {
+    public static void uploadUserAvatar(String filename) {
         requireHttpMethod("POST");
+
+        User user = requireAuthenticatedUser();
+
+        UserAvatar avatar = new UserAvatar();
+        avatar.setInputStreamToCopy(filename, request.body);
+        avatar.user = user;
+        avatar.save();
+
+        user.avatarURL = avatar.getURL(UserAvatar.Variant.SMALL);
+        user.save();
     }
 }

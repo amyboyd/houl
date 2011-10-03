@@ -28,7 +28,7 @@ houl.EditProfile.prototype.render = function() {
     });
     goog.dom.appendChild(container, template);
 
-    goog.events.listenOnce(goog.dom.$$('span', null, goog.dom.$('edit-profile-image'))[0], goog.events.EventType.CLICK, uploadPhoto);
+    goog.events.listenOnce(goog.dom.$$('span', null, goog.dom.$('edit-profile-image'))[0], goog.events.EventType.CLICK, uploadAvatar);
     goog.events.listenOnce(goog.dom.$('edit-profile-name-icon'), goog.events.EventType.CLICK, changeName);
     goog.events.listenOnce(goog.dom.$('edit-profile-status-icon'), goog.events.EventType.CLICK, postStatusUpdate);
     goog.events.listenOnce(goog.dom.$('password-option'), goog.events.EventType.CLICK, changePassword);
@@ -45,7 +45,7 @@ houl.EditProfile.prototype.render = function() {
  */
 var MAX_FILE_SIZE = 3145728000;
 
-function uploadPhoto(evt) {
+function uploadAvatar(evt) {
     var container = /** @type {HTMLElement} */ (evt.currentTarget.parentNode);
     goog.dom.removeChildren(container);
 
@@ -62,33 +62,30 @@ function uploadPhoto(evt) {
     goog.dom.appendChild(container, submit);
     input.click();
 
-    goog.events.listen(submit, goog.events.EventType.CLICK, function() {
+    goog.events.listen(input, goog.events.EventType.CHANGE, doTheUpload);
+    goog.events.listen(submit, goog.events.EventType.CLICK, doTheUpload);
+    goog.events.listen(submit, goog.events.EventType.KEYPRESS, doTheUpload);
+
+    function doTheUpload() {
         if (input.files.length < 1) {
             return;
         }
 
         goog.dom.removeChildren(container);
 
-        new alienmegacorp.FileUpload(input.files[0], houl.getURL('upload-photo'),
-            /**
-             * Complete.
-             * @param {XMLHttpRequest} xhr
-             */
-            function(xhr) {
+        new alienmegacorp.FileUpload(input.files[0], houl.getURL('upload-user-avatar'),
+            // Complete.
+            function() {
                 houl.User.currentUser.update(function() {
                     var ep = new houl.EditProfile();
                     ep.render();
                 });
             },
-            /**
-             * Progress.
-             */
+            // Progress
             function(percent) {
                 goog.dom.setTextContent(container, 'Uploading... ' + percent + '%');
             },
-            /**
-             * Validator.
-             */
+            // Validator.
             function (file) {
                 // Limit file size.
                 var size = (typeof file.size !== 'undefined' ? file.size :
@@ -111,7 +108,7 @@ function uploadPhoto(evt) {
 
                 return true;
             });
-    });
+    }
 }
 
 /** @private */

@@ -30,7 +30,7 @@ houl.User.prototype.update = function(onComplete) {
 houl.User.prototype.setValuesFromJSON = function(json) {
     this.id = json['id'];
     this.name = json['name'];
-    this.imageURL = json['imageURL'];
+    this.avatarURL = json['avatarURL'];
     this.status = json['status'];
     this.pin = json['pin'];
     this.email = json['email'];
@@ -48,7 +48,7 @@ houl.User.prototype.id = null;
 houl.User.prototype.name = null;
 
 /** @type {string} Absolute URL to a 48x48-pixels image. */
-houl.User.prototype.imageURL = null;
+houl.User.prototype.avatarURL = null;
 
 /** @type {string} The user's status (like a Twitter user's last tweet). */
 houl.User.prototype.status = null;

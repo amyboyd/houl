@@ -61,7 +61,9 @@ public class User extends Model {
 
     public String pin;
 
-    public static final String NO_USER_IMAGE_URL = play.mvc.Router.reverse(play.Play.getVirtualFile("public/images/no-user-image-48.png"), true);
+    public String avatarURL;
+
+    public static final String NO_AVATAR_URL = play.mvc.Router.reverse(play.Play.getVirtualFile("public/images/no-user-image-48.png"), true);
 
     /**
      * Bcrypt'ed password. 60 characters long.
@@ -106,7 +108,7 @@ public class User extends Model {
         JsonObject obj = new JsonObject();
         obj.addProperty("id", id);
         obj.addProperty("name", name);
-        obj.addProperty("imageURL", getImageUrl());
+        obj.addProperty("avatarURL", getAvatarURL());
         obj.addProperty("status", status);
         obj.addProperty("pin", pin);
         obj.addProperty("email", email);
@@ -156,8 +158,8 @@ public class User extends Model {
         return name;
     }
 
-    public String getImageUrl() {
-        return User.NO_USER_IMAGE_URL;
+    public String getAvatarURL() {
+        return (avatarURL == null ? User.NO_AVATAR_URL : avatarURL);
     }
 
     @PrePersist

@@ -1,6 +1,7 @@
 syntax: regexp
 logs/*
 public/js/templates/compiled/*
+public/uploads/*
 syntax: glob
 tmp
 nbproject/
