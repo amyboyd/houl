@@ -1,14 +1,28 @@
 #unauth-body {
     margin: 0 auto;
     padding: 10px;
-    background: #fff;
-    border-left: 3px solid #19444D;
-    border-right: 3px solid #19444D;
+    color: #fff;
+    font-weight: bold;
 }
+#unauth-body #logo {
+    margin: 0 auto;
+    text-align: center;
+}
+#unauth-body h1 {
+    font-size: 23px;
+}
+#unauth-body form p {
+    margin: 10px 0;
+}
+
 #login-column-1, #login-column-2 {
-    width: 49%;
+    width: 47.5%;
     float: left;
 }
-#login-column-1 h1, #login-column-2 h1 {
-    margin-top: 0;
+#login-column-1 {
+    margin-right: 2%;
+    text-align: right;
+}
+#login-column-2 {
+    margin-left: 2%;
 }
