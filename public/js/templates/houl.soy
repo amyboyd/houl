@@ -10,7 +10,7 @@
         {/call}
     {ifempty}
         <div class="empty-buddy-list">
-            <p>To add a friend, click the icon in the bottom left corner.</p>
+            <p>To add a friend, click the "+" icon at the bottom of the page.</p>
             <p>Give friends and people you meet your PIN so they can add you.</p>
         </div>
     {/foreach}
@@ -187,7 +187,7 @@
     <div id="edit-profile-image">
         <img src="{$user.avatarURL}" alt="" with="48" height="48" />
         <br />
-        <span>Upload photo</span>
+        <span class="fake-link">Upload photo</span>
     </div>
 
     <div id="edit-profile-right">
@@ -201,6 +201,14 @@
             <em>Status:</em> {if $user.status} {$user.status} {else} none {/if}
             <img src="/_/a/1/images/edit.png" alt="Edit" width="16" height="16"
                  id="edit-profile-status-icon" />
+
+            // Post status on Twitter/Facebook
+            {if $user.status}
+                <br />
+                <span class="fake-link" id="post-on-twitter">Post on Twitter</span>
+                &nbsp;&nbsp;&nbsp;
+                <span class="fake-link" id="post-on-facebook">Post on Facebook</span>
+            {/if}
         </p>
     </div>
 
@@ -218,18 +226,18 @@
         {param description: 'Change your current password' /}
         {param htmlId: 'password-option' /}
     {/call}
-    {call .option}
-        {param img: '/_/a/1/images/options/facebook.png' /}
-        {param title: 'Link With Facebook' /}
-        {param description: 'Automatically post your status updates to Facebook' /}
-        {param htmlId: 'facebook-option' /}
-    {/call}
-    {call .option}
-        {param img: '/_/a/1/images/options/twitter.png' /}
-        {param title: 'Link With Twitter' /}
-        {param description: 'Automatically post your status updates to Twitter' /}
-        {param htmlId: 'twitter-option' /}
-    {/call}
+//    {call .option}
+//        {param img: '/_/a/1/images/options/facebook.png' /}
+//        {param title: 'Link With Facebook' /}
+//        {param description: 'Automatically post your status updates to Facebook' /}
+//        {param htmlId: 'facebook-option' /}
+//    {/call}
+//    {call .option}
+//        {param img: '/_/a/1/images/options/twitter.png' /}
+//        {param title: 'Link With Twitter' /}
+//        {param description: 'Automatically post your status updates to Twitter' /}
+//        {param htmlId: 'twitter-option' /}
+//    {/call}
 {/template}
 
 /**
@@ -323,6 +331,7 @@
     <p class="incoming-houl">
         {$houl.user} has sent you a houl.
         <br />
-        Do you want to <a href="#" class="accept-houl">start a chat</a>, or <a href="#" class="ignore-houl">ignore it</a>?
+        Do you want to <span class="fake-link accept-houl">start a chat</span>,
+        or <span class="fake-link ignore-houl">ignore it</span>?
     </p>
 {/template}

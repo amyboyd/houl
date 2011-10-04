@@ -310,11 +310,6 @@
     font-size: 13px;
     border: 1px dashed #aaa;
 }
-#edit-profile-image span {
-    cursor: pointer;
-    text-decoration: underline;
-    width: 53px;
-}
 #edit-profile-image:hover {
     background-color: #eef;
 }

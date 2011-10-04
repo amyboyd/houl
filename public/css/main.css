@@ -70,3 +70,11 @@ body {
     font-size: 13px;
 }
 
+.fake-link {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #2952A3;
+}
+.fake-link:hover {
+    color: #36C;
+}
