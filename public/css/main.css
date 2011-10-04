@@ -1,19 +1,17 @@
-html, body {
+html {
     padding: 0;
     margin: 0;
     height: 100%;
     width: 100%;
-}
-html {
-    background: #bada55;
+    background: #19444D url("@@{'/public/images/bg.jpg'}") top left repeat;
     font-family: "Droid Sans", Helvetica, Arial, Sans;
 }
 body {
-    background: #fff;
-    border-left: 3px solid #19444D;
-    border-right: 3px solid #19444D;
+    width: 100%;
     max-width: 600px;
+    height: 100%;
     margin: 0 auto;
+    padding: 0;
 }
 
 

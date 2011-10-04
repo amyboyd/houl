@@ -1,10 +1,10 @@
-#unauth-content {
+#unauth-body {
     margin: 0 auto;
     padding: 30px 10px 10px;
     background: #fff;
-    text-align: left;
+    border-left: 3px solid #19444D;
+    border-right: 3px solid #19444D;
 }
-
 #login-column-1, #login-column-2 {
     width: 49%;
     float: left;
