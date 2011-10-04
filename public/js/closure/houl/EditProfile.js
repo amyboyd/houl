@@ -32,8 +32,8 @@ houl.EditProfile.prototype.render = function() {
     goog.events.listenOnce(goog.dom.$('edit-profile-name-icon'), goog.events.EventType.CLICK, changeName);
     goog.events.listenOnce(goog.dom.$('edit-profile-status-icon'), goog.events.EventType.CLICK, postStatusUpdate);
     goog.events.listenOnce(goog.dom.$('password-option'), goog.events.EventType.CLICK, changePassword);
-//    goog.events.listenOnce(goog.dom.$('facebook-option'), goog.events.EventType.CLICK, linkFacebook);
-//    goog.events.listenOnce(goog.dom.$('twitter-option'), goog.events.EventType.CLICK, linkTwitter);
+    //    goog.events.listenOnce(goog.dom.$('facebook-option'), goog.events.EventType.CLICK, linkFacebook);
+    //    goog.events.listenOnce(goog.dom.$('twitter-option'), goog.events.EventType.CLICK, linkTwitter);
     goog.events.listenOnce(goog.dom.$('post-on-twitter'), goog.events.EventType.CLICK, postOnTwitter);
     goog.events.listenOnce(goog.dom.$('post-on-facebook'), goog.events.EventType.CLICK, postOnFacebook);
 
@@ -237,11 +237,15 @@ function changePassword(clickEvt) {
 //}
 
 /** @private */
-function postOnFacebook() {
-    window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(houl.User.currentUser.status), null, "width=440,height=255")
+function postOnFacebook(evt) {
+    // We can't preset the user's status in the textarea, because Facebook doesn't allow it sine July 2011
+    // (source: https://developers.facebook.com/docs/reference/dialogs/feed/ )
+    window.open('https://www.facebook.com/sharer/sharer.php', null, "width=440,height=255");
+    goog.dom.removeNode(evt.target);
 }
 
 /** @private */
-function postOnTwitter() {
+function postOnTwitter(evt) {
     window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(houl.User.currentUser.status), null, "width=440,height=255")
+    goog.dom.removeNode(evt.target);
 }
