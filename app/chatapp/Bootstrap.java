@@ -19,9 +19,6 @@ public class Bootstrap extends Job {
      */
     public static boolean isRunning = true;
 
-    /**
-     * Load fixtures, sync items and generate tag views.
-     */
     @Override
     public void doJob() {
         if (!Play.id.equals("dev") && !Play.id.equals("prod")) {
@@ -33,7 +30,7 @@ public class Bootstrap extends Job {
 
         isRunning = true;
 
-        if (User.count() == 0L) {
+        if (Play.mode.isDev() && User.count() == 0L) {
             Fixtures.deleteAllModels();
             Fixtures.loadModels("fixtures.yml");
             Logger.info("Fixtures loaded");
