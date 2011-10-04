@@ -358,9 +358,15 @@
 }
 
 
-/* Send houl page ***********************************/
+/* Houls ********************************************/
 
 #send-houl p {
     margin-left: 6px;
     margin-right: 6px;
+}
+p.incoming-houl {
+    padding: 10px;
+    margin: 5px 6px;
+    background-color: #FFFFBD;
+    font-size: 13px;
 }

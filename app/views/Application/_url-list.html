@@ -43,8 +43,12 @@ changePassword = changePassword.add('password', '?')
 changePassword.absolute()
 
 sendHoul = play.mvc.Router.reverse('Application.sendHoul')
-sendHoul= sendHoul.add('buddyId', '?')
+sendHoul = sendHoul.add('buddyId', '?')
 sendHoul.absolute()
+
+markHoulAsSeen = play.mvc.Router.reverse('Application.markHoulAsSeen')
+markHoulAsSeen = markHoulAsSeen.add('buddyId', '?')
+markHoulAsSeen.absolute()
 }%
 <div id="url-list"
      data-buddy-list="@@{Application.buddyListJson}"
@@ -62,5 +66,6 @@ sendHoul.absolute()
      data-post-status-update="${postStatusUpdate}"
      data-upload-user-avatar="@@{Application.uploadUserAvatar}"
      data-send-houl="${sendHoul}"
+     data-mark-houl-as-seen="${markHoulAsSeen}"
      data-emoticons-dir="${play.mvc.Router.reverse(play.Play.getVirtualFile('/public/images/emoticons'), true)}"
      ></div>

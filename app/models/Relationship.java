@@ -133,4 +133,12 @@ public class Relationship extends Model {
             user2HasBeenHouledAtByUser1 = true;
         }
     }
+
+    public void markHoulFromBuddyAsSeen(User buddy) {
+        if (buddy.equals(user1)) {
+            user2HasBeenHouledAtByUser1 = false;
+        } else if (buddy.equals(user2)) {
+            user1HasBeenHouledAtByUser2 = false;
+        }
+    }
 }

@@ -30,7 +30,7 @@ public class Application extends BaseController {
 
         final User user = requireAuthenticatedUser();
         final BuddyList buddyList = new BuddyList(user);
-        renderJSON(buddyList.toJsonArray().toString());
+        renderJSON(buddyList.toJsonObject().toString());
     }
 
     public static void currentUser() {
@@ -135,6 +135,15 @@ public class Application extends BaseController {
 
         Relationship relationship = Relationship.findByUsers(buddy, requireAuthenticatedUser());
         relationship.houlAtUser(buddy);
+        relationship.save();
+    }
+
+    public static void markHoulAsSeen(Long buddyId) {
+        User buddy = User.findById(buddyId);
+        notFoundIfNull(buddy);
+
+        Relationship relationship = Relationship.findByUsers(buddy, requireAuthenticatedUser());
+        relationship.markHoulFromBuddyAsSeen(buddy);
         relationship.save();
     }
 }

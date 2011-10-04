@@ -2,6 +2,7 @@ goog.provide('houl.BuddyList');
 
 goog.require('houl');
 goog.require('houl.Relationship');
+goog.require('houl.IncomingHoul');
 goog.require('houl.templates');
 goog.require('goog.async.Delay');
 goog.require('goog.dom');
@@ -65,7 +66,9 @@ houl.BuddyList.prototype.renderNotEmptyList = function() {
     for (var i = 0; i < this.relationships.length; i++) {
         this.relationships[i].render(this);
     }
-
+    for (var ii = 0; ii < this.incomingHouls.length; ii++) {
+        this.incomingHouls[ii].render(this);
+    }
     houl.setTopBarText('Online (' + this.totalOnline + '/' + this.totalCount + ')');
 }
 
@@ -75,13 +78,20 @@ houl.BuddyList.prototype.renderNotEmptyList = function() {
  * @private
  */
 houl.BuddyList.prototype.parseJson = function(json) {
-    for (var i = 0; i < json.length; i++) {
-        var relationship = new houl.Relationship(json[i]);
+    var relationships = json['relationships'];
+    for (var i = 0; i < relationships.length; i++) {
+        var relationship = new houl.Relationship(relationships[i]);
         this.relationships.push(relationship);
         this.totalCount++;
         if (relationship.isOpenChat) {
             this.totalOnline++;
         }
+    }
+
+    var incomingHouls = json['incomingHouls'];
+    for (var ii = 0; ii < incomingHouls.length; ii++) {
+        var incomingHoul = new houl.IncomingHoul(incomingHouls[ii]);
+        this.incomingHouls.push(incomingHoul);
     }
 }
 
@@ -142,6 +152,9 @@ houl.BuddyList.prototype.totalOnline = 0;
 
 /** @type {array<houl.Relationship>} */
 houl.BuddyList.prototype.relationships = [];
+
+/** @type {array<houl.IncomingHoul>} */
+houl.BuddyList.prototype.incomingHouls = [];
 
 /** @constant @private @type {number} */
 var AUTO_UPDATE_INTERVAL_IN_SECONDS = 5;

@@ -313,3 +313,16 @@
         {/foreach}
     </div>
 {/template}
+
+/**
+ * An incoming houl
+ *
+ * @param houl A "houl.IncomingHoul".
+ */
+{template .incomingHoul}
+    <p class="incoming-houl">
+        {$houl.user} has sent you a houl.
+        <br />
+        Do you want to <a href="#" class="accept-houl">start a chat</a>, or <a href="#" class="ignore-houl">ignore it</a>?
+    </p>
+{/template}
