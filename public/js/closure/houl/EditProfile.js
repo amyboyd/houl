@@ -92,7 +92,7 @@ function uploadAvatar(evt) {
                     (typeof file.fileSize !== 'undefined' ? file.fileSize :
                         undefined));
                 if (size > MAX_FILE_SIZE) {
-                    setFeedbackText('The maximum file size that can be uploaded is '
+                    alert('The maximum file size that can be uploaded is '
                         + goog.format.fileSize(MAX_FILE_SIZE, 1) + '. Your file is '
                         + goog.format.fileSize(file.size, 1) + '.');
                     input.value = null;
@@ -101,7 +101,7 @@ function uploadAvatar(evt) {
 
                 // Only allow images.
                 if (file.type.indexOf('image/') !== 0) {
-                    setFeedbackText('The file must be a JPEG image');
+                    alert('The file must be a JPEG image');
                     input.value = null;
                     return false;
                 }
