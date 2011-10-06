@@ -99,12 +99,12 @@ public class ChatRoom {
 
         public Message(long userId, String text) {
             super("message", userId);
-            this.text = text;
+            this.text = text.trim();
         }
 
         public Message(long userId, String text, long timestamp) {
             super("message", userId, timestamp);
-            this.text = text;
+            this.text = text.trim();
         }
 
         @Override
