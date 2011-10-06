@@ -31,13 +31,14 @@ public class Relationship extends Model {
 
     public Date requestedAt;
 
-    @MaxSize(255)
+    @Lob
     public String requestMessage;
 
     public Date acceptedAt;
 
     public Date lastChatAt;
 
+    @Lob
     public String lastChatMessage;
 
     @Lob
