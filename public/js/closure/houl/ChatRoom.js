@@ -130,6 +130,12 @@ houl.ChatRoom.prototype.setupNewMessageForm = function() {
     goog.events.listen(field, goog.events.EventType.KEYPRESS, onKeyPress);
     goog.events.listen(submit, goog.events.EventType.KEYPRESS, onKeyPress);
     goog.events.listen(submit, goog.events.EventType.CLICK, onClick);
+
+    // When the emoticon icon is clicked, open the emoticon chooser.
+    var emoticonChooser = goog.dom.$$(null, 'chat-room-new-message-emoticon', this.element)[0];
+    goog.events.listen(emoticonChooser, goog.events.EventType.CLICK, function() {
+        houl.Emoticons.renderChooser();
+    });
 }
 
 /**

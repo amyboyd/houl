@@ -4,6 +4,7 @@
     background: #fff;
     border-left: 3px solid #19444D;
     border-right: 3px solid #19444D;
+    position: relative; /* so emoticons choose can be absolutely positioned */
 }
 
 
@@ -232,18 +233,36 @@
     position: relative;
     top: 3px;
 }
+/* New message form */
 .chat-room-new-message {
     margin-top: 5px;
+    width: 100%;
+}
+.chat-room-new-message td {
+    padding: 0 0 0 5px;
+}
+.chat-room-new-message td:first-child {
+    width: 100%;
 }
 .chat-room-new-message-field {
-    float: left;
-    width: 74%;
-    margin-left: 6px;
+    width: 98.5%;
     line-height: 21px;
 }
-.chat-room-new-message-send {
-    float: right;
-    margin-right: 6px;
+.chat-room-new-message-send,
+.chat-room-new-message-emoticon {
+}
+
+#emoticon-chooser {
+    position: absolute;
+    right: 3%;
+    bottom: 3%;
+    border: 2px solid #000;
+    background: #eef;
+    width: 60px;
+    padding: 5px;
+}
+#emoticon-chooser img {
+    cursor: pointer;
 }
 
 

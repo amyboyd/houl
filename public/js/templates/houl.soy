@@ -119,10 +119,52 @@
         {/foreach}
     </div>
 
-    <div class="chat-room-new-message">
-        <input type="text" class="chat-room-new-message-field" autocomplete="off">
-        <input type="submit" value="send" class="chat-room-new-message-send button-green">
-    </div>
+    <table class="chat-room-new-message">
+        <tbody>
+            <tr>
+                <td>
+                    <input type="text" class="chat-room-new-message-field" autocomplete="off" />
+                </td>
+                <td>
+                    <button class="chat-room-new-message-send button-green">Send</button>
+                </td>
+                <td>
+                    <button class="chat-room-new-message-emoticon button-green">
+                        <img src="/_/a/1/images/emoticons/1.png" alt="" title="Add an emoticon" width="14" height="14" />
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{/template}
+
+/**
+ * @param emoticons
+ */
+{template .emoticonChooser}
+    <table id="emoticon-chooser">
+        <tbody>
+            {foreach $text in keys($emoticons)}
+                {call .emoticonChooserEmoticon}
+                    {param text: $text /}
+                    {param imageNumber: $emoticons[$text] /}
+                {/call}
+            {/foreach}
+        </tbody>
+    </table>
+{/template}
+
+/**
+ * @param text For example ':)'
+ * @param imageNumber 1-7
+ */
+{template .emoticonChooserEmoticon private="true"}
+    <tr>
+        <td>{$text}</td>
+        <td><img src="/_/a/1/images/emoticons/{$imageNumber}.png" width="16" height="16"
+                 // Alt text needed by JS
+                 alt="{$text}" /></td>
+    </tr>
 {/template}
 
 /**
