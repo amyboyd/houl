@@ -194,7 +194,6 @@
 .relationship .relationship-message .quote {
     font-size: 19px;
     position: absolute;
-    font-weight: bold;
 }
 .relationship.request-type .relationship-message .quote {
     color: #bb7ad5;
@@ -206,12 +205,12 @@
     color: #666;
 }
 .relationship .relationship-message .quote:nth-child(1) {
-    top: 2px;
-    left: 1px;
+    top: 1px;
+    left: 0px;
 }
 .relationship .relationship-message .quote:last-child {
-    bottom: -5px;
-    right: 5px;
+    bottom: -2px;
+    right: 7px;
 }
 
 /* Request buttons (accept/reject) */

@@ -19,7 +19,7 @@ public class Mails extends Mailer {
      * @param user The new user.
      */
     public static void welcome(final User user) {
-        setSubject("Thanks for joining %s. There is an important link inside.", SITE_NAME);
+        setSubject("Welcome to %s", SITE_NAME);
         addRecipient(formatAddress(user));
         setFrom(EMAIL_ADDRESS);
         setReplyTo(EMAIL_ADDRESS);

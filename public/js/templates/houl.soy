@@ -88,10 +88,10 @@
 {template .relationshipMessage}
     {if $text}
         <div class="relationship-message">
-            <span class="quote">&OpenCurlyDoubleQuote;</span>
+            <span class="quote">&ldquo;</span>
             {if $prependHTML} {$prependHTML|noAutoescape} {/if}
             {$text |escapeHtml}
-            <span class="quote">&CloseCurlyDoubleQuote;</span>
+            <span class="quote">&ldquo;</span>
         </div>
     {/if}
 {/template}
