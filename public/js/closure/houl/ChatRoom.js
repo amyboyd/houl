@@ -200,7 +200,7 @@ houl.ChatRoom.prototype.waitForMessages = function() {
             thisChatRoom.lastReceivedEventId = json['lastId'];
             thisChatRoom.scrollToBottom();
             thisChatRoom.waitForMessages();
-        });
+        }, {}, 0);
 }
 
 houl.ChatRoom.prototype.scrollToBottom = function() {
