@@ -11,13 +11,20 @@ goog.require("goog.string");
 goog.require("goog.soy");
 
 houl.BottomButtons.setup = function() {
-    common('bottom-buttons-home', home);
-    common('bottom-buttons-add-buddy', addBuddy);
+    common('bottom-buttons-friends', friends);
+//    common('bottom-buttons-add-buddy', addBuddy);
+    common('bottom-buttons-chat', friends); // @todo
     common('bottom-buttons-houl', sendHoul);
-    common('bottom-buttons-options', options);
+    common('bottom-buttons-profile', friends); // @todo
+    common('bottom-buttons-more', more);
 
     function common(htmlId, callback) {
-        goog.events.listen(goog.dom.$(htmlId), goog.events.EventType.CLICK,
+        var el = goog.dom.$(htmlId);
+        if (el == null) {
+            throw 'Element doesn\'t exist: ' + htmlId;
+        }
+
+        goog.events.listen(el, goog.events.EventType.CLICK,
             /** @param {goog.events.BrowserEvent} */
             function(evt) {
                 evt.preventDefault();
@@ -27,7 +34,7 @@ houl.BottomButtons.setup = function() {
 }
 
 /** @private */
-function home() {
+function friends() {
     houl.getAndActivatePageContainer('index-page');
     houl.globalBuddyList.setAutoUpdating(true);
     houl.globalBuddyList.update();
@@ -96,6 +103,6 @@ function setupSendHoulButton(button) {
 }
 
 /** @private */
-function options() {
+function more() {
     new houl.Options().render();
 }

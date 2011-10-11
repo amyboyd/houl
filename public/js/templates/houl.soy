@@ -23,61 +23,54 @@
     <div id="relationship-with-user-{$relationship.otherUser.id}" class="relationship {if $relationship.isRequest} request-type {elseif $relationship.isOpenChat} open-chat-type {else} other-type {/if}">
         <img src="{$relationship.otherUser.avatarURL}" alt="" width="48" height="48" />
 
-        {if $relationship.isRequest}
-            {call .relationshipTypeAndTime}
-                {param type: 'request' /}
-                {param time: $relationship.requestedAt /}
-            {/call}
-        {elseif $relationship.isOpenChat}
-            {call .relationshipTypeAndTime}
-                {param type: 'message' /}
-                {param time: $relationship.lastChatAt/}
-            {/call}
-        {elseif $relationship.lastChatAt != null}
-            {call .relationshipTypeAndTime}
-                {param type: 'message' /}
-                {param time: $relationship.lastChatAt /}
-            {/call}
-        {else}
-            {call .relationshipTypeAndTime}
-                {param type: 'added' /}
-                {param time: $relationship.acceptedAt /}
-            {/call}
-        {/if}
+        <div class="relationship-type-bar">&nbsp;</div>
 
-        // Name and link to room
-        <h2 class="relationship-name" role="link">{$relationship.otherUser.name}</h2>
+        <div class="relationship-center">
+            {if $relationship.isRequest}
+                {call .relationshipTime}
+                    {param time: $relationship.requestedAt /}
+                {/call}
+            {elseif $relationship.isOpenChat}
+                {call .relationshipTime}
+                    {param time: $relationship.lastChatAt/}
+                {/call}
+            {elseif $relationship.lastChatAt != null}
+                {call .relationshipTime}
+                    {param time: $relationship.lastChatAt /}
+                {/call}
+            {/if}
 
-        <div style="clear: right;"></div>
+            // Name and link to room
+            <h2 class="relationship-name" role="link">{$relationship.otherUser.name}</h2>
 
-        {if $relationship.isRequest}
-            {call .relationshipMessage}
-                {param text: $relationship.requestMessage /}
-            {/call}
-        {elseif $relationship.lastChatMessage}
-            {call .relationshipMessage}
-                {param text: $relationship.lastChatMessage /}
-            {/call}
-        {elseif $relationship.otherUser.status}
-            {call .relationshipMessage}
-                {param prependHTML: '<em>Status:</em> ' /}
-                {param text: $relationship.otherUser.status /}
-            {/call}
-        {/if}
+            {if $relationship.isRequest}
+                {call .relationshipMessage}
+                    {param prependHTML: '<em>Request:</em> ' /}
+                    {param text: $relationship.requestMessage /}
+                {/call}
+            {elseif $relationship.lastChatMessage}
+                {call .relationshipMessage}
+                    {param text: $relationship.lastChatMessage /}
+                {/call}
+            {elseif $relationship.otherUser.status}
+                {call .relationshipMessage}
+                    {param prependHTML: '<em>Status:</em> ' /}
+                    {param text: $relationship.otherUser.status /}
+                {/call}
+            {/if}
+        </div>
+        <div style="clear: both;"></div>
     </div>
 {/template}
 
 /**
- * @param type
  * @param time
  * @private
  */
-{template .relationshipTypeAndTime}
-    <div class="relationship-type-and-time">
-        <strong>{$type}</strong>
-        <br />
-        {if $time} {$time} {else} just now {/if}
-    </div>
+{template .relationshipTime}
+    {if $time}
+        <div class="relationship-time">{$time}</div>
+    {/if}
 {/template}
 
 /**
@@ -88,10 +81,8 @@
 {template .relationshipMessage}
     {if $text}
         <div class="relationship-message">
-            <span class="quote">&ldquo;</span>
-            {if $prependHTML} {$prependHTML|noAutoescape} {/if}
+            {if $prependHTML} {$prependHTML |noAutoescape} {/if}
             {$text |escapeHtml}
-            <span class="quote">&ldquo;</span>
         </div>
     {/if}
 {/template}
@@ -355,11 +346,11 @@
             <div class="relationship">
                 <img src="{$relationship.otherUser.avatarURL}" alt="" width="48" height="48" />
                 <h2 class="relationship-name">{$relationship.otherUser.name}</h2>
-                <br />
                 <button class="send-houl-button" data-buddy-id="{$relationship.otherUser.id}">
                     Houl at {$relationship.otherUser.name}
                 </button>
             </div>
+            <div style="clear:both;"></div>
         {/foreach}
     </div>
 {/template}

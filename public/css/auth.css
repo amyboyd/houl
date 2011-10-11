@@ -2,8 +2,6 @@
     height: 100%;
     margin: 0 auto;
     background: #fff;
-    border-left: 3px solid #19444D;
-    border-right: 3px solid #19444D;
     position: relative; /* so emoticons choose can be absolutely positioned */
 }
 
@@ -48,169 +46,172 @@
 
 /* Bottom buttons **********************************/
 #bottom-buttons {
-    height: 47px;
-}
-#bottom-buttons div {
-    cursor: pointer;
-    width: 25%;
-    height: 100%;
-    float: left;
-    text-decoration: none;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-color: #19444D;
-}
-#bottom-buttons-home {
-    %{
-    fancyDeboss = play.getFile('/public/images/home.png');
-    base64 = play.libs.Images.toBase64(fancyDeboss)
-    }%
-    background-image: url('${base64}');
-}
-#bottom-buttons-add-buddy {
-    %{
-    fancyDeboss = play.getFile('/public/images/add-buddy.png');
-    base64 = play.libs.Images.toBase64(fancyDeboss)
-    }%
-    background-image: url('${base64}');
-}
-#bottom-buttons-houl {
-    %{
-    fancyDeboss = play.getFile('/public/images/houl.png');
-    base64 = play.libs.Images.toBase64(fancyDeboss)
-    }%
-    background-image: url('${base64}');
-}
-#bottom-buttons-options {
-    %{
-    fancyDeboss = play.getFile('/public/images/options.png');
-    base64 = play.libs.Images.toBase64(fancyDeboss)
-    }%
-    background-image: url('${base64}');
-}
-
-
-/* Common styles between buddy list and chat room ***/
-
-.relationship,
-.cms {
-    padding: 0 7px 7px;
-    margin: 7px 0 0;
-    min-height: 58px;
-/*    %{
-    fancyDeboss = play.getFile('/public/images/buddy-bg.png');
-    base64 = play.libs.Images.toBase64(fancyDeboss)
-    }%
+    height: 76px;
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons/bg.png')) }%
     background-image: url('${base64}');
     background-position: bottom left;
-    background-repeat: repeat-x;*/
+    background-repeat: repeat-x;
 }
-
-.relationship img,
-.cms .cms-user-image {
+#bottom-buttons div {
+    margin: 5px 3px;
+    cursor: pointer;
+    height: 66px;
     float: left;
-    margin: 0 10px 0 0;
-}
-
-/* Name */
-.relationship-name,
-.cms-name {
-    margin: 0;
-    padding: 0;
-    font-size: 19px;
-    font-weight: normal;
-    display: inline;
     text-decoration: none;
-    color: inherit;
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons/sprite.png')) }%
+    background-image: url('${base64}');
+    background-repeat: no-repeat;
+}
+#bottom-buttons-friends {
+    width: 89px;
+    background-position: 0 -66px;
+}
+#bottom-buttons-friends:hover,
+#bottom-buttons-friends.current {
+    background-position: 0 0;
+}
+/*#bottom-buttons-add-buddy {
+    width: 88px;
+    background-position: -97px -66px;
+}
+#bottom-buttons-add-buddy:hover,
+#bottom-buttons-add-buddy.current {
+    background-position: -97px 0;
+}*/
+#bottom-buttons-chat {
+    width: 88px;
+    background-position: -97px -66px;
+}
+#bottom-buttons-chat:hover,
+#bottom-buttons-chat.current {
+    background-position: -97px 0;
+}
+#bottom-buttons-houl {
+    width: 80px;
+    background-position: -192px -66px;
+}
+#bottom-buttons-houl:hover,
+#bottom-buttons-houl.current {
+    background-position: -192px 0;
+}
+#bottom-buttons-profile {
+    width: 77px;
+    background-position: -280px -66px;
+}
+#bottom-buttons-profile:hover,
+#bottom-buttons-profile.current {
+    background-position: -280px 0;
+}
+#bottom-buttons-more {
+    width: 70px;
+    background-position: -366px -66px;
+}
+#bottom-buttons-more:hover,
+#bottom-buttons-more.current {
+    background-position: -366px 0;
 }
 
-/* Time */
-.relationship-type-and-time,
-.cms-time {
-    float: right;
-    text-align: right;
-    color: #666;
-    font-style: italic;
-    font-size: 12px;
-    line-height: 16px;
-}
 
-/* Message */
-.relationship-message,
-.cms-message {
-    margin: 2px 0 0 60px;
+/* Common between buddy list and chat rooms ******************************************/
+
+.cms-message,
+.relationship-message {
+    color: #121212;
     font-size: 12px;
-    line-height: 15px;
-    color: #000;
-    border-color: #bdbdbd;
+    line-height: 17px;
+    border-color: #d8d8d8;
     border-width: 2px 0;
     border-style: solid;
-    background-color: #e6e6e6;
+    background-color: #eeeeee;
+    margin-top: 2px;
+    padding: 3px 4px;
 }
 
 
-/* Buddy list ***********************************/
+/* Buddy list / relationship *********************************************************/
 
 .empty-buddy-list p {
     padding-left: 2em;
     padding-right: 2em;
 }
 
+.relationship {
+    height: 100px;
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/friend-bg.png')) }%
+    background-image: url('${base64}');
+    background-position: bottom left;
+    background-repeat: repeat-x;
+}
+
+.relationship img {
+    float: left;
+    margin: 10px 10px 8px 14px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.relationship-center {
+    margin: 0 34px 0 72px;
+}
+
 /* Name */
+.relationship-name {
+    color: #000;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 22px;
+    margin: 0;
+    padding: 10px 0 5px;
+}
 .relationship-name:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
-/* Type (request, last message, etc.) */
-.relationship.request-type .relationship-type-and-time strong {
-    color: #bb7ad5;
-}
-.relationship.open-chat-type .relationship-type-and-time strong {
-    color: #3f83e4;
+/* Time */
+.relationship-time {
+    color: #353535;
+    font-size: 12px;
+    line-height: 12px;
+    font-style: italic;
+    text-align: right;
+    float: right;
+    padding-top: 15px;
 }
 
 /* Message/status */
-.relationship-message {
-    padding: 2px 13px;
-    font-style: italic;
-    position: relative;
-}
 .relationship-message em {
     font-weight: bold;
     font-style: normal;
 }
 .relationship.request-type .relationship-message {
-    background-color: #e4d7e9;
-    border-top-color: #bb7ad5;
-    border-bottom-color: #d0acde;
+    background-color: #e4ecde;
+    border-color: #c0e8a3;
 }
 .relationship.open-chat-type .relationship-message {
-    background-color: #dae4ef;
-    border-color: #3F83E4;
+    background-color: #e8edf4;
+    border-color: #a8c7ea;
 }
 
-/* Quote marks */
-.relationship .relationship-message .quote {
-    font-size: 19px;
-    position: absolute;
+/* Type bar on the right */
+.relationship-type-bar {
+    float: right;
+    height: 100px;
+    width: 26px;
 }
-.relationship.request-type .relationship-message .quote {
-    color: #bb7ad5;
+.relationship.request-type .relationship-type-bar {
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/relationship-type-request.png')) }%
+    background-image: url('${base64}');
 }
-.relationship.open-chat-type .relationship-message .quote {
-    color: #3f83e4;
+.relationship.open-chat-type .relationship-type-bar {
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/relationship-type-open-chat.png')) }%
+    background-image: url('${base64}');
 }
-.relationship.other-type .relationship-message .quote {
-    color: #666;
-}
-.relationship .relationship-message .quote:nth-child(1) {
-    top: 1px;
-    left: 0px;
-}
-.relationship .relationship-message .quote:last-child {
-    bottom: -2px;
-    right: 7px;
+.relationship.other-type .relationship-type-bar {
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/relationship-type-other.png')) }%
+    background-image: url('${base64}');
 }
 
 /* Request buttons (accept/reject) */
@@ -222,16 +223,47 @@
 }
 
 
-/* Chat room ***********************************/
-.cms-message {
-    padding: 2px 7px;
-    margin-top: 6px;
+/* Chat room **************************************************************************/
+
+/* Messages */
+.cms-message-list {
+    margin-left: 59px;
 }
-/* Emoticons */
-.cms-message img {
-    position: relative;
-    top: 3px;
+.cms {
+    padding: 0 7px 7px;
+    margin: 7px 0 0;
+    min-height: 58px;
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/friend-bg.png')) }%
+    background-image: url('${base64}');
+    background-position: bottom left;
+    background-repeat: repeat-x;
 }
+.cms-user-image {
+    float: left;
+    margin: 0 10px 0 0;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.cms-name {
+    color: #000;
+    font-size: 22px;
+    font-weight: normal;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+.cms-time {
+    color: #353535;
+    font-size: 12px;
+    font-style: italic;
+    text-align: right;
+    line-height: 12px;
+    float: right;
+    padding-top: 14px;
+}
+
 /* New message form */
 .chat-room-new-message {
     margin-top: 5px;
@@ -251,6 +283,11 @@
 .chat-room-new-message-emoticon {
 }
 
+/* Emoticons */
+.cms-message img {
+    position: relative;
+    top: 3px;
+}
 #emoticon-chooser {
     position: absolute;
     right: 3%;
@@ -369,8 +406,15 @@
 /* Houls ********************************************/
 
 #send-houl p {
-    margin-left: 6px;
-    margin-right: 6px;
+    margin: 0.7em 14px;
+}
+#send-houl .relationship {
+    height: auto !important;
+    padding-bottom: 9px !important;
+}
+#send-houl .relationship-name:hover {
+    cursor: default !important;
+    text-decoration: none !important;
 }
 p.incoming-houl {
     padding: 10px;

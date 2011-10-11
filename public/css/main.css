@@ -4,7 +4,7 @@ html {
     height: 100%;
     width: 100%;
     background: #19444D url("@@{'/public/images/bg.jpg'}") top left repeat;
-    font-family: "Droid Sans", Helvetica, Arial, Sans;
+    font-family: "Segoe UI", "Droid Sans", Helvetica, Arial, Sans;
 }
 body {
     width: 100%;
