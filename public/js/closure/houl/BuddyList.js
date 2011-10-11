@@ -58,7 +58,7 @@ houl.BuddyList.prototype.renderEmptyList = function() {
     });
     goog.dom.appendChild(this.element, template);
 
-    houl.setTopBarText('Houl');
+    houl.setTopBarLeftText('Houl');
 }
 
 /** @private */
@@ -69,7 +69,8 @@ houl.BuddyList.prototype.renderNotEmptyList = function() {
     for (var ii = 0; ii < this.incomingHouls.length; ii++) {
         this.incomingHouls[ii].render(this);
     }
-    houl.setTopBarText('Online (' + this.totalOnline + '/' + this.totalCount + ')');
+    houl.setTopBarLeftText('Online (' + this.totalOnline + '/' + this.totalCount + ')');
+    houl.setTopBarRightText('PIN: ' + houl.User.currentUser.pin);
 }
 
 /**

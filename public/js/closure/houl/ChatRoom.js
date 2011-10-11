@@ -61,7 +61,7 @@ houl.ChatRoom.prototype.render = function() {
         goog.dom.appendChild(thisChatRoom.element, template);
 
         houl.globalBuddyList.setAutoUpdating(false);
-        houl.setTopBarText(thisChatRoom.otherUser.name);
+        houl.setTopBarLeftText(thisChatRoom.otherUser.name);
         thisChatRoom.setupNewMessageForm();
         thisChatRoom.waitForMessages();
     }

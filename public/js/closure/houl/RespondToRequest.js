@@ -18,18 +18,20 @@ houl.RespondToRequest = function(relationship) {
 }
 
 houl.RespondToRequest.prototype.render = function() {
+    var centerEl = goog.dom.$$(null, 'relationship-center', this.relationship.element)[0];
+
     // Disable the buddy list from auto-updating so the buttons don't disappear.
     houl.globalBuddyList.setAutoUpdating(false);
 
     // Remove the request message.
-    var messageEl = goog.dom.$$('div', 'relationship-message', this.relationship.element)[0];
+    var messageEl = goog.dom.$$(null, 'relationship-message', centerEl)[0];
     goog.dom.removeNode(messageEl);
 
     // Show site's question ('do you want to accept?') and accept/reject buttons.
     this.element =  goog.soy.renderAsElement(houl.templates.request, {
         requester: this.relationship.otherUser
     });
-    goog.dom.appendChild(this.relationship.element, this.element);
+    goog.dom.appendChild(centerEl, this.element);
 
     this.acceptButton = goog.dom.$$('button', 'button-green', this.element)[0];
     this.rejectButton = goog.dom.$$('button', 'button-grey', this.element)[0];

@@ -187,16 +187,8 @@
 
 /**
  * The options page.
- *
- * @param user
  */
 {template .options}
-    {call .option}
-        {param img: '/_/a/1/images/options/profile.png' /}
-        {param title: 'Profile' /}
-        {param description: 'Your PIN is ' + $user.pin /}
-        {param htmlId: 'profile-option' /}
-    {/call}
     {call .option}
         {param img: '/_/a/1/images/options/feedback.png' /}
         {param title: 'Feedback' /}

@@ -28,16 +28,10 @@ houl.Options.prototype.render = function() {
     });
     goog.dom.appendChild(container, template);
 
-    goog.events.listenOnce(goog.dom.$('profile-option'), goog.events.EventType.CLICK, editProfile);
     goog.events.listenOnce(goog.dom.$('feedback-option'), goog.events.EventType.CLICK, feedback);
     goog.events.listenOnce(goog.dom.$('logout-option'), goog.events.EventType.CLICK, logout);
 
-    houl.setTopBarText('Options');
-}
-
-/** @private */
-function editProfile() {
-    new houl.EditProfile().render();
+    houl.setTopBarLeftText('More Options');
 }
 
 /** @private */

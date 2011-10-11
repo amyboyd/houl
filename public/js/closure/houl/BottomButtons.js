@@ -13,9 +13,9 @@ goog.require("goog.soy");
 houl.BottomButtons.setup = function() {
     common('bottom-buttons-friends', friends);
 //    common('bottom-buttons-add-buddy', addBuddy);
-    common('bottom-buttons-chat', friends); // @todo
+    common('bottom-buttons-chat', chat);
     common('bottom-buttons-houl', sendHoul);
-    common('bottom-buttons-profile', friends); // @todo
+    common('bottom-buttons-profile', editProfile);
     common('bottom-buttons-more', more);
 
     function common(htmlId, callback) {
@@ -100,6 +100,16 @@ function setupSendHoulButton(button) {
             });
             goog.net.XhrIo.send(url);
         });
+}
+
+/** @private */
+function chat() {
+    // @todo
+}
+
+/** @private */
+function editProfile() {
+    new houl.EditProfile().render();
 }
 
 /** @private */

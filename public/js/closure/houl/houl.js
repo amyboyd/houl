@@ -9,8 +9,12 @@ goog.require('goog.string');
  */
 houl.globalBuddyList = null;
 
-houl.setTopBarText = function(text) {
-    goog.dom.$$('h1', null, goog.dom.$('top-bar'))[0].innerHTML = text;
+houl.setTopBarLeftText = function(text) {
+    goog.dom.$$('h1', 'left', goog.dom.$('top-bar'))[0].innerHTML = text;
+}
+
+houl.setTopBarRightText = function(text) {
+    goog.dom.$$('h1', 'right', goog.dom.$('top-bar'))[0].innerHTML = text;
 }
 
 

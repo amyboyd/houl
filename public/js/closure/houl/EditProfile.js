@@ -37,7 +37,7 @@ houl.EditProfile.prototype.render = function() {
     goog.events.listenOnce(goog.dom.$('post-on-twitter'), goog.events.EventType.CLICK, postOnTwitter);
     goog.events.listenOnce(goog.dom.$('post-on-facebook'), goog.events.EventType.CLICK, postOnFacebook);
 
-    houl.setTopBarText('Profile');
+    houl.setTopBarLeftText('Profile');
 }
 
 /**
