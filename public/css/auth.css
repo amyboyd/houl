@@ -1,6 +1,6 @@
 #auth-body {
     height: 100%;
-    margin: 0 auto;
+    margin: 0 auto 76px;
     background: #fff;
     position: relative; /* so emoticons choose can be absolutely positioned */
 }
@@ -53,7 +53,11 @@
 
 /* Bottom buttons **********************************/
 #bottom-buttons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     height: 76px;
+    width: 100%;
     %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons/bg.png')) }%
     background-image: url('${base64}');
     background-position: bottom left;
