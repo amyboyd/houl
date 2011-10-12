@@ -143,7 +143,6 @@ houl.ChatRoom.prototype.setupNewMessageForm = function() {
 
 /**
  * @private
- * @todo - web socket
  */
 houl.ChatRoom.prototype.say = function(message) {
     if (goog.string.isEmptySafe(message)) {

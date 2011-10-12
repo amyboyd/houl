@@ -32,8 +32,6 @@ houl.EditProfile.prototype.render = function() {
     goog.events.listenOnce(goog.dom.$('edit-profile-name-icon'), goog.events.EventType.CLICK, changeName);
     goog.events.listenOnce(goog.dom.$('edit-profile-status-icon'), goog.events.EventType.CLICK, postStatusUpdate);
     goog.events.listenOnce(goog.dom.$('password-option'), goog.events.EventType.CLICK, changePassword);
-    //    goog.events.listenOnce(goog.dom.$('facebook-option'), goog.events.EventType.CLICK, linkFacebook);
-    //    goog.events.listenOnce(goog.dom.$('twitter-option'), goog.events.EventType.CLICK, linkTwitter);
     goog.events.listenOnce(goog.dom.$('post-on-twitter'), goog.events.EventType.CLICK, postOnTwitter);
     goog.events.listenOnce(goog.dom.$('post-on-facebook'), goog.events.EventType.CLICK, postOnFacebook);
 
@@ -225,16 +223,6 @@ function changePassword(clickEvt) {
                 }, 'POST');
         });
 }
-
-///** @private */
-//function linkFacebook() {
-//    // @todo
-//}
-//
-///** @private */
-//function linkTwitter() {
-//    // @todo
-//}
 
 /** @private */
 function postOnFacebook(evt) {
