@@ -13,10 +13,11 @@ goog.require('goog.events.KeyCodes');
 goog.require('goog.net.XhrIo');
 goog.require('goog.soy');
 goog.require('goog.string');
+goog.require('goog.style');
 goog.require('goog.userAgent');
 
 /**
- * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
+ * JSON comes from 'models.ChatRoom.toJsonObject()' in Java.
  *
  * @constructor
  * @param {houl.User} otherUser
@@ -44,7 +45,7 @@ houl.ChatRoom.lastOpenUserID = null;
 
 /**
  * Parse the room's JSON.
- * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
+ * JSON comes from 'models.ChatRoom.toJsonObject()' in Java.
  *
  * @private
  */
@@ -116,6 +117,7 @@ houl.ChatRoom.prototype.setupNewMessageForm = function() {
     function resetField() {
         field.focus();
         goog.dom.forms.setValue(field, null);
+        hideBottomButtons();
     }
 
     /** @param {goog.events.BrowserEvent} evt */
@@ -136,10 +138,27 @@ houl.ChatRoom.prototype.setupNewMessageForm = function() {
         }
     }
 
+    function hideBottomButtons() {
+        goog.style.showElement(goog.dom.$('bottom-buttons'), false);
+        goog.dom.$('content').style.bottom = 0;
+    }
+
+    function showBottomButtons() {
+        goog.style.showElement(goog.dom.$('bottom-buttons'), true);
+        goog.dom.$('content').style.bottom = '76px';
+        thisChatRoom.scrollToBottom();
+    }
+
     resetField();
     goog.events.listen(field, goog.events.EventType.KEYPRESS, onKeyPress);
     goog.events.listen(submit, goog.events.EventType.KEYPRESS, onKeyPress);
     goog.events.listen(submit, goog.events.EventType.CLICK, onClick);
+
+    // On mobile we hide the bottom buttons so the keyboard is sure to be seen.
+    if (goog.userAgent.MOBILE) {
+        goog.events.listen(field, goog.events.EventType.FOCUS, hideBottomButtons);
+        goog.events.listen(field, goog.events.EventType.BLUR, showBottomButtons);
+    }
 
     // When the emoticon icon is clicked, open the emoticon chooser.
     var emoticonChooser = goog.dom.$$(null, 'chat-room-new-message-emoticon', this.element)[0];
