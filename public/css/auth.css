@@ -4,7 +4,8 @@
     top: 0;
     height: 34px;
     width: 100%;
-    background-image: url("@@{'/public/images/sprite.jpg'}");
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/top-bar-bg.png')) }%
+    background-image: url('${base64}');
     background-position: 0 0;
     background-repeat: repeat-x;
 }
