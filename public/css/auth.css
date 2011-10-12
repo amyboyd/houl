@@ -62,8 +62,9 @@
     background-repeat: repeat-x;
 }
 #bottom-buttons div {
-    margin: 5px 3px;
+    margin: 5px 0 5px 3px;
     cursor: pointer;
+    width: 71px;
     height: 66px;
     float: left;
     text-decoration: none;
@@ -72,7 +73,6 @@
     background-repeat: no-repeat;
 }
 #bottom-buttons-friends {
-    width: 89px;
     background-position: 0 -66px;
 }
 #bottom-buttons-friends:hover,
@@ -80,7 +80,6 @@
     background-position: 0 0;
 }
 /*#bottom-buttons-add-buddy {
-    width: 88px;
     background-position: -97px -66px;
 }
 #bottom-buttons-add-buddy:hover,
@@ -88,36 +87,32 @@
     background-position: -97px 0;
 }*/
 #bottom-buttons-chat {
-    width: 88px;
-    background-position: -97px -66px;
+    background-position: -73px -66px;
 }
 #bottom-buttons-chat:hover,
 #bottom-buttons-chat.current {
-    background-position: -97px 0;
+    background-position: -73px 0;
 }
 #bottom-buttons-houl {
-    width: 80px;
-    background-position: -192px -66px;
+    background-position: -148px -66px;
 }
 #bottom-buttons-houl:hover,
 #bottom-buttons-houl.current {
-    background-position: -192px 0;
+    background-position: -148px 0;
 }
 #bottom-buttons-profile {
-    width: 77px;
-    background-position: -280px -66px;
+    background-position: -222px -66px;
 }
 #bottom-buttons-profile:hover,
 #bottom-buttons-profile.current {
-    background-position: -280px 0;
+    background-position: -222px 0;
 }
 #bottom-buttons-more {
-    width: 70px;
-    background-position: -366px -66px;
+    background-position: -295px -66px;
 }
 #bottom-buttons-more:hover,
 #bottom-buttons-more.current {
-    background-position: -366px 0;
+    background-position: -295px 0;
 }
 
 
