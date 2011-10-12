@@ -70,7 +70,6 @@ houl.BuddyList.prototype.renderNotEmptyList = function() {
         this.incomingHouls[ii].render(this);
     }
     houl.setTopBarLeftText('Online (' + this.totalOnline + '/' + this.totalCount + ')');
-    houl.setTopBarRightText('PIN: ' + houl.User.currentUser.pin);
 }
 
 /**

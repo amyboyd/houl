@@ -35,6 +35,7 @@ function setCurrentUser() {
     goog.net.XhrIo.send(houl.getURL('current-user'), function(evt) {
         var json = evt.target.getResponseJson();
         houl.User.currentUser = new houl.User(json);
+        houl.setTopBarRightText('PIN: ' + houl.User.currentUser.pin);
     });
 }
 
