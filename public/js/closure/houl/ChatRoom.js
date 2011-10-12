@@ -38,6 +38,11 @@ houl.ChatRoom = function(otherUser) {
 }
 
 /**
+ * The user ID we last spoke to during this session.
+ */
+houl.ChatRoom.lastOpenUserID = null;
+
+/**
  * Parse the room's JSON.
  * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
  *
@@ -67,6 +72,8 @@ houl.ChatRoom.prototype.render = function() {
         houl.setTopBarLeftText(thisChatRoom.otherUser.name);
         thisChatRoom.setupNewMessageForm();
         thisChatRoom.waitForMessages();
+
+        houl.ChatRoom.lastOpenUserID = thisChatRoom.otherUser.id;
     }
 
     function onFailure() {

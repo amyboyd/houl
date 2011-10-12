@@ -14,6 +14,20 @@ houl.User = function(json) {
     this.setValuesFromJSON(json);
 }
 
+/**
+ * @param {number} id
+ * @param {function} onSuccess Called with the user as the only parameter.
+ */
+houl.User.getByID = function(id, onSuccess) {
+    var url = houl.getURL('user', {
+        'id': id
+    });
+    goog.net.XhrIo.send(url, function(evt) {
+        var user = new houl.User(evt.target.getResponseJson());
+        onSuccess(user);
+    });
+}
+
 houl.User.prototype.update = function(onComplete) {
     var url = houl.getURL('user', {
         'id': this.id

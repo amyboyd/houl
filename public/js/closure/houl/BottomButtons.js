@@ -3,6 +3,8 @@ goog.provide("houl.BottomButtons");
 goog.require("houl");
 goog.require("houl.templates");
 goog.require("houl.Options");
+goog.require("houl.User");
+goog.require("houl.ChatRoom");
 goog.require("goog.dom");
 goog.require("goog.events");
 goog.require("goog.events.EventType");
@@ -104,7 +106,14 @@ function setupSendHoulButton(button) {
 
 /** @private */
 function chat() {
-    // @todo
+    if (houl.ChatRoom.lastOpenUserID != null) {
+        houl.User.getByID(houl.ChatRoom.lastOpenUserID, function(user) {
+            var chatRoom = new houl.ChatRoom(user);
+            chatRoom.render();
+        });
+    } else {
+        alert('Please start a chat with a friend on your friends list');
+    }
 }
 
 /** @private */
