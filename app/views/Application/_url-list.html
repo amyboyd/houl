@@ -18,6 +18,11 @@ waitForMessages = waitForMessages.add('userId', '?')
 waitForMessages = waitForMessages.add('lastReceived', '?')
 waitForMessages.absolute()
 
+getMessages = play.mvc.Router.reverse('Chat.getMessages')
+getMessages = getMessages.add('userId', '?')
+getMessages = getMessages.add('lastReceived', '?')
+getMessages.absolute()
+
 addBuddy = play.mvc.Router.reverse('Application.addBuddy')
 addBuddy = addBuddy.add('pinOrEmail', '?')
 addBuddy.absolute()
@@ -56,6 +61,7 @@ markHoulAsSeen.absolute()
      data-room-json="${roomJson}"
      data-say="${say}"
      data-wait-for-messages="${waitForMessages}"
+     data-get-messages="${getMessages}"
      data-logout="@@{UserAuth.logout}"
      data-add-buddy="${addBuddy}"
      data-user="${user}"

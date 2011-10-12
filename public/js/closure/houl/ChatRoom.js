@@ -2,8 +2,8 @@ goog.provide('houl.ChatRoom');
 
 goog.require('houl');
 goog.require('houl.templates');
-goog.require('houl.User');
 goog.require('houl.ChatMessageSeries');
+goog.require('houl.User');
 goog.require('goog.async.ConditionalDelay');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
@@ -13,6 +13,7 @@ goog.require('goog.events.KeyCodes');
 goog.require('goog.net.XhrIo');
 goog.require('goog.soy');
 goog.require('goog.string');
+goog.require('goog.userAgent');
 
 /**
  * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
@@ -63,7 +64,12 @@ houl.ChatRoom.prototype.render = function() {
         houl.globalBuddyList.setAutoUpdating(false);
         houl.setTopBarLeftText(thisChatRoom.otherUser.name);
         thisChatRoom.setupNewMessageForm();
-        thisChatRoom.waitForMessages();
+
+//        if (goog.userAgent.MOBILE || 1) {
+//            thisChatRoom.refreshForMessages();
+//        } else {
+            thisChatRoom.waitForMessages();
+//        }
     }
 
     function onFailure() {
@@ -162,7 +168,11 @@ houl.ChatRoom.prototype.say = function(message) {
     goog.net.XhrIo.send(sayURL, function() { }, 'POST');
 }
 
-/** @private */
+/**
+ * Send a long-polling request that waits for new messages. Not suitable for mobile devices.
+ *
+ * @private
+ */
 houl.ChatRoom.prototype.waitForMessages = function() {
     var url = houl.getURL('wait-for-messages', {
         'userId': this.otherUser.id,
@@ -200,7 +210,57 @@ houl.ChatRoom.prototype.waitForMessages = function() {
             thisChatRoom.lastReceivedEventId = json['lastId'];
             thisChatRoom.scrollToBottom();
             thisChatRoom.waitForMessages();
-        }, {}, 0);
+        }, null, 0);
+}
+
+/**
+ * Send a request (not long polling) for new messages. Suitable for mobile devices, because they do
+ * not allow long polling requests.
+ *
+ * @private
+ */
+houl.ChatRoom.prototype.refreshForMessages = function() {
+    var url = houl.getURL('get-messages', {
+        'userId': this.otherUser.id,
+        'lastReceived': this.lastReceivedEventId
+    });
+
+    var thisChatRoom = this;
+
+    refresh();
+    setInterval(refresh, 10000);
+
+    function refresh() {
+        goog.net.XhrIo.send(url,
+            /** @param {goog.events.Event} event */
+            function(event) {
+                var json = event.target.getResponseJson();
+                var lastCms = (thisChatRoom.chatMessageSeriesArray.length > 0
+                    ? thisChatRoom.chatMessageSeriesArray[thisChatRoom.chatMessageSeriesArray.length - 1]
+                    : null);
+                var messagesCount = json['messages'].length;
+                for (var i = 0; i < messagesCount; i++) {
+                    var message = json['messages'][i];
+
+                    if (lastCms == null
+                        || lastCms.user.id != message['userId']
+                        // Over 2 minutes old.
+                        || (message['timestamp'] - lastCms.firstTimestamp) > 180000) {
+                        if (lastCms != null) {
+                            lastCms.render(thisChatRoom);
+                        }
+
+                        lastCms = new houl.ChatMessageSeries(thisChatRoom.users[message['userId']]);
+                        thisChatRoom.chatMessageSeriesArray.push(lastCms);
+                    }
+
+                    lastCms.addMessage(message['text'], message['timestamp']);
+                }
+                lastCms.render(thisChatRoom);
+                thisChatRoom.lastReceivedEventId = json['lastId'];
+                thisChatRoom.scrollToBottom();
+            }, null, 7500);
+    }
 }
 
 houl.ChatRoom.prototype.scrollToBottom = function() {

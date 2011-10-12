@@ -38,6 +38,16 @@ public class ChatRoom {
         return events.nextEvents(lastReceived);
     }
 
+    @SuppressWarnings("unchecked")
+    List<IndexedEvent<Event>> getMessagesSinceLastReceived(long lastReceived) {
+        List<IndexedEvent> ieList = events.availableEvents(lastReceived);
+        List<IndexedEvent<Event>> ieeList = new ArrayList<IndexedEvent<Event>>(ieList.size());
+        for (IndexedEvent ie: ieList) {
+            ieeList.add((IndexedEvent<Event>) ie);
+        }
+        return ieeList;
+    }
+
     void publish(Event event) {
         events.publish(event);
     }

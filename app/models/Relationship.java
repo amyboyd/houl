@@ -102,6 +102,10 @@ public class Relationship extends Model {
         return getChatRoom().nextMessages(lastReceived);
     }
 
+    public List<IndexedEvent<ChatRoom.Event>> getMessagesSinceLastReceived(long lastReceived) {
+        return getChatRoom().getMessagesSinceLastReceived(lastReceived);
+    }
+
     public ChatRoom getChatRoom() {
         return ChatRoom.get(this);
     }

@@ -25,4 +25,9 @@ public class Chat extends BaseController {
         List<IndexedEvent<Event>> messages = await(getRelationshipWithOtherUser(userId).nextMessages(lastReceived));
         renderJSON(ChatRoom.toJsonObject(messages).toString());
     }
+
+    public static void getMessages(Long userId, long lastReceived) {
+        List<IndexedEvent<Event>> messages = getRelationshipWithOtherUser(userId).getMessagesSinceLastReceived(lastReceived);
+        renderJSON(ChatRoom.toJsonObject(messages).toString());
+    }
 }
