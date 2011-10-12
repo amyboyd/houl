@@ -56,7 +56,7 @@
     bottom: 0;
     height: 76px;
     width: 100%;
-    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons/bg.png')) }%
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons-bg.png')) }%
     background-image: url('${base64}');
     background-position: bottom left;
     background-repeat: repeat-x;
@@ -68,7 +68,7 @@
     height: 66px;
     float: left;
     text-decoration: none;
-    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons/sprite.png')) }%
+    %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons-sprite.png')) }%
     background-image: url('${base64}');
     background-repeat: no-repeat;
 }
