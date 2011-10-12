@@ -26,22 +26,24 @@ houl.ChatRoom = function(otherUser) {
     this.element = houl.getAndActivatePageContainer('chat-room-page');
     this.chatMessageSeriesArray = [];
     this.receivedJson = false;
-    this.lastReceivedId = 0;
+    this.lastEventID = 0;
 
     var url = houl.getURL('room-json', {
         'userId': otherUser.id
     });
     var thisChatRoom = this;
     goog.net.XhrIo.send(url, function(event) {
-        thisChatRoom.parseJson(event.target.getResponseJson());
+        thisChatRoom.parseRoomJSON(event.target.getResponseJson());
     });
 }
 
 /**
  * Parse the room's JSON.
  * JSON comes from "models.ChatRoom.toJsonObject()" in Java.
+ *
+ * @private
  */
-houl.ChatRoom.prototype.parseJson = function(json) {
+houl.ChatRoom.prototype.parseRoomJSON = function(json) {
     this.users = json['users'];
     for (var id in json['users']) {
         this.users[id] = new houl.User(json['users'][id]);
@@ -64,12 +66,7 @@ houl.ChatRoom.prototype.render = function() {
         houl.globalBuddyList.setAutoUpdating(false);
         houl.setTopBarLeftText(thisChatRoom.otherUser.name);
         thisChatRoom.setupNewMessageForm();
-
-//        if (goog.userAgent.MOBILE || 1) {
-//            thisChatRoom.refreshForMessages();
-//        } else {
-            thisChatRoom.waitForMessages();
-//        }
+        thisChatRoom.waitForMessages();
     }
 
     function onFailure() {
@@ -176,17 +173,17 @@ houl.ChatRoom.prototype.say = function(message) {
 houl.ChatRoom.prototype.waitForMessages = function() {
     var url = houl.getURL('wait-for-messages', {
         'userId': this.otherUser.id,
-        'lastReceived': this.lastReceivedEventId
+        'lastReceived': this.lastEventID
     });
 
-    var thisChatRoom = this;
+    var chatRoom = this;
 
     goog.net.XhrIo.send(url,
         /** @param {goog.events.Event} event */
         function(event) {
             var json = event.target.getResponseJson();
-            var lastCms = (thisChatRoom.chatMessageSeriesArray.length > 0
-                ? thisChatRoom.chatMessageSeriesArray[thisChatRoom.chatMessageSeriesArray.length - 1]
+            var lastCms = (chatRoom.chatMessageSeriesArray.length > 0
+                ? chatRoom.chatMessageSeriesArray[chatRoom.chatMessageSeriesArray.length - 1]
                 : null);
             var messagesCount = json['messages'].length;
             for (var i = 0; i < messagesCount; i++) {
@@ -197,70 +194,20 @@ houl.ChatRoom.prototype.waitForMessages = function() {
                     // Over 2 minutes old.
                     || (message['timestamp'] - lastCms.firstTimestamp) > 180000) {
                     if (lastCms != null) {
-                        lastCms.render(thisChatRoom);
+                        lastCms.render(chatRoom);
                     }
 
-                    lastCms = new houl.ChatMessageSeries(thisChatRoom.users[message['userId']]);
-                    thisChatRoom.chatMessageSeriesArray.push(lastCms);
+                    lastCms = new houl.ChatMessageSeries(chatRoom.users[message['userId']]);
+                    chatRoom.chatMessageSeriesArray.push(lastCms);
                 }
 
                 lastCms.addMessage(message['text'], message['timestamp']);
             }
-            lastCms.render(thisChatRoom);
-            thisChatRoom.lastReceivedEventId = json['lastId'];
-            thisChatRoom.scrollToBottom();
-            thisChatRoom.waitForMessages();
+            lastCms.render(chatRoom);
+            chatRoom.lastEventID = json['lastId'];
+            chatRoom.scrollToBottom();
+            chatRoom.waitForMessages();
         }, null, 0);
-}
-
-/**
- * Send a request (not long polling) for new messages. Suitable for mobile devices, because they do
- * not allow long polling requests.
- *
- * @private
- */
-houl.ChatRoom.prototype.refreshForMessages = function() {
-    var url = houl.getURL('get-messages', {
-        'userId': this.otherUser.id,
-        'lastReceived': this.lastReceivedEventId
-    });
-
-    var thisChatRoom = this;
-
-    refresh();
-    setInterval(refresh, 10000);
-
-    function refresh() {
-        goog.net.XhrIo.send(url,
-            /** @param {goog.events.Event} event */
-            function(event) {
-                var json = event.target.getResponseJson();
-                var lastCms = (thisChatRoom.chatMessageSeriesArray.length > 0
-                    ? thisChatRoom.chatMessageSeriesArray[thisChatRoom.chatMessageSeriesArray.length - 1]
-                    : null);
-                var messagesCount = json['messages'].length;
-                for (var i = 0; i < messagesCount; i++) {
-                    var message = json['messages'][i];
-
-                    if (lastCms == null
-                        || lastCms.user.id != message['userId']
-                        // Over 2 minutes old.
-                        || (message['timestamp'] - lastCms.firstTimestamp) > 180000) {
-                        if (lastCms != null) {
-                            lastCms.render(thisChatRoom);
-                        }
-
-                        lastCms = new houl.ChatMessageSeries(thisChatRoom.users[message['userId']]);
-                        thisChatRoom.chatMessageSeriesArray.push(lastCms);
-                    }
-
-                    lastCms.addMessage(message['text'], message['timestamp']);
-                }
-                lastCms.render(thisChatRoom);
-                thisChatRoom.lastReceivedEventId = json['lastId'];
-                thisChatRoom.scrollToBottom();
-            }, null, 7500);
-    }
 }
 
 houl.ChatRoom.prototype.scrollToBottom = function() {
@@ -286,4 +233,4 @@ houl.ChatRoom.prototype.chatMessageSeriesArray = null;
 houl.ChatRoom.prototype.receivedJson = false;
 
 /** @private @type {numnber} */
-houl.ChatRoom.prototype.lastReceivedEventId = 0;
+houl.ChatRoom.prototype.lastEventID = 0;
