@@ -121,7 +121,7 @@
                 </td>
                 <td>
                     <button class="chat-room-new-message-emoticon button-green">
-                        <img src="/_/a/2/images/emoticons/1.png" alt="" title="Add an emoticon" width="14" height="14" />
+                        <img src="/public/images/emoticons/1.png" alt="" title="Add an emoticon" width="14" height="14" />
                     </button>
                 </td>
             </tr>
@@ -152,7 +152,7 @@
 {template .emoticonChooserEmoticon private="true"}
     <tr>
         <td>{$text}</td>
-        <td><img src="/_/a/2/images/emoticons/{$imageNumber}.png" width="16" height="16"
+        <td><img src="/public/images/emoticons/{$imageNumber}.png" width="16" height="16"
                  // Alt text needed by JS
                  alt="{$text}" /></td>
     </tr>
@@ -190,13 +190,13 @@
  */
 {template .options}
     {call .option}
-        {param img: '/_/a/2/images/options/feedback.png' /}
+        {param img: '/public/images/options/feedback.png' /}
         {param title: 'Feedback' /}
         {param description: 'Send us your feedback and any suggestions' /}
         {param htmlId: 'feedback-option' /}
     {/call}
     {call .option}
-        {param img: '/_/a/2/images/options/logout.png' /}
+        {param img: '/public/images/options/logout.png' /}
         {param title: 'Logout' /}
         {param description: 'Logout of your Houl account' /}
         {param htmlId: 'logout-option' /}
@@ -218,13 +218,13 @@
     <div id="edit-profile-right">
         <h2 id="edit-profile-name">
             {$user.name}
-            <img src="/_/a/2/images/edit.png" alt="Edit" width="20" height="20"
+            <img src="/public/images/edit.png" alt="Edit" width="20" height="20"
                  id="edit-profile-name-icon" />
         </h2>
         <p id="edit-profile-pin">PIN: {$user.pin}</p>
         <p id="edit-profile-status">
             <em>Status:</em> {if $user.status} {$user.status} {else} none {/if}
-            <img src="/_/a/2/images/edit.png" alt="Edit" width="16" height="16"
+            <img src="/public/images/edit.png" alt="Edit" width="16" height="16"
                  id="edit-profile-status-icon" />
 
             // Post status on Twitter/Facebook
@@ -240,25 +240,25 @@
     <div class="clearfix"></div>
 
     {call .option}
-        {param img: '/_/a/2/images/options/email.png' /}
+        {param img: '/public/images/options/email.png' /}
         {param title: $user.email /}
         {param description: 'Your email address is not shown to anyone' /}
         {param htmlId: 'email-option' /}
     {/call}
     {call .option}
-        {param img: '/_/a/2/images/options/password.png' /}
+        {param img: '/public/images/options/password.png' /}
         {param title: 'Change Password' /}
         {param description: 'Change your current password' /}
         {param htmlId: 'password-option' /}
     {/call}
 //    {call .option}
-//        {param img: '/_/a/2/images/options/facebook.png' /}
+//        {param img: '/public/images/options/facebook.png' /}
 //        {param title: 'Link With Facebook' /}
 //        {param description: 'Automatically post your status updates to Facebook' /}
 //        {param htmlId: 'facebook-option' /}
 //    {/call}
 //    {call .option}
-//        {param img: '/_/a/2/images/options/twitter.png' /}
+//        {param img: '/public/images/options/twitter.png' /}
 //        {param title: 'Link With Twitter' /}
 //        {param description: 'Automatically post your status updates to Twitter' /}
 //        {param htmlId: 'twitter-option' /}
