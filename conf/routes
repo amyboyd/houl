@@ -16,6 +16,8 @@ GET     /                                       Application.index
 # Update the version number when deploying if we need to force browsers to refresh their cache.
 GET     /_/bundles/3/{action}                   Bundles.{action}
 GET     /uploads/                               staticDir:public/uploads/
+GET     /_/no-img.png                           staticFile:public/images/no-user-image-48.png
+GET     /_/public/3/                            staticDir:public/
 GET     /_/public/                              staticDir:public/
 
 GET     /favicon.ico                            staticFile:public/favicon.ico

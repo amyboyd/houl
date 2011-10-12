@@ -12,9 +12,9 @@ goog.require("goog.soy");
 
 houl.BottomButtons.setup = function() {
     common('bottom-buttons-friends', friends);
-//    common('bottom-buttons-add-buddy', addBuddy);
+    common('bottom-buttons-add-friend', addFriend);
     common('bottom-buttons-chat', chat);
-    common('bottom-buttons-houl', sendHoul);
+//    common('bottom-buttons-houl', sendHoul);
     common('bottom-buttons-profile', editProfile);
     common('bottom-buttons-more', more);
 
@@ -41,7 +41,7 @@ function friends() {
 }
 
 /** @private */
-function addBuddy() {
+function addFriend() {
     var pinOrEmail = window.prompt("What is the other user's PIN or email address?", null);
     if (goog.string.isEmptySafe(pinOrEmail)) {
         return;
@@ -55,7 +55,7 @@ function addBuddy() {
         var xhr = evt.target;
 
         if (xhr.getStatus() == 200) {
-            // Added the buddy successfully.
+            // Added the friend successfully.
             alert('Your request has been sent');
             houl.globalBuddyList.update();
         } else if (xhr.getStatus() === 403) {

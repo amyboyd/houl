@@ -20,7 +20,6 @@ houl.Emoticons.map = {
 
 houl.Emoticons.insertEmoticonImages = function(message) {
     var emoticonsDir = houl.getURL('emoticons-dir');
-    alert(emoticonsDir);
     for (var smiley in houl.Emoticons.map) {
         var imageNumber = houl.Emoticons.map[smiley];
         message = message.replace(smiley, '<img src="' + emoticonsDir + '/' + imageNumber + '.png" alt="' + smiley + '" width="16" height="16" />', 'gm');
