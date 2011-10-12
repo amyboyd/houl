@@ -113,6 +113,7 @@ function chat() {
         });
     } else {
         alert('Please start a chat with a friend on your friends list');
+        friends();
     }
 }
 
