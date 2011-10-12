@@ -1,17 +1,12 @@
-#auth-body {
-    height: 100%;
-    margin: 0 auto 76px;
-    background: #fff;
-    position: relative; /* so emoticons choose can be absolutely positioned */
-}
-
-
 /* Top bar *****************************************/
 #top-bar {
+    position: fixed;
+    top: 0;
     height: 34px;
+    width: 100%;
     background-image: url("@@{'/public/images/sprite.jpg'}");
     background-position: 0 0;
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
 }
 #top-bar h1 {
     height: 34px;
@@ -33,7 +28,10 @@
 
 /* Actual content **********************************/
 #content {
-    /* Height is set by JavaScript to take up all remaining height. */
+    position: fixed;
+    top: 34px;
+    bottom: 76px;
+    width: 100%;
     overflow-y: scroll;
     background-color: #fff;
 }
@@ -53,9 +51,8 @@
 
 /* Bottom buttons **********************************/
 #bottom-buttons {
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    left: 0;
     height: 76px;
     width: 100%;
     %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/bottom-buttons/bg.png')) }%
@@ -304,9 +301,10 @@
     top: 3px;
 }
 #emoticon-chooser {
-    position: absolute;
-    right: 3%;
-    bottom: 3%;
+    position: fixed;
+    right: 5px;
+    bottom: 80px;
+    z-index: 5;
     border: 2px solid #000;
     background: #eef;
     width: 60px;

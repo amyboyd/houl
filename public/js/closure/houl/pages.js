@@ -20,7 +20,6 @@ houl.pages.initAuthPage = function() {
 
     goog.dom.removeNode(goog.dom.$('loading-page'));
 
-    setContentHeight();
     setCurrentUser();
     removeFlashMessage();
 }
@@ -37,16 +36,6 @@ function setCurrentUser() {
         var json = evt.target.getResponseJson();
         houl.User.currentUser = new houl.User(json);
     });
-}
-
-/**
- * @private
- */
-function setContentHeight() {
-    var content = goog.dom.$('content');
-    var topBar = goog.dom.$('top-bar');
-    var bottomButtons = goog.dom.$('bottom-buttons');
-    content.style.height = (document.body.clientHeight - topBar.clientHeight - bottomButtons.clientHeight) + "px";
 }
 
 /**
