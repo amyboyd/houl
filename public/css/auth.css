@@ -31,6 +31,7 @@
     width: 100%;
     min-height: 150px;
     background-color: #fff;
+    position: relative;
 }
 #loading-page, #index-page, #request-page, #chat-room-page, #options-page {
     /* These must be explicilty "display:block;", because "goog.style.showElement()" restores to
@@ -236,8 +237,7 @@
     margin-left: 59px;
 }
 .cms {
-    padding: 0 7px 7px;
-    margin: 7px 0 0;
+    padding: 7px;
     min-height: 58px;
     %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/friend-bg.png')) }%
     background-image: url('${base64}');
@@ -295,7 +295,7 @@
     top: 3px;
 }
 #emoticon-chooser {
-    position: fixed;
+    position: absolute;
     right: 5px;
     bottom: 80px;
     z-index: 5;

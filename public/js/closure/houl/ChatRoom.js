@@ -118,7 +118,10 @@ houl.ChatRoom.prototype.setupNewMessageForm = function() {
     var thisChatRoom = this;
 
     function resetField() {
-        field.focus();
+        // Only focus on desktop. Do not focus on mobile because then the keyboard will re-open and take up screen space.
+        if (!goog.userAgent.MOBILE) {
+            field.focus();
+        }
         goog.dom.forms.setValue(field, null);
     }
 
