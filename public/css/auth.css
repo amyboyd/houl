@@ -185,6 +185,11 @@
 }
 
 /* Message/status */
+.relationship-message {
+    /* Don't show more than two lines of last message in friends list. */
+    max-height: 34px;
+    overflow: hidden;
+}
 .relationship-message em {
     font-weight: bold;
     font-style: normal;
