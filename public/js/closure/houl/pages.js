@@ -20,6 +20,7 @@ houl.pages.initAuthPage = function() {
 
     goog.dom.removeNode(goog.dom.$('loading-page'));
 
+//    setTimeout(setContentHeight, 1000);
     setCurrentUser();
     removeFlashMessage();
 }
@@ -37,6 +38,16 @@ function setCurrentUser() {
         houl.User.currentUser = new houl.User(json);
         houl.setTopBarRightText('PIN: ' + houl.User.currentUser.pin);
     });
+}
+
+/**
+ * @private
+ */
+function setContentHeight() {
+    var content = goog.dom.$('content');
+    var topBar = goog.dom.$('top-bar');
+    var bottomButtons = goog.dom.$('bottom-buttons');
+    content.style.height = (document.body.clientHeight - topBar.clientHeight - bottomButtons.clientHeight) + "px";
 }
 
 /**

@@ -1,7 +1,6 @@
 /* Top bar *****************************************/
 #top-bar {
-    position: fixed;
-    top: 0;
+    z-index: 10;
     height: 34px;
     width: 100%;
     %{ base64 = play.libs.Images.toBase64(play.getFile('/public/images/top-bar-bg.png')) }%
@@ -29,11 +28,8 @@
 
 /* Actual content **********************************/
 #content {
-    position: fixed;
-    top: 34px;
-    bottom: 76px;
     width: 100%;
-    overflow-y: scroll;
+    min-height: 150px;
     background-color: #fff;
 }
 #loading-page, #index-page, #request-page, #chat-room-page, #options-page {
@@ -52,8 +48,7 @@
 
 /* Bottom buttons **********************************/
 #bottom-buttons {
-    position: fixed;
-    bottom: 0;
+    z-index: 10;
     height: 76px;
     max-height: 76px;
     overflow: hidden;
@@ -155,6 +150,7 @@
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
+    z-index: 10;
 }
 
 .relationship-center {

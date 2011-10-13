@@ -24,7 +24,10 @@ goog.require('goog.userAgent');
  */
 houl.ChatRoom = function(otherUser) {
     this.otherUser = otherUser;
+
     this.element = houl.getAndActivatePageContainer('chat-room-page');
+    goog.dom.removeChildren(this.element);
+
     this.chatMessageSeriesArray = [];
     this.receivedJson = false;
     this.lastEventID = 0;
@@ -137,28 +140,12 @@ houl.ChatRoom.prototype.setupNewMessageForm = function() {
         }
     }
 
-    function hideBottomButtons() {
-        goog.style.showElement(goog.dom.$('bottom-buttons'), false);
-//        goog.dom.$('content').style.bottom = 0;
-    }
-
-    function showBottomButtons() {
-        goog.style.showElement(goog.dom.$('bottom-buttons'), true);
-//        goog.dom.$('content').style.bottom = '76px';
-        thisChatRoom.scrollToBottom();
-    }
-
-    // On mobile we hide the bottom buttons so the keyboard is sure to be seen.
-    if (goog.userAgent.MOBILE) {
-        goog.events.listen(field, goog.events.EventType.FOCUS, hideBottomButtons);
-        goog.events.listen(field, goog.events.EventType.BLUR, showBottomButtons);
-    }
-
     goog.events.listen(field, goog.events.EventType.KEYPRESS, onKeyPress);
     goog.events.listen(submit, goog.events.EventType.KEYPRESS, onKeyPress);
     goog.events.listen(submit, goog.events.EventType.CLICK, onClick);
 
     resetField();
+    thisChatRoom.scrollToBottom();
 
     // When the emoticon icon is clicked, open the emoticon chooser.
     var emoticonChooser = goog.dom.$$(null, 'chat-room-new-message-emoticon', this.element)[0];
