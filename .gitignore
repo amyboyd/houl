@@ -1,0 +1,5 @@
+/logs/*
+/public/js/templates/compiled/*
+/public/uploads/*
+/tmp
+/public/bundles/
